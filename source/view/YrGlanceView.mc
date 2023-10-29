@@ -32,7 +32,7 @@ class YrGlanceView extends WatchUi.GlanceView {
 
         var mw = W * 0.55; // Rain chart width margin (left)
         var mh = H / 5.5; // Rain chart height margin (bottom)
-        var lh = (H - mh * 2.5) / 3; // Rain chart line height
+        var lh = (H - mh * 3) / 3; // Rain chart line height
         var chartWidth = W - mw;
         if (data.rainfall != null) {
             var rainPoints = new [data.rainfall.size() + 2];

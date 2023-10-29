@@ -65,10 +65,6 @@ class App extends Application.AppBase {
 (:glance)
 function generateArrow(centerPoint as Array<Number>, angle as Float, length as Number) as Array<Array<Float>> {
     // Map out the coordinates of the arrow
-    /*var coords = [[(-length * 0.35).toNumber(), length / 2] as Array<Number>,
-                    [0, -length / 2] as Array<Number>,
-                    [(length * 0.35).toNumber(), length / 2] as Array<Number>,
-                    [0, (-length * 0.35).toNumber() + length / 2]] as Array<Array<Number>>;*/
     var coords = [[0, length / 2] as Array<Number>,
                   [(length * 0.07).toNumber(), (-length / 2 * 0.5).toNumber()] as Array<Number>,
                   [(length * 0.3).toNumber(), (-length / 2 * 0.3).toNumber()] as Array<Number>,

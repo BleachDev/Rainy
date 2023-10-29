@@ -47,13 +47,27 @@ class SummaryView extends WatchUi.View {
         var mh = H / 7.42; // Rain chart height margin
         var lh = H / 13; // Rain chart line height
         var chartWidth = W - 60;
+        var rainBackup = Weather.getHourlyForecast() != null && Weather.getHourlyForecast().size() >= 6;
 
         if (data.rainfall != null) {
             var rainPoints = new [data.rainfall.size() + 2];
             rainPoints[0] = [ mw, H - mh ];
             rainPoints[data.rainfall.size() + 1] = [ mw + (chartWidth / 18) * (data.rainfall.size() - 1), H - mh ];
             for (var i = 0; i < data.rainfall.size(); i++) {
-                rainPoints[i + 1] = [ mw + (chartWidth / 18) * i, H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3.25 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
+                rainPoints[i + 1] = [ mw + (chartWidth / 18) * i,
+                                      H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3.25 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
+            }
+
+            dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+            dc.fillPolygon(rainPoints);
+        } else if (rainBackup) {
+            var forecast = Weather.getHourlyForecast();
+            var rainPoints = new [8];
+            rainPoints[0] = [ mw, H - mh ];
+            rainPoints[7] = [ mw + chartWidth, H - mh ];
+            for (var i = 0; i < 6; i++) {
+                rainPoints[i + 1] = [ mw + (chartWidth / 6) * i,
+                                      H - mh - (lh * 3.25) * (forecast[i].precipitationChance / 100.0) ];
             }
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
@@ -62,8 +76,8 @@ class SummaryView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W * 0.27, H - mh + 2, Graphics.FONT_XTINY, "Now", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, "45", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, "90", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, rainBackup ? "3hr" : "45", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.drawLine(mw, H - mh, W - mw, H - mh);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -72,7 +86,8 @@ class SummaryView extends WatchUi.View {
         dc.drawLine(mw, H - mh - lh * 3, W - mw, H - mh - lh * 3);
         
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 2, H - mh - lh * 3 - XTINY_HEIGHT, Graphics.FONT_XTINY, data.rainfall == null ? "90 min Rainfall Unavailable\n(Nordics Only)" : "Rainfall next 90 min.", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H - mh - lh * 3 - XTINY_HEIGHT, Graphics.FONT_XTINY,
+            data.rainfall != null ? "Rainfall next 90 min." : rainBackup ? "Rain chance next 6 hr." : "90 Minute Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         res.indicator.draw(dc, 0);

@@ -17,7 +17,7 @@ class BaseDelegate extends WatchUi.BehaviorDelegate {
                 {}
             )
         );
-        WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_BLINK);
         return true;
     }
 }

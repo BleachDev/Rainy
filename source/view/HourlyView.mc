@@ -17,6 +17,11 @@ class HourlyView extends WatchUi.View {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
 
+        if (data.hints & 2 == 0) {
+            data.hints |= 2;
+            WatchUi.pushView(new HintView("Press Select to scroll\nin the Hourly and\nChart Forecasts", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
+        }
+
         var W = dc.getWidth();
         var H = dc.getHeight();
         var XTINY_HEIGHT = H / 13; // XTINY font line height

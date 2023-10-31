@@ -17,6 +17,11 @@ class SummaryView extends WatchUi.View {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
 
+        if (data.hints & 1 == 0) {
+            data.hints |= 1;
+            WatchUi.pushView(new HintView("Press the Select\nor Menu button\nto open Yr settings.", [ 0, 1 ]), new HintDelegate([ 0, 1 ]), WatchUi.SLIDE_BLINK);
+        }
+
         var W = dc.getWidth();
         var H = dc.getHeight();
         var XTINY_HEIGHT = H / 13; // XTINY font line height

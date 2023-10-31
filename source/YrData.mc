@@ -6,6 +6,7 @@ import Toybox.Time;
 
 class YrData {
 
+    public var hints                as Number = 0;
     public var fahrenheit           as Boolean = false;
 
     public var position             as Array<Double>?;
@@ -71,6 +72,7 @@ class YrData {
     }
 
     function save() {
+        Storage.setValue("hints", hints);
         Storage.setValue("fahrenheit", fahrenheit);
 
         Storage.setValue("geo", position);
@@ -106,6 +108,7 @@ class YrData {
     }
 
     function load() {
+        if (Storage.getValue("hints") != null) { hints = Storage.getValue("hints"); }
         if (Storage.getValue("fahrenheit") != null) { fahrenheit = Storage.getValue("fahrenheit"); }
                                                else { fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE; }
         
@@ -133,6 +136,9 @@ class YrData {
         if (Storage.getValue("waterTimestamps") != null) { waterTimestamps = loadMoments("waterTimestamps"); }
         Storage.clearValues();
         WatchUi.requestUpdate();
+
+        // Save back sints so we're sure that its saved
+        Storage.setValue("hints", hints);
     }
 
     function loadMoments(key) {

@@ -44,6 +44,7 @@ class GraphView extends WatchUi.View {
 
             // Bottom time text
             if (i % 3 == 0) {
+                dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(mw + lw * i, H - mh, Graphics.FONT_XTINY, ((startHour + offset + i) % 24).format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
             }
         }

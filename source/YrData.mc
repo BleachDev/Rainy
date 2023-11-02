@@ -167,7 +167,6 @@ class YrData {
                 hourlyRainfall = new [hours];
                 hourlySymbol = new [hours];
                 for (var i = 0; i < hours; i++) {
-                    System.println(hourly[i].condition);
                     hourlyTemperature[i]   = hourly[i].temperature == null ? 0.0 : hourly[i].temperature.toFloat();
                     hourlyWindSpeed[i]     = hourly[i].windSpeed == null ? 0.0 : hourly[i].windSpeed;
                     hourlyWindDirection[i] = hourly[i].windBearing == null ? 0.0 : hourly[i].windBearing.toFloat();

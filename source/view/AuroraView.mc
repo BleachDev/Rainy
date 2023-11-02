@@ -24,7 +24,7 @@ class AuroraView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W / 2, H / 26, Graphics.FONT_MEDIUM, "Aurora", Graphics.TEXT_JUSTIFY_CENTER);
-        if (data.hourlyAurora == null) {
+        if (data.hourlyClouds == null) {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 2.5, Graphics.FONT_TINY, "Aurora & Cloud Data\nUnavailable.", Graphics.TEXT_JUSTIFY_CENTER);
         } else {
@@ -36,7 +36,7 @@ class AuroraView extends WatchUi.View {
             dc.drawText(mw + cw + 3, mh + ch - ch * 0.4 * 0.15 - H / 26, Graphics.FONT_XTINY, "Lo", Graphics.TEXT_JUSTIFY_LEFT);
             dc.drawText(mw + cw + 3, mh + ch - ch * 0.4 * 0.5 - H / 26, Graphics.FONT_XTINY, "Hi", Graphics.TEXT_JUSTIFY_LEFT);
 
-            var len = data.hourlyAurora.size();
+            var len = data.hourlyClouds.size() > 32 ? 32 : data.hourlyClouds.size();
             var cloudPoints = new [len * 2];
             var auroraPoints = new [len + 2];
 
@@ -47,8 +47,9 @@ class AuroraView extends WatchUi.View {
                 cloudPoints[i] = [ x, mh + ch * 0.26 + ch * data.hourlyClouds[i] / 1000 ];
                 cloudPoints[len * 2 - 1 - i] = [ x, mh + ch * 0.26 - ch * data.hourlyClouds[i] / 1000 ];
 
-                auroraPoints[i] = [ x, mh + ch - (ch * data.hourlyAurora[i] * 0.4)];
-                maxAurora = data.hourlyAurora[i] > maxAurora ? data.hourlyAurora[i] : maxAurora;
+                var aurStrength = data.hourlyAurora != null && data.hourlyAurora.size() > i ? data.hourlyAurora[i] : 0;
+                auroraPoints[i] = [ x, mh + ch - (ch * aurStrength * 0.4)];
+                maxAurora = aurStrength > maxAurora ? aurStrength : maxAurora;
 
                 if (i % 6 == 0) {
                     dc.drawText(x, mh + ch, Graphics.FONT_XTINY, ((hour + i) % 24).format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
@@ -65,7 +66,7 @@ class AuroraView extends WatchUi.View {
             dc.fillPolygon(cloudPoints);
 
             if (len > 0) {
-                dc.drawText(mw, mh, Graphics.FONT_XTINY, data.hourlyClouds[0] + "% Cloudy", Graphics.TEXT_JUSTIFY_LEFT);
+                dc.drawText(mw, mh, Graphics.FONT_XTINY, data.hourlyClouds[0].format("%d") + "% Cloudy", Graphics.TEXT_JUSTIFY_LEFT);
             }
 
             dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);

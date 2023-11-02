@@ -43,23 +43,22 @@ class YrData {
         position = coords;
         var fcUrl = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=" + coords[0] + "&lon=" + coords[1];
         var geoUrl = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + coords[0] + "&lon=" + coords[1];
-        var auroraUrl = "https://www.yr.no/api/v0/locations/" + coords[0] + "," + coords[1] + "/auroraforecast";
         var waterUrl = "https://www.yr.no/api/v0/locations/" + coords[0] + "," + coords[1] + "/nearestwatertemperatures";
 
         // Don't bother downloading the full forecast if were low on ram
         // OOM Requests creates a ton of heap garbage that won't go away
-        if (System.getSystemStats().totalMemory < 200000) {
+        if (System.getSystemStats().totalMemory < 220000) {
             fetchForecastData(-403, null);
         } else {
             request(fcUrl, method(:fetchForecastData));
         }
         request(geoUrl, method(:fetchGeoData));
-        request(auroraUrl, method(:fetchAuroraData));
         request(waterUrl, method(:fetchWaterData));
     }
 
     // Request order
     // -> Forecast -> Now
+    //            \-> Aurora
     // -> Geo
     // -> Aurora
     // -> Water
@@ -202,6 +201,7 @@ class YrData {
             hourlyWindDirection = new [hours];
             hourlyRainfall = new [hours];
             hourlySymbol = new [hours];
+            hourlyClouds = new [hours];
             for (var i = 0; i < hours; i++) {
                 var data2 = seriesData[i]["data"];
                 var hourData = data2["next_1_hours"];
@@ -210,13 +210,16 @@ class YrData {
                 hourlyWindDirection[i] = data2["instant"]["details"]["wind_from_direction"];
                 hourlyRainfall[i] = hourData["details"]["precipitation_amount"];
                 hourlySymbol[i] = hourData["summary"]["symbol_code"].hashCode();
+                hourlyClouds[i] = data2["instant"]["details"]["cloud_area_fraction"];
             }
             
             time = parseISODate(seriesData[0]["time"]);
         }
 
         var nowUrl = "https://api.met.no/weatherapi/nowcast/2.0/complete?lat=" + position[0] + "&lon=" + position[1];
+        var auroraUrl = "https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/auroraforecast";
         request(nowUrl, method(:fetchNowData));
+        request(auroraUrl, method(:fetchAuroraData));
 
         WatchUi.requestUpdate();
     }
@@ -285,7 +288,7 @@ class YrData {
 
         if (data["shortIntervals"] == null) {
             hourlyAurora = null;
-            hourlyClouds = null;
+            //hourlyClouds = null;
             return;
         }
 

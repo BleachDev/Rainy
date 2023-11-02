@@ -33,10 +33,10 @@ class App extends Application.AppBase {
         var pos = Position.getInfo().position.toDegrees();
         if (pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
             data.update(pos);
+        } else if (Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
+            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
         } else if (data.position != null) {
             data.update(data.position);
-        } else if (Weather.getCurrentConditions() != null) {
-            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
         }
         
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:updateCB));
@@ -51,10 +51,10 @@ class App extends Application.AppBase {
         var pos = Position.getInfo().position.toDegrees();
         if (pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
             data.update(pos);
+        } else if (Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
+            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
         } else if (data.position != null) {
             data.update(data.position);
-        } else if (Weather.getCurrentConditions() != null) {
-            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
         }
 
         return [ new YrGlanceView(data) ];

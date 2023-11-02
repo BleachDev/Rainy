@@ -167,11 +167,12 @@ class YrData {
                 hourlyRainfall = new [hours];
                 hourlySymbol = new [hours];
                 for (var i = 0; i < hours; i++) {
+                    System.println(hourly[i].condition);
                     hourlyTemperature[i]   = hourly[i].temperature == null ? 0.0 : hourly[i].temperature.toFloat();
                     hourlyWindSpeed[i]     = hourly[i].windSpeed == null ? 0.0 : hourly[i].windSpeed;
                     hourlyWindDirection[i] = hourly[i].windBearing == null ? 0.0 : hourly[i].windBearing.toFloat();
                     hourlyRainfall[i]      = hourly[i].precipitationChance == null ? 0.0 : -hourly[i].precipitationChance.toFloat();
-                    hourlySymbol[i]        = hourly[i].precipitationChance == null ? "fair_day" : (hourly[i].precipitationChance > 50 ? "rainshowers_day" : "fair_day").hashCode();
+                    hourlySymbol[i]        = hourly[i].condition == null ? "fair_day".hashCode() : res.builtInToCode[hourly[i].condition];
                 }
                 if (hours != 0) {
                     time = hourly[0].forecastTime;

@@ -81,8 +81,8 @@ class SummaryView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W * 0.27, H - mh + 2, Graphics.FONT_XTINY, "Now", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, rainBackup ? "3hr" : "45", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, data.rainfall == null && rainBackup ? "3hr" : "45", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, data.rainfall == null && rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.drawLine(mw, H - mh, W - mw, H - mh);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);

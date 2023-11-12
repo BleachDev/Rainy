@@ -48,7 +48,7 @@ class HourlyView extends WatchUi.View {
             var rain = data.hourlyRainfall[entry];
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.drawText(lh + (W - lh * 2) / 2, mh + lh / 6 + offset, Graphics.FONT_MEDIUM,
-                rain < 0 ? -rain.toNumber() + "%" : rain == rain.toNumber() ? rain.toNumber() : rain.format("%.1f"), Graphics.TEXT_JUSTIFY_LEFT);
+                rain == rain.toNumber() ? rain.toNumber() : rain.format("%.1f"), Graphics.TEXT_JUSTIFY_LEFT);
 
             // Wind
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);

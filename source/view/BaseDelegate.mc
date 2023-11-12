@@ -26,6 +26,10 @@ class BaseDelegate extends WatchUi.BehaviorDelegate {
     //! Handle going to the next view
     //! @return true if handled, false otherwise
     public function onNextPage() as Boolean {
+        if (data.hourlyTemperature.size() < 1) {
+            return false;
+        }
+
         page = page == 4 ? 0 : page + 1;
 
         var view = getView(page);
@@ -36,6 +40,10 @@ class BaseDelegate extends WatchUi.BehaviorDelegate {
     //! Handle going to the previous view
     //! @return true if handled, false otherwise
     public function onPreviousPage() as Boolean {
+        if (data.hourlyTemperature.size() < 1) {
+            return false;
+        }
+        
         page = page == 0 ? 4 : page - 1;
 
         var view = getView(page);

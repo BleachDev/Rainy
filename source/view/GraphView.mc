@@ -54,8 +54,8 @@ class GraphView extends WatchUi.View {
             dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - cols), mh + lh * i);
         }
 
-        var minTemp = data.temperature;
-        var maxTemp = data.temperature;
+        var minTemp = data.hourlyTemperature[0];
+        var maxTemp = data.hourlyTemperature[0];
         for (var i = 0; i < data.hourlyTemperature.size(); i++) {
             if (data.hourlyTemperature[i] - 2 < minTemp) {
                 minTemp = data.hourlyTemperature[i] - 2;
@@ -65,7 +65,6 @@ class GraphView extends WatchUi.View {
             }
         }
         var diffTemp = maxTemp - minTemp;
-        var rainPercent = data.hourlyRainfall.size() > 0 && data.hourlyRainfall[0] < 0;
 
         for (var i = 0; i < 12; i++) {
             if (data.hourlySymbol.size() <= offset + i + 1) {
@@ -74,7 +73,7 @@ class GraphView extends WatchUi.View {
 
             // Rain (fillRectancle uses wh instead of xy :troll:)
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
-            var rain = rainPercent ? -data.hourlyRainfall[offset + i] / 11 : data.hourlyRainfall[offset + i];
+            var rain = data.hourlyRainfall[offset + i];
             dc.fillRectangle(mw + lw * i, H - mh - lh * rain, lw, lh * rain);
 
             // Temperature
@@ -92,10 +91,10 @@ class GraphView extends WatchUi.View {
         dc.drawText(mw - 3, H - mh - XTINY_HEIGHT, Graphics.FONT_XTINY, degrees(minTemp, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
 
         // Right side rainfall text
-        dc.drawText(W - mw + 3, mh, Graphics.FONT_XTINY, rainPercent ? "100%" : "9", Graphics.TEXT_JUSTIFY_LEFT);
-        dc.drawText(W - mw + 3, mh + (H - mh * 2) * 0.28, Graphics.FONT_XTINY, rainPercent ? "60%" : "6", Graphics.TEXT_JUSTIFY_LEFT);
-        dc.drawText(W - mw + 3, mh + (H - mh * 2) * 0.58, Graphics.FONT_XTINY, rainPercent ? "30%" : "3", Graphics.TEXT_JUSTIFY_LEFT);
-        dc.drawText(W - mw + 3, H - mh - XTINY_HEIGHT, Graphics.FONT_XTINY, rainPercent ? "0%" : "0", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W - mw + 3, mh, Graphics.FONT_XTINY, "9", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W - mw + 3, mh + (H - mh * 2) * 0.28, Graphics.FONT_XTINY, "6", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W - mw + 3, mh + (H - mh * 2) * 0.58, Graphics.FONT_XTINY, "3", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W - mw + 3, H - mh - XTINY_HEIGHT, Graphics.FONT_XTINY, "0", Graphics.TEXT_JUSTIFY_LEFT);
 
         // Local Page Indicator
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);

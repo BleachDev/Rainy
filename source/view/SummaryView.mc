@@ -17,14 +17,22 @@ class SummaryView extends WatchUi.View {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
 
+        var W = dc.getWidth();
+        var H = dc.getHeight();
+        var XTINY_HEIGHT = H / 13; // XTINY font line height
+
+        if (data.hourlySymbol.size() < 1) {
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(W / 2, H / 8, Graphics.FONT_LARGE, "Loading..", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(W / 2, H / 2.8, Graphics.FONT_TINY, "Phone Bluetooth\nconnection required\nto load Yr.", Graphics.TEXT_JUSTIFY_CENTER);
+            return;
+        }
+
         if (data.hints & 1 == 0) {
             data.hints |= 1;
             WatchUi.pushView(new HintView("Press the Select\nor Menu button\nto open Yr settings.", [ 0, 1 ]), new HintDelegate([ 0, 1 ]), WatchUi.SLIDE_BLINK);
         }
-
-        var W = dc.getWidth();
-        var H = dc.getHeight();
-        var XTINY_HEIGHT = H / 13; // XTINY font line height
 
         // Location
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
@@ -36,15 +44,15 @@ class SummaryView extends WatchUi.View {
         // Temperature
         dc.drawBitmap(XTINY_HEIGHT, XTINY_HEIGHT * 2.7, res.getSymbol(data.hourlySymbol.size() == 0 ? 2018941991 : data.hourlySymbol[0]));
 
-        dc.drawText(XTINY_HEIGHT + 50, XTINY_HEIGHT * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.temperature, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(XTINY_HEIGHT + 50, XTINY_HEIGHT * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.hourlyTemperature[0], data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var apTemp = calcApparentTemperature(data.temperature, data.humidity, data.windSpeed);
+        var apTemp = calcApparentTemperature(data.hourlyTemperature[0], data.hourlyHumidity[0], data.hourlyWindSpeed[0]);
         dc.drawText(XTINY_HEIGHT, XTINY_HEIGHT * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         // Wind
-        dc.drawText(W - XTINY_HEIGHT * 3, XTINY_HEIGHT * 2.5, Graphics.FONT_NUMBER_MILD, data.windSpeed.format("%d"), Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(W - XTINY_HEIGHT * 3, XTINY_HEIGHT * 2.5, Graphics.FONT_NUMBER_MILD, data.hourlyWindSpeed[0].format("%d"), Graphics.TEXT_JUSTIFY_RIGHT);
         dc.drawText(W - XTINY_HEIGHT, XTINY_HEIGHT * 5, Graphics.FONT_XTINY, "(m/s)", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.fillPolygon(generateArrow([ W - XTINY_HEIGHT * 1.9, XTINY_HEIGHT * 4 ], data.windDirection + 180, (XTINY_HEIGHT * 1.6).toNumber()));
+        dc.fillPolygon(generateArrow([ W - XTINY_HEIGHT * 1.9, XTINY_HEIGHT * 4 ], data.hourlyWindDirection[0] + 180, (XTINY_HEIGHT * 1.6).toNumber()));
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 
         // Rain chart
@@ -54,13 +62,13 @@ class SummaryView extends WatchUi.View {
         var chartWidth = W - 60;
         var rainBackup = Weather.getHourlyForecast() != null && Weather.getHourlyForecast().size() >= 6;
 
-        if (data.rainfall != null) {
-            var rainPoints = new [data.rainfall.size() + 2];
+        if (data.nowRainfall != null) {
+            var rainPoints = new [data.nowRainfall.size() + 2];
             rainPoints[0] = [ mw, H - mh ];
-            rainPoints[data.rainfall.size() + 1] = [ mw + (chartWidth / 18) * (data.rainfall.size() - 1), H - mh ];
-            for (var i = 0; i < data.rainfall.size(); i++) {
+            rainPoints[data.nowRainfall.size() + 1] = [ mw + (chartWidth / 18) * (data.nowRainfall.size() - 1), H - mh ];
+            for (var i = 0; i < data.nowRainfall.size(); i++) {
                 rainPoints[i + 1] = [ mw + (chartWidth / 18) * i,
-                                      H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3.25 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
+                                      H - mh - (data.nowRainfall[i] <= 0 ? 0 : data.nowRainfall[i] > 5 ? lh * 3.25 : ((data.nowRainfall[i] + 0.3) * (lh * 0.6))) ];
             }
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
@@ -81,8 +89,8 @@ class SummaryView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W * 0.27, H - mh + 2, Graphics.FONT_XTINY, "Now", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, data.rainfall == null && rainBackup ? "3hr" : "45", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, data.rainfall == null && rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, data.nowRainfall == null && rainBackup ? "3hr" : "45", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, data.nowRainfall == null && rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.drawLine(mw, H - mh, W - mw, H - mh);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -92,7 +100,7 @@ class SummaryView extends WatchUi.View {
         
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W / 2, H - mh - lh * 3 - XTINY_HEIGHT, Graphics.FONT_XTINY,
-            data.rainfall != null ? "Rainfall next 90 min." : rainBackup ? "Rain chance next 6 hr." : "90 Minute Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
+            data.nowRainfall != null ? "Rainfall next 90 min." : rainBackup ? "Rain chance next 6 hr." : "90 Minute Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         res.indicator.draw(dc, 0);

@@ -12,17 +12,13 @@ class YrData {
     public var position             as Array<Double>?;
     public var location             as String = "..";
     public var time                 as Moment = Time.now();
-    // Nowcast
-    public var temperature          as Float = 88.0;
-    public var windSpeed            as Float = 88.0;
-    public var windDirection        as Float = 88.0;
-    public var humidity             as Float = 88.0;
-    public var rainfall             as Array<Float>? = null; // Null or list of next 90 mins of rain
     // Forecast
+    public var nowRainfall          as Array<Float>? = null; // Null or list of next 90 mins of rain
     public var hourlyTemperature    as Array<Float> = [];
     public var hourlyWindSpeed      as Array<Float> = [];
     public var hourlyWindDirection  as Array<Float> = [];
     public var hourlyRainfall       as Array<Float> = [];
+    public var hourlyHumidity       as Array<Float> = [];
     public var hourlySymbol         as Array<Number> = [];
     // Aurora
     public var hourlyAurora        as Array<Float>? = null;
@@ -34,38 +30,27 @@ class YrData {
     public var waterTimestamps     as Array<Moment> = [];
 
     // Callback function for Position.enableLocationEvents
-    function updateCB(loc as Position.Info) as Void {
-        update(loc.position.toDegrees());
+    function posCB(loc as Position.Info) as Void {
+        position = loc.position.toDegrees();
     }
 
     function update(coords as Array<Double>) as Void {
         System.println("Refreshing, " + coords);
         position = coords;
-        var fcUrl = "https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=" + coords[0] + "&lon=" + coords[1];
-        var geoUrl = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + coords[0] + "&lon=" + coords[1];
-        var waterUrl = "https://www.yr.no/api/v0/locations/" + coords[0] + "," + coords[1] + "/nearestwatertemperatures";
 
-        // Don't bother downloading the full forecast if were low on ram
-        // OOM Requests creates a ton of heap garbage that won't go away
-        if (System.getSystemStats().totalMemory < 220000) {
-            fetchForecastData(-403, null);
-        } else {
-            request(fcUrl, method(:fetchForecastData));
-        }
-        request(geoUrl, method(:fetchGeoData));
-        request(waterUrl, method(:fetchWaterData));
+        var limit = System.getSystemStats().totalMemory < 80000 ? 24 : 36;
+        request("https://api.bleach.dev/weather/forecast?limit=" + limit + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
+        request("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
     }
 
     // Request order
-    // -> Forecast -> Now
-    //            \-> Aurora
+    // -> Forecast -> Aurora
+    //            \-> Water
     // -> Geo
-    // -> Aurora
-    // -> Water
     function request(url, callback) {
         Communications.makeWebRequest(url, null, {
             :method => Communications.HTTP_REQUEST_METHOD_GET,
-            :headers => { "User-Agent" => "GarminYr/Dev me@bleach.dev" },
+            :headers => { "User-Agent" => "GarminYr/1.1 me@bleach.dev" },
             :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
         }, callback);
     }
@@ -78,15 +63,12 @@ class YrData {
         Storage.setValue("location", location);
         Storage.setValue("time", time.value());
 
-        Storage.setValue("temperature", temperature);
-        Storage.setValue("windSpeed", windSpeed);
-        Storage.setValue("windDirection", windDirection);
-        Storage.setValue("rainfall", rainfall);
-
+        Storage.setValue("nowRainfall", nowRainfall);
         Storage.setValue("hourlyTemperature", hourlyTemperature);
         Storage.setValue("hourlyWindSpeed", hourlyWindSpeed);
         Storage.setValue("hourlyWindDirection", hourlyWindDirection);
         Storage.setValue("hourlyRainfall", hourlyRainfall);
+        Storage.setValue("hourlyHumidity", hourlyHumidity);
         Storage.setValue("hourlySymbol", hourlySymbol);
 
         Storage.setValue("hourlyAurora", hourlyAurora);
@@ -115,15 +97,12 @@ class YrData {
         if (Storage.getValue("location") != null) { location = Storage.getValue("location"); }
         if (Storage.getValue("time") != null) { time = new Moment(Storage.getValue("time")); }
 
-        if (Storage.getValue("temperature") != null) { temperature = Storage.getValue("temperature"); }
-        if (Storage.getValue("windSpeed") != null) { windSpeed = Storage.getValue("windSpeed"); }
-        if (Storage.getValue("windDirection") != null) { windDirection = Storage.getValue("windDirection"); }
-        if (Storage.getValue("rainfall") != null) { rainfall = Storage.getValue("rainfall"); }
-
+        if (Storage.getValue("nowRainfall") != null) { nowRainfall = Storage.getValue("nowRainfall"); }
         if (Storage.getValue("hourlyTemperature") != null) { hourlyTemperature = Storage.getValue("hourlyTemperature"); }
         if (Storage.getValue("hourlyWindSpeed") != null) { hourlyWindSpeed = Storage.getValue("hourlyWindSpeed"); }
         if (Storage.getValue("hourlyWindDirection") != null) { hourlyWindDirection = Storage.getValue("hourlyWindDirection"); }
         if (Storage.getValue("hourlyRainfall") != null) { hourlyRainfall = Storage.getValue("hourlyRainfall"); }
+        if (Storage.getValue("hourlyHumidity") != null) { hourlyHumidity = Storage.getValue("hourlyHumidity"); }
         if (Storage.getValue("hourlySymbol") != null) { hourlySymbol = Storage.getValue("hourlySymbol"); }
 
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
@@ -153,96 +132,45 @@ class YrData {
 
     function fetchForecastData(responseCode as Number, data as Dictionary?) as Void {
         System.println("FC " + responseCode);
-        if (responseCode != 200 || data == null || data["properties"] == null) {
+        if (responseCode != 200 || data == null || data["forecast"] == null) {
             System.println("FC EXIT " + data);
-            // If OOM use internal weather data as a backup
-            if (responseCode == Communications.NETWORK_RESPONSE_OUT_OF_MEMORY || responseCode == Communications.NETWORK_RESPONSE_TOO_LARGE) {
-                location += "*";
-
-                var hourly = Weather.getHourlyForecast();
-                var hours = hourly == null ? 0 : hourly.size() < 36 ? hourly.size() : 36;
-                hourlyTemperature = new [hours];
-                hourlyWindSpeed = new [hours];
-                hourlyWindDirection = new [hours];
-                hourlyRainfall = new [hours];
-                hourlySymbol = new [hours];
-                for (var i = 0; i < hours; i++) {
-                    hourlyTemperature[i]   = hourly[i].temperature == null ? 0.0 : hourly[i].temperature.toFloat();
-                    hourlyWindSpeed[i]     = hourly[i].windSpeed == null ? 0.0 : hourly[i].windSpeed;
-                    hourlyWindDirection[i] = hourly[i].windBearing == null ? 0.0 : hourly[i].windBearing.toFloat();
-                    hourlyRainfall[i]      = hourly[i].precipitationChance == null ? 0.0 : -hourly[i].precipitationChance.toFloat();
-                    hourlySymbol[i]        = hourly[i].condition == null ? "fair_day".hashCode() : res.builtInToCode[hourly[i].condition];
-                }
-                if (hours != 0) {
-                    time = hourly[0].forecastTime;
-                }
-
-                var current = Weather.getCurrentConditions();
-                if (current != null) {
-                    if (current.temperature != null) { temperature = current.temperature.toFloat(); }
-                    if (current.windSpeed != null) { windSpeed = current.windSpeed; }
-                    if (current.windBearing != null) { windDirection = current.windBearing.toFloat(); }
-                    if (current.relativeHumidity != null) { humidity = current.relativeHumidity.toFloat(); }
-                }
-            }
         } else {
-            var seriesData = data["properties"]["timeseries"] as Dictionary;
+            var forecastData = data["forecast"] as Dictionary;
 
-            // Set instant data here first, then overwrite if nowcast succeeds
-            var instantData = seriesData[0]["data"]["instant"]["details"] as Dictionary;
-            temperature = instantData["air_temperature"];
-            windSpeed = instantData["wind_speed"];
-            windDirection = instantData["wind_from_direction"];
-            humidity = instantData["relative_humidity"];
-            
-            var hours = seriesData.size() < 36 ? seriesData.size() : 36;
+            var hours = forecastData.size();
             hourlyTemperature = new [hours];
             hourlyWindSpeed = new [hours];
             hourlyWindDirection = new [hours];
             hourlyRainfall = new [hours];
+            hourlyHumidity = new [hours];
             hourlySymbol = new [hours];
             hourlyClouds = new [hours];
             for (var i = 0; i < hours; i++) {
-                var data2 = seriesData[i]["data"];
-                var hourData = data2["next_1_hours"];
-                hourlyTemperature[i] = data2["instant"]["details"]["air_temperature"];
-                hourlyWindSpeed[i] = data2["instant"]["details"]["wind_speed"];
-                hourlyWindDirection[i] = data2["instant"]["details"]["wind_from_direction"];
-                hourlyRainfall[i] = hourData["details"]["precipitation_amount"];
-                hourlySymbol[i] = hourData["summary"]["symbol_code"].hashCode();
-                hourlyClouds[i] = data2["instant"]["details"]["cloud_area_fraction"];
+                var hour = forecastData[i];
+                hourlyTemperature[i] = hour["air_temperature"];
+                hourlyWindSpeed[i] = hour["wind_speed"];
+                hourlyWindDirection[i] = hour["wind_from_direction"];
+                hourlyRainfall[i] = hour["precipitation_amount"];
+                hourlyHumidity[i] = hour["relative_humidity"];
+                hourlySymbol[i] = hour["symbol_code"].hashCode();
+                hourlyClouds[i] = hour["cloud_area_fraction"];
             }
             
-            time = parseISODate(seriesData[0]["time"]);
+            time = parseISODate(forecastData[0]["time"]);
+
+            if (data["nowcast"] != null) {
+                var nowData = data["nowcast"] as Dictionary;
+                nowRainfall = new [nowData.size() < 19 ? nowData.size() : 19];
+                for (var i = 0; i < nowRainfall.size(); i++) {
+                    nowRainfall[i] = nowData[i];
+                }
+            }
+
+            WatchUi.requestUpdate();
         }
 
-        var nowUrl = "https://api.met.no/weatherapi/nowcast/2.0/complete?lat=" + position[0] + "&lon=" + position[1];
-        var auroraUrl = "https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/auroraforecast";
-        request(nowUrl, method(:fetchNowData));
-        request(auroraUrl, method(:fetchAuroraData));
-
-        WatchUi.requestUpdate();
-    }
-
-    function fetchNowData(responseCode as Number, data as Dictionary?) as Void {
-        System.println("NOW " + responseCode);
-        if (responseCode != 200 || data == null || data["properties"] == null) {
-            System.println("NOW EXIT " + data);
-            return;
-        }
-
-        var seriesData = data["properties"]["timeseries"] as Dictionary;
-        var instantData = seriesData[0]["data"]["instant"]["details"] as Dictionary;
-        temperature = instantData["air_temperature"];
-        windSpeed = instantData["wind_speed"];
-        windDirection = instantData["wind_from_direction"];
-
-        rainfall = new [seriesData.size() < 19 ? seriesData.size() : 19];
-        for (var i = 0; i < rainfall.size(); i++) {
-            rainfall[i] = seriesData[i]["data"]["instant"]["details"]["precipitation_rate"];
-        }
-
-        WatchUi.requestUpdate();
+        request("https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/auroraforecast", method(:fetchAuroraData));
+        request("https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/nearestwatertemperatures", method(:fetchWaterData));
     }
 
     function fetchGeoData(responseCode as Number, data as Dictionary?) as Void {
@@ -288,16 +216,13 @@ class YrData {
 
         if (data["shortIntervals"] == null) {
             hourlyAurora = null;
-            //hourlyClouds = null;
             return;
         }
 
         var len = data["shortIntervals"].size() > 32 ? 32 : data["shortIntervals"].size();
         hourlyAurora = new [len];
-        hourlyClouds = new [len];
         for (var i = 0; i < len; i++) {
             hourlyAurora[i] = data["shortIntervals"][i]["auroraValue"];
-            hourlyClouds[i] = data["shortIntervals"][i]["cloudCover"]["value"];
         }
 
         WatchUi.requestUpdate();

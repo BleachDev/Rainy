@@ -39,7 +39,7 @@ class App extends Application.AppBase {
             data.update(data.position);
         }
         
-        Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:updateCB));
+        Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:posCB));
 
         return [ new SummaryView(), new SummaryDelegate() ] as Array<Views or InputDelegates>;
     }

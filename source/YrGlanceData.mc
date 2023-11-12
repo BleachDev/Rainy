@@ -11,21 +11,24 @@ class YrGlanceData {
 
     public var position             as Array<Double>?;
     public var location             as String = "..";
-    // Nowcast
-    public var temperature          as Float = 88.0;
-    public var windSpeed            as Float = 88.0;
-    public var windDirection        as Float = 88.0;
-    public var rainfall             as Array<Float>? = null; // Null or list of next 90 mins of rain
+    // Forecast
+    public var nowRainfall          as Array<Float>? = null; // Null or list of next 90 mins of rain
+    public var hourlyTemperature    as Array<Float> = [];
+    public var hourlyWindSpeed      as Array<Float> = [];
+    public var hourlyWindDirection  as Array<Float> = [];
+    public var hourlyRainfall       as Array<Float> = [];
+    public var hourlyHumidity       as Array<Float> = [];
+    public var hourlySymbol         as Array<Number> = [];
 
     function update(coords as Array<Double>) as Void {
         System.println("Refreshing, " + coords);
-        var nowUrl = "https://api.met.no/weatherapi/nowcast/2.0/complete?lat=" + coords[0] + "&lon=" + coords[1];
+        var nowUrl = "https://api.bleach.dev/weather/forecast?limit=20&lat=" + coords[0] + "&lon=" + coords[1];
         var geoUrl = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + coords[0] + "&lon=" + coords[1];
         position = coords;
 
         var options = {                                             // set the options
             :method => Communications.HTTP_REQUEST_METHOD_GET,      // set HTTP method
-            :headers => { "User-Agent" => "GarminYr/Dev me@bleach.dev" },
+            :headers => { "User-Agent" => "GarminYr/1.1 me@bleach.dev" },
             :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON // set response type
         };
 
@@ -39,10 +42,11 @@ class YrGlanceData {
         Storage.setValue("geo", position);
         Storage.setValue("location", location);
 
-        Storage.setValue("temperature", temperature);
-        Storage.setValue("windSpeed", windSpeed);
-        Storage.setValue("windDirection", windDirection);
-        Storage.setValue("rainfall", rainfall);
+        Storage.setValue("nowRainfall", nowRainfall);
+        Storage.setValue("hourlyTemperature", hourlyTemperature);
+        Storage.setValue("hourlyWindSpeed", hourlyWindSpeed);
+        Storage.setValue("hourlyWindDirection", hourlyWindDirection);
+        Storage.setValue("hourlyRainfall", hourlyRainfall);
     }
 
     function load() {
@@ -52,40 +56,47 @@ class YrGlanceData {
         if (Storage.getValue("geo") != null) { position = Storage.getValue("geo"); }
         if (Storage.getValue("location") != null) { location = Storage.getValue("location"); }
 
-        if (Storage.getValue("temperature") != null) { temperature = Storage.getValue("temperature"); }
-        if (Storage.getValue("windSpeed") != null) { windSpeed = Storage.getValue("windSpeed"); }
-        if (Storage.getValue("windDirection") != null) { windDirection = Storage.getValue("windDirection"); }
-        if (Storage.getValue("rainfall") != null) { rainfall = Storage.getValue("rainfall"); }
+        if (Storage.getValue("nowRainfall") != null) { nowRainfall = Storage.getValue("nowRainfall"); }
+        if (Storage.getValue("hourlyTemperature") != null) { hourlyTemperature = Storage.getValue("hourlyTemperature"); }
+        if (Storage.getValue("hourlyWindSpeed") != null) { hourlyWindSpeed = Storage.getValue("hourlyWindSpeed"); }
+        if (Storage.getValue("hourlyWindDirection") != null) { hourlyWindDirection = Storage.getValue("hourlyWindDirection"); }
+        if (Storage.getValue("hourlyRainfall") != null) { hourlyRainfall = Storage.getValue("hourlyRainfall"); }
         WatchUi.requestUpdate();
     }
 
     // Fetching Methods
 
     function fetchNowData(responseCode as Number, data as Dictionary?) as Void {
-        System.println("NOW " + responseCode);
-        if (responseCode != 200 || data == null || data["properties"] == null) {
-            System.println("NOW EXIT " + data);
-
-            // Use internal weather as a backup
-            var conditions = Weather.getCurrentConditions();
-            if (conditions != null) {
-                if (conditions.temperature != null) { temperature = conditions.temperature.toFloat(); }
-                if (conditions.windSpeed != null) { windSpeed = conditions.windSpeed; }
-                if (conditions.windBearing != null) { windDirection = conditions.windBearing.toFloat(); }
-            }
-
-            WatchUi.requestUpdate();
+        System.println("FC " + responseCode);
+        if (responseCode != 200 || data == null || data["forecast"] == null) {
             return;
         }
 
-        var seriesData = data["properties"]["timeseries"] as Dictionary;
+        var forecastData = data["forecast"] as Dictionary;
 
-        temperature = seriesData[0]["data"]["instant"]["details"]["air_temperature"];
-        windSpeed = seriesData[0]["data"]["instant"]["details"]["wind_speed"];
-        windDirection = seriesData[0]["data"]["instant"]["details"]["wind_speed_of_gust"];
-        rainfall = new [seriesData.size() < 19 ? seriesData.size() : 19];
-        for (var i = 0; i < seriesData.size() && i < 19; i++) {
-            rainfall[i] = seriesData[i]["data"]["instant"]["details"]["precipitation_rate"];
+        var hours = forecastData.size();
+        hourlyTemperature = new [hours];
+        hourlyWindSpeed = new [hours];
+        hourlyWindDirection = new [hours];
+        hourlyRainfall = new [hours];
+        hourlyHumidity = new [hours];
+        hourlySymbol = new [hours];
+        for (var i = 0; i < hours; i++) {
+            var hour = forecastData[i];
+            hourlyTemperature[i] = hour["air_temperature"];
+            hourlyWindSpeed[i] = hour["wind_speed"];
+            hourlyWindDirection[i] = hour["wind_from_direction"];
+            hourlyRainfall[i] = hour["precipitation_amount"];
+            hourlyHumidity[i] = hour["relative_humidity"];
+            hourlySymbol[i] = hour["symbol_code"].hashCode();
+        }
+
+        if (data["nowcast"] != null) {
+            var nowData = data["nowcast"] as Dictionary;
+            nowRainfall = new [nowData.size() < 19 ? nowData.size() : 19];
+            for (var i = 0; i < nowRainfall.size(); i++) {
+                nowRainfall[i] = nowData[i];
+            }
         }
 
         WatchUi.requestUpdate();

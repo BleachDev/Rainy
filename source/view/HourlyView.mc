@@ -64,7 +64,7 @@ class HourlyView extends WatchUi.View {
 
         dc.drawLine(XTINY_HEIGHT, mh + 3 * lh, W - XTINY_HEIGHT, mh + 3 * lh);
         // Local Page Indicator
-        dc.drawText(W / 2, mh + XTINY_HEIGHT / 20 + 3 * lh, Graphics.FONT_TINY, (page + 1) + "/4", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H * 0.75 + XTINY_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/4", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         res.indicator.draw(dc, 1);

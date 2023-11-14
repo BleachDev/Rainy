@@ -60,7 +60,7 @@ class SummaryView extends WatchUi.View {
         var mh = H / 7.42; // Rain chart height margin
         var lh = H / 13; // Rain chart line height
         var chartWidth = W - 60;
-        var rainBackup = Weather.getHourlyForecast() != null && Weather.getHourlyForecast().size() >= 6;
+        var rainBackup = data.hourlyRainfall.size() >= 6;
 
         if (data.nowRainfall != null) {
             var rainPoints = new [data.nowRainfall.size() + 2];
@@ -74,13 +74,12 @@ class SummaryView extends WatchUi.View {
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
         } else if (rainBackup) {
-            var forecast = Weather.getHourlyForecast();
             var rainPoints = new [8];
             rainPoints[0] = [ mw, H - mh ];
             rainPoints[7] = [ mw + chartWidth, H - mh ];
             for (var i = 0; i < 6; i++) {
                 rainPoints[i + 1] = [ mw + (chartWidth / 6) * i,
-                                      H - mh - (lh * 3.25) * (forecast[i].precipitationChance / 100.0) ];
+                                      H - mh - (data.hourlyRainfall[i] <= 0 ? 0 : data.hourlyRainfall[i] > 5 ? lh * 3.25 : ((data.hourlyRainfall[i] + 0.3) * (lh * 0.6))) ];
             }
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
@@ -100,7 +99,7 @@ class SummaryView extends WatchUi.View {
         
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W / 2, H - mh - lh * 3 - XTINY_HEIGHT, Graphics.FONT_XTINY,
-            data.nowRainfall != null ? "Rainfall next 90 min." : rainBackup ? "Rain chance next 6 hr." : "90 Minute Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
+            data.nowRainfall != null ? "Rainfall next 90 min." : rainBackup ? "Rainfall next 6 hr." : "90 Minute Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         res.indicator.draw(dc, 0);

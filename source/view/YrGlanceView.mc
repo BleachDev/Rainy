@@ -46,20 +46,19 @@ class YrGlanceView extends WatchUi.GlanceView {
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
-        } else if (Weather.getHourlyForecast() != null && Weather.getHourlyForecast().size() >= 6) {
-            var forecast = Weather.getHourlyForecast();
+        } else if (data.hourlyRainfall.size() >= 6) {
             var rainPoints = new [8];
             rainPoints[0] = [ mw, H - mh ];
             rainPoints[7] = [ mw + chartWidth, H - mh ];
             for (var i = 0; i < 6; i++) {
                 rainPoints[i + 1] = [ mw + (chartWidth / 6) * i,
-                                      H - mh - (lh * 3) * (forecast[i].precipitationChance / 100.0) ];
+                                      H - mh - (data.hourlyRainfall[i] <= 0 ? 0 : data.hourlyRainfall[i] > 5 ? lh * 3 : ((data.hourlyRainfall[i] + 0.3) * (lh * 0.6))) ];
             }
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W, H * 0.2, Graphics.FONT_GLANCE, "6hr Rain %", Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W, H * 0.2, Graphics.FONT_GLANCE, "6hr Rain", Graphics.TEXT_JUSTIFY_RIGHT);
         } else {
             dc.drawText(W * 0.8, H * 0.3, Graphics.FONT_GLANCE, "Rain\nUnavailable", Graphics.TEXT_JUSTIFY_CENTER);
         }

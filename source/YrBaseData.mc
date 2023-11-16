@@ -39,7 +39,7 @@ class YrBaseData {
     function request(url, callback) {
         Communications.makeWebRequest(url, null, {
             :method => Communications.HTTP_REQUEST_METHOD_GET,
-            :headers => { "User-Agent" => "GarminYr/1.1 me@bleach.dev" },
+            :headers => { "User-Agent" => "GarminYr/1.2 me@bleach.dev" },
             :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
         }, callback);
     }

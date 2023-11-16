@@ -2,8 +2,9 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-public var data as YrData?;
+public var data as YrFullData?;
 public var res as YrResources?;
+(:glance) public var IS_GLANCE as Boolean = false;
 
 (:glance)
 class App extends Application.AppBase {
@@ -25,9 +26,8 @@ class App extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        System.println("getInitialView");
         res = new YrResources();
-        data = new YrData();
+        data = new YrFullData();
         data.load();
 
         var pos = Position.getInfo().position.toDegrees();
@@ -44,8 +44,10 @@ class App extends Application.AppBase {
         return [ new SummaryView(), new SummaryDelegate() ] as Array<Views or InputDelegates>;
     }
 
-    function getGlanceView() as Array<GlanceView>? {
-        var data = new YrGlanceData();
+    function getGlanceView() as Array<GlanceView or GlanceViewDelegate>? {
+        IS_GLANCE = true;
+
+        var data = new YrBaseData();
         data.load();
 
         var pos = Position.getInfo().position.toDegrees();

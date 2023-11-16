@@ -5,9 +5,9 @@ import Toybox.Lang;
 (:glance)
 class YrGlanceView extends WatchUi.GlanceView {
 
-    private var data as YrGlanceData;
+    private var data as YrBaseData;
 
-    function initialize(data as YrGlanceData) {
+    function initialize(data as YrBaseData) {
         GlanceView.initialize();
 
         System.println("Init Glance");

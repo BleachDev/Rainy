@@ -5,12 +5,13 @@ import Toybox.Application;
 import Toybox.Time;
 
 (:glance)
-class YrGlanceData {
+class YrBaseData {
 
     public var fahrenheit           as Boolean = false;
 
     public var position             as Array<Double>?;
     public var location             as String = "..";
+    public var time                 as Moment = Time.now();
     // Forecast
     public var nowRainfall          as Array<Float>? = null; // Null or list of next 90 mins of rain
     public var hourlyTemperature    as Array<Float> = [];
@@ -22,18 +23,25 @@ class YrGlanceData {
 
     function update(coords as Array<Double>) as Void {
         System.println("Refreshing, " + coords);
-        var nowUrl = "https://api.bleach.dev/weather/forecast?limit=20&lat=" + coords[0] + "&lon=" + coords[1];
-        var geoUrl = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + coords[0] + "&lon=" + coords[1];
         position = coords;
 
-        var options = {                                             // set the options
-            :method => Communications.HTTP_REQUEST_METHOD_GET,      // set HTTP method
-            :headers => { "User-Agent" => "GarminYr/1.1 me@bleach.dev" },
-            :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON // set response type
-        };
+        syncData();
 
-        Communications.makeWebRequest(geoUrl, null, options, method(:fetchGeoData));
-        Communications.makeWebRequest(nowUrl, null, options, method(:fetchNowData));
+        var limit = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 24 : 36;
+        request("https://api.bleach.dev/weather/forecast?limit=" + limit + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
+        request("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
+    }
+
+    // Request order
+    // -> Forecast -> (F)Aurora
+    //            \-> (F)Water
+    // -> Geo
+    function request(url, callback) {
+        Communications.makeWebRequest(url, null, {
+            :method => Communications.HTTP_REQUEST_METHOD_GET,
+            :headers => { "User-Agent" => "GarminYr/1.1 me@bleach.dev" },
+            :responseType => Communications.HTTP_RESPONSE_CONTENT_TYPE_JSON
+        }, callback);
     }
 
     function save() {
@@ -41,12 +49,15 @@ class YrGlanceData {
 
         Storage.setValue("geo", position);
         Storage.setValue("location", location);
+        Storage.setValue("time", time.value());
 
         Storage.setValue("nowRainfall", nowRainfall);
         Storage.setValue("hourlyTemperature", hourlyTemperature);
         Storage.setValue("hourlyWindSpeed", hourlyWindSpeed);
         Storage.setValue("hourlyWindDirection", hourlyWindDirection);
         Storage.setValue("hourlyRainfall", hourlyRainfall);
+        Storage.setValue("hourlyHumidity", hourlyHumidity);
+        Storage.setValue("hourlySymbol", hourlySymbol);
     }
 
     function load() {
@@ -55,21 +66,40 @@ class YrGlanceData {
 
         if (Storage.getValue("geo") != null) { position = Storage.getValue("geo"); }
         if (Storage.getValue("location") != null) { location = Storage.getValue("location"); }
+        if (Storage.getValue("time") != null) { time = new Moment(Storage.getValue("time")); }
 
         if (Storage.getValue("nowRainfall") != null) { nowRainfall = Storage.getValue("nowRainfall"); }
         if (Storage.getValue("hourlyTemperature") != null) { hourlyTemperature = Storage.getValue("hourlyTemperature"); }
         if (Storage.getValue("hourlyWindSpeed") != null) { hourlyWindSpeed = Storage.getValue("hourlyWindSpeed"); }
         if (Storage.getValue("hourlyWindDirection") != null) { hourlyWindDirection = Storage.getValue("hourlyWindDirection"); }
         if (Storage.getValue("hourlyRainfall") != null) { hourlyRainfall = Storage.getValue("hourlyRainfall"); }
+        if (Storage.getValue("hourlyHumidity") != null) { hourlyHumidity = Storage.getValue("hourlyHumidity"); }
+        if (Storage.getValue("hourlySymbol") != null) { hourlySymbol = Storage.getValue("hourlySymbol"); }
         WatchUi.requestUpdate();
+    }
+
+    function syncData() {
+        var prevTime = time.value();
+        self.data = data;
+        var nowTime = Time.now().value();
+        for (var i = 0; prevTime + 3600 < nowTime && i < 20; i++) {
+            nowRainfall = null; // No more 90 minute rain
+            if (hourlyTemperature.size() > 0) { hourlyTemperature.remove(hourlyTemperature[0]); }
+            if (hourlyWindSpeed.size() > 0) { hourlyWindSpeed.remove(hourlyWindSpeed[0]); }
+            if (hourlyWindDirection.size() > 0) { hourlyWindDirection.remove(hourlyWindDirection[0]); }
+            if (hourlyRainfall.size() > 0) { hourlyRainfall.remove(hourlyRainfall[0]); }
+            if (hourlyHumidity.size() > 0) { hourlyHumidity.remove(hourlyHumidity[0]); }
+            if (hourlySymbol.size() > 0) { hourlySymbol.remove(hourlySymbol[0]); }
+            prevTime += 3600;
+        }
     }
 
     // Fetching Methods
 
-    function fetchNowData(responseCode as Number, data as Dictionary?) as Void {
+    function fetchForecastData(responseCode as Number, data as Dictionary?) as Boolean {
         System.println("FC " + responseCode);
         if (responseCode != 200 || data == null || data["forecast"] == null) {
-            return;
+            return false;
         }
 
         var forecastData = data["forecast"] as Dictionary;
@@ -99,8 +129,12 @@ class YrGlanceData {
             }
         }
 
-        WatchUi.requestUpdate();
-        save();
+        if (IS_GLANCE) {
+            WatchUi.requestUpdate();
+            save();
+        }
+
+        return true;
     }
 
     function fetchGeoData(responseCode as Number, data as Dictionary?) as Void {
@@ -134,7 +168,9 @@ class YrGlanceData {
             location = "Unknown";
         }
 
-        WatchUi.requestUpdate();
-        save();
+        if (IS_GLANCE) {
+            WatchUi.requestUpdate();
+            save();
+        }
     }
 }

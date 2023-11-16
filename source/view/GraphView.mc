@@ -22,7 +22,7 @@ class GraphView extends WatchUi.View {
         var XTINY_HEIGHT = H / 13; // XTINY font line height
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 2, H / 26, Graphics.FONT_MEDIUM, page == 0 ? "Today" : page < 3 ? "Tomorrow" : "In " + (page + 1) / 2 + " Days", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H / 26, Graphics.FONT_MEDIUM, page == 0 ? "Now" : "In " + (page * 12) + " Hours", Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
 
         var offset = page * 12;
@@ -30,15 +30,10 @@ class GraphView extends WatchUi.View {
         var mh = H * 0.25; // Margin Height
         var lw = (W - mw * 2) / 12.0; // Line Width
         var lh = (H - mh * 2) / 9.0; // Line Height
-        var cols = 0;
+        var points = data.hourlySymbol.size() - offset > 12 ? 12 : data.hourlySymbol.size() - offset - 1;
         var startHour = Time.Gregorian.info(data.time, Time.FORMAT_SHORT).hour;
         // Graph Background
-        for (var i = 0; i < 13; i++) {
-            if (data.hourlySymbol.size() <= offset + i) {
-                break;
-            }
-
-            cols = i;
+        for (var i = 0; i < points + 1; i++) {
             dc.setColor((startHour + offset + i) % 24 == 0 ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawLine(mw + lw * i, mh, mw + lw * i, H - mh);
 
@@ -51,7 +46,7 @@ class GraphView extends WatchUi.View {
 
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         for (var i = 0; i < 10; i++) {
-            dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - cols), mh + lh * i);
+            dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - points), mh + lh * i);
         }
 
         var minTemp = data.hourlyTemperature[0];
@@ -66,11 +61,8 @@ class GraphView extends WatchUi.View {
         }
         var diffTemp = maxTemp - minTemp;
 
-        for (var i = 0; i < 12; i++) {
-            if (data.hourlySymbol.size() <= offset + i + 1) {
-                break;
-            }
-
+        var tempPoints = new [points * 2 + 2];
+        for (var i = 0; i < points; i++) {
             // Rain (fillRectancle uses wh instead of xy :troll:)
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             var rain = data.hourlyRainfall[offset + i];
@@ -78,10 +70,18 @@ class GraphView extends WatchUi.View {
 
             // Temperature
             var t1 = H - mh - ((data.hourlyTemperature[offset + i].toFloat() - minTemp) / diffTemp) * (H - mh * 2);
-            var t2 = H - mh - ((data.hourlyTemperature[offset + i + 1].toFloat() - minTemp) / diffTemp) * (H - mh * 2);
-            dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(mw + lw * i, t1, mw + lw * (i + 1), t2);
+            tempPoints[i] = [ mw + lw * i, t1 ];
+            tempPoints[tempPoints.size() - 1 - i] = [ mw + lw * i, t1 - lh / 4 ];
+            if (i + 1 == points) {
+                var t2 = H - mh - ((data.hourlyTemperature[offset + i + 1].toFloat() - minTemp) / diffTemp) * (H - mh * 2);
+                tempPoints[i + 1] = [ mw + lw * (i + 1), t2 ];
+                tempPoints[i + 2] = [ mw + lw * (i + 1), t2 - lh / 4 ];
+            }
         }
+
+        System.println(tempPoints);
+        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+        dc.fillPolygon(tempPoints);
 
         // Left side temperature text
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);

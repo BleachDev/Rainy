@@ -79,7 +79,6 @@ class GraphView extends WatchUi.View {
             }
         }
 
-        System.println(tempPoints);
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon(tempPoints);
 

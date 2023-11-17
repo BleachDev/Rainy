@@ -19,7 +19,8 @@ class HourlyView extends WatchUi.View {
 
         if (data.hints & 2 == 0) {
             data.hints |= 2;
-            WatchUi.pushView(new HintView("Press Select to scroll\nin the Hourly and\nChart Forecasts", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
+            WatchUi.pushView(new HintView("Press Select to scroll\nin the Hourly and\nGraph Forecasts", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
+            return;
         }
 
         var W = dc.getWidth();

@@ -1,16 +1,17 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class BaseDelegate extends WatchUi.BehaviorDelegate {
+class BaseDelegate extends BehaviorDelegate {
 
-    private static var page = 0;
+    private static var page as Number = 0;
+    private var startX as Number = 0;
 
     function initialize() {
         BehaviorDelegate.initialize();
     }
 
     function onMenu() {
-        var menu = new WatchUi.Menu2({:title=>"Yr Settings"});
+        var menu = new WatchUi.Menu2({:title=>"Yr 1.2.1"});
         menu.addItem(
             new MenuItem(
                 "Temperature Units",
@@ -23,9 +24,7 @@ class BaseDelegate extends WatchUi.BehaviorDelegate {
         return true;
     }
 
-    //! Handle going to the next view
-    //! @return true if handled, false otherwise
-    public function onNextPage() as Boolean {
+    function onNextPage() as Boolean {
         if (data.hourlyTemperature.size() < 1) {
             return false;
         }
@@ -37,9 +36,7 @@ class BaseDelegate extends WatchUi.BehaviorDelegate {
         return true;
     }
 
-    //! Handle going to the previous view
-    //! @return true if handled, false otherwise
-    public function onPreviousPage() as Boolean {
+    function onPreviousPage() as Boolean {
         if (data.hourlyTemperature.size() < 1) {
             return false;
         }
@@ -49,6 +46,31 @@ class BaseDelegate extends WatchUi.BehaviorDelegate {
         var view = getView(page);
         WatchUi.switchToView(view[0], view[1], WatchUi.SLIDE_DOWN);
         return true;
+    }
+
+    // Vivoactive swipe controls
+    function onDrag(event as DragEvent) as Boolean {
+        if ("1".equals(Application.loadResource(Rez.Strings.VA_MODE))) {
+            if (event.getType() == 0 /* START */) {
+                startX = event.getCoordinates()[0];
+            } else if (event.getType() == 2 /* STOP */) {
+                if (startX - event.getCoordinates()[0] > (System.getDeviceSettings().screenWidth / 4)) {
+                    onSelectOrSwipe();
+                }
+            }
+            return true;
+        }
+
+        return BehaviorDelegate.onDrag(event);
+    }
+
+    function onSelect() as Boolean {
+        return "1".equals(Application.loadResource(Rez.Strings.VA_MODE)) ? onNextPage() : onSelectOrSwipe();
+    }
+
+    // Pinnacle coding
+    function onSelectOrSwipe() as Boolean {
+        return false;
     }
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {

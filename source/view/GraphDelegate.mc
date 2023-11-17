@@ -7,7 +7,7 @@ class GraphDelegate extends BaseDelegate {
         BaseDelegate.initialize();
     }
 
-    function onSelect() as Boolean {
+    function onSelectOrSwipe() as Boolean {
         GraphView.page = GraphView.page >= (data.hourlySymbol.size() - 1) / 12 ? 0 : GraphView.page + 1;
         WatchUi.requestUpdate();
         return true;

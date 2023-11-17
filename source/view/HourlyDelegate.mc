@@ -7,7 +7,7 @@ class HourlyDelegate extends BaseDelegate {
         BaseDelegate.initialize();
     }
 
-    function onSelect() as Boolean {
+    function onSelectOrSwipe() as Boolean {
         HourlyView.page = HourlyView.page == 3 ? 0 : HourlyView.page + 1;
         WatchUi.requestUpdate();
         return true;

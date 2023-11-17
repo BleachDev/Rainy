@@ -7,7 +7,7 @@ class SummaryDelegate extends BaseDelegate {
         BaseDelegate.initialize();
     }
 
-    function onSelect() {
+    function onSelectOrSwipe() as Boolean {
         return onMenu();
     }
 }

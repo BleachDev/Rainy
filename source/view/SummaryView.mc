@@ -32,6 +32,7 @@ class SummaryView extends WatchUi.View {
         if (data.hints & 1 == 0) {
             data.hints |= 1;
             WatchUi.pushView(new HintView("Press the Select\nor Menu button\nto open Yr settings.", [ 0, 1 ]), new HintDelegate([ 0, 1 ]), WatchUi.SLIDE_BLINK);
+            return;
         }
 
         // Location

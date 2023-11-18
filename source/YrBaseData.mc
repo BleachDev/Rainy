@@ -79,10 +79,8 @@ class YrBaseData {
     }
 
     function syncData() {
-        var prevTime = time.value();
-        self.data = data;
         var nowTime = Time.now().value();
-        for (var i = 0; prevTime + 3600 < nowTime && i < 20; i++) {
+        for (var i = 0; time.value() + 3600 < nowTime && i < 20; i++) {
             nowRainfall = null; // No more 90 minute rain
             if (hourlyTemperature.size() > 0) { hourlyTemperature.remove(hourlyTemperature[0]); }
             if (hourlyWindSpeed.size() > 0) { hourlyWindSpeed.remove(hourlyWindSpeed[0]); }
@@ -90,7 +88,7 @@ class YrBaseData {
             if (hourlyRainfall.size() > 0) { hourlyRainfall.remove(hourlyRainfall[0]); }
             if (hourlyHumidity.size() > 0) { hourlyHumidity.remove(hourlyHumidity[0]); }
             if (hourlySymbol.size() > 0) { hourlySymbol.remove(hourlySymbol[0]); }
-            prevTime += 3600;
+            time = new Moment(time.value() + 3600);
         }
     }
 

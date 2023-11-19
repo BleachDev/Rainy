@@ -23,22 +23,6 @@ class GraphView extends BaseView {
         var lh = (H - mh * 2) / 9.0; // Line Height
         var points = data.hourlySymbol.size() - offset > 12 ? 12 : data.hourlySymbol.size() - offset - 1;
         var startHour = Time.Gregorian.info(data.time, Time.FORMAT_SHORT).hour;
-        // Graph Background
-        for (var i = 0; i < points + 1; i++) {
-            dc.setColor((startHour + offset + i) % 24 == 0 || INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawLine(mw + lw * i, mh, mw + lw * i, H - mh);
-
-            // Bottom time text
-            if (i % 3 == 0) {
-                dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-                dc.drawText(mw + lw * i, H - mh, Graphics.FONT_XTINY, ((startHour + offset + i) % 24).format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
-            }
-        }
-
-        dc.setColor(INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        for (var i = 0; i < 10; i++) {
-            dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - points), mh + lh * i);
-        }
 
         var minTemp = data.hourlyTemperature[0];
         var maxTemp = data.hourlyTemperature[0];
@@ -51,6 +35,31 @@ class GraphView extends BaseView {
             }
         }
         var diffTemp = maxTemp - minTemp;
+        
+        // 0 Degree line
+        if (minTemp < 0 && maxTemp > 0) {
+            var freezingY = H - mh - (-minTemp / diffTemp) * (H - mh * 2);
+            dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
+            dc.drawLine(mw, freezingY, W - mw - lw * (12 - points), freezingY);
+        }
+
+        // Vertical Graph Background + Timestamps
+        for (var i = 0; i < points + 1; i++) {
+            dc.setColor((startHour + offset + i) % 24 == 0 || INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawLine(mw + lw * i, mh, mw + lw * i, H - mh);
+
+            // Bottom time text
+            if (i % 3 == 0) {
+                dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+                dc.drawText(mw + lw * i, H - mh, Graphics.FONT_XTINY, ((startHour + offset + i) % 24).format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
+            }
+        }
+
+        // Horizontal Graph Background
+        dc.setColor(INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        for (var i = 0; i < 10; i++) {
+            dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - points), mh + lh * i);
+        }
 
         var tempPoints = new [points * 2 + 2];
         for (var i = 0; i < points; i++) {

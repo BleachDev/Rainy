@@ -5,6 +5,8 @@ import Toybox.WatchUi;
 public var data as YrFullData?;
 public var res as YrResources?;
 (:glance) public var IS_GLANCE as Boolean = false;
+public var VA4_MODE as Boolean = false;
+public var INSTINCT_MODE as Boolean = false;
 
 (:glance)
 class App extends Application.AppBase {
@@ -26,6 +28,9 @@ class App extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
+        VA4_MODE = "1".equals(Application.loadResource(Rez.Strings.VA_MODE));
+        INSTINCT_MODE = "1".equals(Application.loadResource(Rez.Strings.INSTINCT_MODE));
+
         res = new YrResources();
         data = new YrFullData();
         data.load();

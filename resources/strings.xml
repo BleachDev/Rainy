@@ -1,4 +1,5 @@
 <strings>
     <string id="AppName">Yr</string>
-    <string id="VA_MODE"></string>
+    <string id="VA_MODE">0</string>
+    <string id="INSTINCT_MODE">0</string>
 </strings>

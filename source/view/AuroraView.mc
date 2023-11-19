@@ -2,32 +2,26 @@ import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Lang;
 
-class AuroraView extends WatchUi.View {
+class AuroraView extends BaseView {
 
     function initialize() {
-        View.initialize();
+        BaseView.initialize();
 
         System.println("Init Aurora");
     }
 
     // Update the view
-    function onUpdate(dc as Dc) as Void {
-        // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
-
-        var W = dc.getWidth();
-        var H = dc.getHeight();
-        var mw = W * 0.14; // Margin Width
-        var mh = H * 0.23; // Margin Height
-        var cw = W - mw * 2.0; // Chart Width
-        var ch = H - mh * 2.0; // Chart Height
-
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 2, H / 26, Graphics.FONT_MEDIUM, "Aurora", Graphics.TEXT_JUSTIFY_CENTER);
+    function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
+        drawHeader(dc, W, H, "Aurora");
         if (data.hourlyClouds == null) {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 2.5, Graphics.FONT_TINY, "Aurora & Cloud Data\nUnavailable.", Graphics.TEXT_JUSTIFY_CENTER);
         } else {
+            var mw = W * 0.14; // Margin Width
+            var mh = H * 0.23; // Margin Height
+            var cw = W - mw * 2.0; // Chart Width
+            var ch = H - mh * 2.0; // Chart Height
+
             // Aurora guidelines
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawLine(mw, mh + ch - ch * 0.4 * 0.15, mw + cw, mh + ch - ch * 0.4 * 0.15);
@@ -69,7 +63,7 @@ class AuroraView extends WatchUi.View {
                 dc.drawText(mw, mh, Graphics.FONT_XTINY, data.hourlyClouds[0].format("%d") + "% Cloudy", Graphics.TEXT_JUSTIFY_LEFT);
             }
 
-            dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+            dc.setColor(INSTINCT_MODE ? Graphics.COLOR_WHITE : Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(auroraPoints);
 
             dc.drawText(mw + cw, mh, Graphics.FONT_XTINY,

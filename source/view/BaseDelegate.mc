@@ -11,7 +11,7 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onMenu() {
-        var menu = new WatchUi.Menu2({:title=>"Yr 1.2.1"});
+        var menu = new WatchUi.Menu2({:title=>"Yr 1.2.2"});
         menu.addItem(
             new MenuItem(
                 "Temperature Units",
@@ -50,7 +50,7 @@ class BaseDelegate extends BehaviorDelegate {
 
     // Vivoactive swipe controls
     function onDrag(event as DragEvent) as Boolean {
-        if ("1".equals(Application.loadResource(Rez.Strings.VA_MODE))) {
+        if (VA4_MODE) {
             if (event.getType() == 0 /* START */) {
                 startX = event.getCoordinates()[0];
             } else if (event.getType() == 2 /* STOP */) {
@@ -65,7 +65,7 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onSelect() as Boolean {
-        return "1".equals(Application.loadResource(Rez.Strings.VA_MODE)) ? onNextPage() : onSelectOrSwipe();
+        return VA4_MODE ? onNextPage() : onSelectOrSwipe();
     }
 
     // Pinnacle coding

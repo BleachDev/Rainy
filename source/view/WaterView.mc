@@ -2,26 +2,20 @@ import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Lang;
 
-class WaterView extends WatchUi.View {
+class WaterView extends BaseView {
 
     function initialize() {
-        View.initialize();
+        BaseView.initialize();
 
         System.println("Init Water");
     }
 
     // Update the view
-    function onUpdate(dc as Dc) as Void {
-        // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
-
-        var W = dc.getWidth();
-        var H = dc.getHeight();
+    function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         var mw = W * 0.085; // Margin Width
         var mh = H * 0.22; // Margin Height
 
-        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 2, H / 17, Graphics.FONT_MEDIUM, "Water Temps", Graphics.TEXT_JUSTIFY_CENTER);
+        drawHeader(dc, W, H, "Water");
         if (data.waterNames.size() == 0) {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 3, Graphics.FONT_TINY, "No Nearby Water\n Temperatures Found.\n(Norway Only)", Graphics.TEXT_JUSTIFY_CENTER);
@@ -42,7 +36,7 @@ class WaterView extends WatchUi.View {
                     time.month + " " + time.day.format("%02d") + " " + time.hour.format("%02d") + ":" + time.min.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);
 
 
-                dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+                dc.setColor(INSTINCT_MODE ? Graphics.COLOR_WHITE : Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(W - mw * 0.8, offset + H / 40, Graphics.FONT_SMALL, 
                     (data.fahrenheit ? degrees(data.waterTemperatures[i], true) : data.waterTemperatures[i].format("%.1f")) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
             }

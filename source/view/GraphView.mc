@@ -35,6 +35,12 @@ class GraphView extends BaseView {
             }
         }
         var diffTemp = maxTemp - minTemp;
+
+        // Horizontal Graph Background
+        dc.setColor(INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        for (var i = 0; i < 10; i++) {
+            dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - points), mh + lh * i);
+        }
         
         // 0 Degree line
         if (minTemp < 0 && maxTemp > 0) {
@@ -53,12 +59,6 @@ class GraphView extends BaseView {
                 dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(mw + lw * i, H - mh, Graphics.FONT_XTINY, ((startHour + offset + i) % 24).format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
             }
-        }
-
-        // Horizontal Graph Background
-        dc.setColor(INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
-        for (var i = 0; i < 10; i++) {
-            dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - points), mh + lh * i);
         }
 
         var tempPoints = new [points * 2 + 2];

@@ -48,7 +48,7 @@ class SummaryView extends BaseView {
         var mw = H / 8.66; // Rain chart width margin
         var mh = H / 7.42; // Rain chart height margin
         var lh = H / 13; // Rain chart line height
-        var chartWidth = W - 60;
+        var chartWidth = W - mw;
         var rainBackup = data.hourlyRainfall.size() >= 6;
 
         if (data.nowRainfall != null) {

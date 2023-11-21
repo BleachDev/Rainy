@@ -41,7 +41,7 @@ class HintView extends WatchUi.View {
             var b = dc.getWidth() / 2 - height + 2;
 
             var x_i = b * Math.cos(angle + i * 0.06) + dc.getWidth() / 2;
-            var y_i = b * Math.sin(angle + i * 0.06) + dc.getWidth() / 2;
+            var y_i = b * Math.sin(angle + i * 0.06) + dc.getHeight() / 2;
 
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(x_i, y_i, height / 2);

@@ -18,7 +18,7 @@ class PageIndicator {
 
             //round page indicator
             var x_i = b * Math.cos(3.14 + (_size / 2) * 0.12 - i * 0.12) + dc.getWidth() / 2;
-            var y_i = b * Math.sin(3.14 + (_size / 2) * 0.12 - i * 0.12) + dc.getWidth() / 2;
+            var y_i = b * Math.sin(3.14 + (_size / 2) * 0.12 - i * 0.12) + dc.getHeight() / 2;
 
             if (i == selectedIndex) {
                 dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);

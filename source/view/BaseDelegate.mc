@@ -11,7 +11,7 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onMenu() {
-        var menu = new WatchUi.Menu2({:title=>"Yr 1.2.2"});
+        var menu = new WatchUi.Menu2({:title=> "Yr " + VERSION });
         menu.addItem(
             new MenuItem(
                 "Temperature Units",

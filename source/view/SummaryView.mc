@@ -12,11 +12,19 @@ class SummaryView extends BaseView {
 
     // Update the view
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
+        if (data.position == null) {
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(W / 2, H / 8.2, Graphics.FONT_MEDIUM, "Updating GPS\nLocation..", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(W / 2, H / 2.1, Graphics.FONT_TINY, "GPS may require a\nclear view of the sky\nto update.", Graphics.TEXT_JUSTIFY_CENTER);
+            return;
+        }
+
         if (data.hourlySymbol.size() < 1) {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W / 2, H / 8, Graphics.FONT_LARGE, "Loading..", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(W / 2, H / 6.5, Graphics.FONT_LARGE, "Loading..", Graphics.TEXT_JUSTIFY_CENTER);
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W / 2, H / 2.8, Graphics.FONT_TINY, "Phone Bluetooth\nconnection required\nto load Yr.", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(W / 2, H / 2.6, Graphics.FONT_TINY, "Phone Bluetooth\nconnection required\nto load Yr.", Graphics.TEXT_JUSTIFY_CENTER);
             return;
         }
 

@@ -36,15 +36,6 @@ class App extends Application.AppBase {
         data = new YrFullData();
         data.load();
 
-        var pos = Position.getInfo().position.toDegrees();
-        if (pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
-            data.update(pos);
-        } else if (Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
-            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
-        } else if (data.position != null) {
-            data.update(data.position);
-        }
-        
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:posCB));
 
         return [ new SummaryView(), new SummaryDelegate() ] as Array<Views or InputDelegates>;
@@ -55,15 +46,6 @@ class App extends Application.AppBase {
 
         var data = new YrBaseData();
         data.load();
-
-        var pos = Position.getInfo().position.toDegrees();
-        if (pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
-            data.update(pos);
-        } else if (Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
-            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
-        } else if (data.position != null) {
-            data.update(data.position);
-        }
 
         return [ new YrGlanceView(data) ];
     }

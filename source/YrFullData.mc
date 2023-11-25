@@ -22,7 +22,9 @@ class YrFullData extends YrBaseData {
 
     // Callback function for Position.enableLocationEvents
     function posCB(loc as Position.Info) as Void {
-        position = loc.position.toDegrees();
+        if (loc.position != null) {
+            update(loc.position.toDegrees());
+        }
     }
 
     function save() {

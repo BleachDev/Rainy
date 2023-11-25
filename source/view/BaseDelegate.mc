@@ -48,7 +48,8 @@ class BaseDelegate extends BehaviorDelegate {
         return true;
     }
 
-    // Vivoactive swipe controls
+    // Vivoactive 3/4 swipe controls
+    // Note: Only supported on API 3.3.0+ so vivoactive 3 has kinda broken interactions.
     function onDrag(event as DragEvent) as Boolean {
         if (VA4_MODE) {
             if (event.getType() == 0 /* START */) {

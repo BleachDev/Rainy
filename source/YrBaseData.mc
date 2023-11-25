@@ -76,6 +76,18 @@ class YrBaseData {
         if (Storage.getValue("hourlyHumidity") != null) { hourlyHumidity = Storage.getValue("hourlyHumidity"); }
         if (Storage.getValue("hourlySymbol") != null) { hourlySymbol = Storage.getValue("hourlySymbol"); }
         WatchUi.requestUpdate();
+
+        // Update if we have a valid position
+        var pos = Position.getInfo().position.toDegrees();
+        if (pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
+            update(pos);
+        } else if (Activity.getActivityInfo() != null && Activity.getActivityInfo().currentLocation != null) {
+            update(Activity.getActivityInfo().currentLocation.toDegrees());
+        } else if (Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
+            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
+        } else if (position != null) {
+            update(position);
+        }
     }
 
     function syncData() {

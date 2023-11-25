@@ -160,6 +160,8 @@ class YrBaseData {
             location = addressData["neighbourhood"];
         } else if (addressData["farm"] != null) {
             location = addressData["farm"];
+        } else if (addressData["hamlet"] != null) {
+            location = addressData["hamlet"];
         } else if (addressData["quarter"] != null) {
             location = addressData["quarter"];
         } else if (addressData["village"] != null) {
@@ -172,6 +174,8 @@ class YrBaseData {
             location = addressData["city"];
         } else if (addressData["county"] != null) {
             location = addressData["county"];
+        } else if (addressData["road"] != null) { // Roads have low priority due to not looking very elegant
+            location = addressData["road"];
         } else if (addressData["country"] != null) {
             location = addressData["country"];
         } else {

@@ -84,7 +84,7 @@ class YrBaseData {
         } else if (Activity.getActivityInfo() != null && Activity.getActivityInfo().currentLocation != null) {
             update(Activity.getActivityInfo().currentLocation.toDegrees());
         } else if (Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
-            data.update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
+            update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
         } else if (position != null) {
             update(position);
         }

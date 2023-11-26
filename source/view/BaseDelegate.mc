@@ -11,15 +11,9 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onMenu() {
-        var menu = new WatchUi.Menu2({:title=> "Yr " + VERSION });
-        menu.addItem(
-            new MenuItem(
-                "Temperature Units",
-                data.fahrenheit ? "Fahrenheit" : "Celcius",
-                0,
-                {}
-            )
-        );
+        var menu = new Menu2({:title=> "Yr " + VERSION });
+        menu.addItem(new MenuItem("Location", data.autoLocation ? "Automatic (GPS)" : data.location, 0, {}));
+        menu.addItem(new MenuItem("Temperature Units", data.fahrenheit ? "Fahrenheit" : "Celcius", 1, {}));
         WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_BLINK);
         return true;
     }

@@ -7,7 +7,8 @@ import Toybox.Time;
 (:glance)
 class YrBaseData {
 
-    public var fahrenheit           as Boolean = false;
+    public var autoLocation         as Boolean = true;
+    public var fahrenheit           as Boolean = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
 
     public var position             as Array<Double>?;
     public var location             as String = "..";
@@ -45,6 +46,7 @@ class YrBaseData {
     }
 
     function save() {
+        Storage.setValue("autoLocation", autoLocation);
         Storage.setValue("fahrenheit", fahrenheit);
 
         Storage.setValue("geo", position);
@@ -61,8 +63,8 @@ class YrBaseData {
     }
 
     function load() {
+        if (Storage.getValue("autoLocation") != null) { autoLocation = Storage.getValue("autoLocation"); }
         if (Storage.getValue("fahrenheit") != null) { fahrenheit = Storage.getValue("fahrenheit"); }
-                                               else { fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE; }
 
         if (Storage.getValue("geo") != null) { position = Storage.getValue("geo"); }
         if (Storage.getValue("location") != null) { location = Storage.getValue("location"); }
@@ -79,11 +81,11 @@ class YrBaseData {
 
         // Update if we have a valid position
         var pos = Position.getInfo().position.toDegrees();
-        if (pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
+        if (autoLocation && pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
             update(pos);
-        } else if (Activity.getActivityInfo() != null && Activity.getActivityInfo().currentLocation != null) {
+        } else if (autoLocation && Activity.getActivityInfo() != null && Activity.getActivityInfo().currentLocation != null) {
             update(Activity.getActivityInfo().currentLocation.toDegrees());
-        } else if (Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
+        } else if (autoLocation && Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
             update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
         } else if (position != null) {
             update(position);
@@ -154,7 +156,6 @@ class YrBaseData {
             return;
         }
 
-        System.println(data);
         location = data[0]["name"];
 
         if (IS_GLANCE) {

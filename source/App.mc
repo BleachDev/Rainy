@@ -4,7 +4,7 @@ import Toybox.WatchUi;
 
 public var data as YrFullData?;
 public var res as YrResources?;
-(:glance) public var VERSION = "1.2.3";
+(:glance) public var VERSION = "1.3.0";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var VA4_MODE as Boolean = false;
 public var INSTINCT_MODE as Boolean = false;

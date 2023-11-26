@@ -16,7 +16,7 @@ class SummaryView extends BaseView {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 8.2, Graphics.FONT_MEDIUM, "Updating GPS\nLocation..", Graphics.TEXT_JUSTIFY_CENTER);
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W / 2, H / 2.1, Graphics.FONT_TINY, "GPS may require a\nclear view of the sky\nto update.", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(W / 2, H / 2.1, Graphics.FONT_TINY, "Or press MENU\nto manually select\na location.", Graphics.TEXT_JUSTIFY_CENTER);
             return;
         }
 

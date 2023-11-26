@@ -29,7 +29,7 @@ class YrBaseData {
 
         var limit = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 24 : 36;
         request("https://api.bleach.dev/weather/forecast?limit=" + limit + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
-        request("https://nominatim.openstreetmap.org/reverse?format=json&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
+        request("https://api.bleach.dev/weather/search?lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
     }
 
     // Request order
@@ -149,38 +149,13 @@ class YrBaseData {
 
     function fetchGeoData(responseCode as Number, data as Dictionary?) as Void {
         System.println("GEO " + responseCode);
-        if (responseCode != 200 || data == null || data["address"] == null) {
+        if (responseCode != 200 || data == null || data.size() == 0) {
             System.println("GEO EXIT " + data);
             return;
         }
 
-        var addressData = data["address"] as Dictionary;
-
-        if (addressData["neighbourhood"] != null) {
-            location = addressData["neighbourhood"];
-        } else if (addressData["farm"] != null) {
-            location = addressData["farm"];
-        } else if (addressData["hamlet"] != null) {
-            location = addressData["hamlet"];
-        } else if (addressData["quarter"] != null) {
-            location = addressData["quarter"];
-        } else if (addressData["village"] != null) {
-            location = addressData["village"];
-        } else if (addressData["suburb"] != null) {
-            location = addressData["suburb"];
-        } else if (addressData["city_district"] != null) {
-            location = addressData["city_district"];
-        } else if (addressData["city"] != null) {
-            location = addressData["city"];
-        } else if (addressData["county"] != null) {
-            location = addressData["county"];
-        } else if (addressData["road"] != null) { // Roads have low priority due to not looking very elegant
-            location = addressData["road"];
-        } else if (addressData["country"] != null) {
-            location = addressData["country"];
-        } else {
-            location = "Unknown";
-        }
+        System.println(data);
+        location = data[0]["name"];
 
         if (IS_GLANCE) {
             WatchUi.requestUpdate();

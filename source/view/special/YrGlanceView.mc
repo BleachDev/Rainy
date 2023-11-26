@@ -58,7 +58,7 @@ class YrGlanceView extends WatchUi.GlanceView {
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W, H * 0.2, Graphics.FONT_GLANCE, "6hr Rain", Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W, H * 0.2, Graphics.FONT_GLANCE, "6hr", Graphics.TEXT_JUSTIFY_RIGHT);
         } else {
             dc.drawText(W * 0.8, H * 0.3, Graphics.FONT_GLANCE, "Rain\nUnavailable", Graphics.TEXT_JUSTIFY_CENTER);
         }

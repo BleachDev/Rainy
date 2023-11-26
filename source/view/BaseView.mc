@@ -13,7 +13,9 @@ class BaseView extends WatchUi.View {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
 
-        onDraw(dc, dc.getWidth(), dc.getHeight(), dc.getHeight() / (INSTINCT_MODE ? 9 : 13));
+        var W = dc.getWidth();
+        var H = dc.getHeight();
+        onDraw(dc, W, H, H / (INSTINCT_MODE ? 9 : 13));
     }
 
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
@@ -21,7 +23,7 @@ class BaseView extends WatchUi.View {
 
     function drawHeader(dc as Dc, W as Number, H as Number, text as String) {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(INSTINCT_MODE ? W / 5 : W / 2,
+        dc.drawText(INSTINCT_MODE ? W / 6 : W / 2,
                     text.length() > 12 ? H / 15 : H / 26,
                     text.length() > 15 ? Graphics.FONT_TINY : text.length() > 12 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM,
                     text,

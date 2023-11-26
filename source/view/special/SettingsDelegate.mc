@@ -19,7 +19,7 @@ class SettingsDelegate extends Menu2InputDelegate {
                 WatchUi.pushView(
                     new TextPicker(""),
                     new SpellSearchDelegate(),
-                    WatchUi.SLIDE_DOWN
+                    WatchUi.SLIDE_LEFT
                 );
             } else {
                 item.setSubLabel("Automatic (GPS)");

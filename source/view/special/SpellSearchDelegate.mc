@@ -18,14 +18,13 @@ class SpellSearchDelegate extends TextPickerDelegate {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
             WatchUi.pushView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_IMMEDIATE);
             WatchUi.pushView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_IMMEDIATE); // Not good but onTextEntered pops the last view after returning
+            return true;
         }
 
         return false;
     }
 
     function fetchSearch(responseCode as Number, data as Dictionary?) as Boolean {
-        System.println(data);
-
         if (WatchUi.getCurrentView()[0] instanceof Menu2) {
             WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
         }

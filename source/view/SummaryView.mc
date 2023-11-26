@@ -53,10 +53,10 @@ class SummaryView extends BaseView {
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 
         // Rain chart
-        var mw = H / 8.66; // Rain chart width margin
+        var mw = W / 8.66; // Rain chart width margin
         var mh = H / 7.42; // Rain chart height margin
         var lh = H / 13; // Rain chart line height
-        var chartWidth = W - mw;
+        var chartWidth = W - mw * 2;
         var rainBackup = data.hourlyRainfall.size() >= 6;
 
         if (data.nowRainfall != null) {

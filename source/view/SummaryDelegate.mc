@@ -7,7 +7,7 @@ class SummaryDelegate extends BaseDelegate {
         BaseDelegate.initialize();
     }
 
-    function onSelectOrSwipe() as Boolean {
-        return onMenu();
+    function onSelectOrSwipe(softAction as Boolean) as Boolean {
+        return softAction ? false : onMenu();
     }
 }

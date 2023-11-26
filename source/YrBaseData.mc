@@ -85,7 +85,8 @@ class YrBaseData {
             update(pos);
         } else if (autoLocation && Activity.getActivityInfo() != null && Activity.getActivityInfo().currentLocation != null) {
             update(Activity.getActivityInfo().currentLocation.toDegrees());
-        } else if (autoLocation && Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
+        } else if (autoLocation && Toybox has :Weather
+                    && Weather.getCurrentConditions() != null && Weather.getCurrentConditions().observationLocationPosition != null) {
             update(Weather.getCurrentConditions().observationLocationPosition.toDegrees());
         } else if (position != null) {
             update(position);

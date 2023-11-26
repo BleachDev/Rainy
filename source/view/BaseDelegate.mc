@@ -45,12 +45,12 @@ class BaseDelegate extends BehaviorDelegate {
     // Vivoactive 3/4 swipe controls
     // Note: Only supported on API 3.3.0+ so vivoactive 3 has kinda broken interactions.
     function onDrag(event as DragEvent) as Boolean {
-        if (VA4_MODE) {
+        if (NOGLANCE_MODE) {
             if (event.getType() == 0 /* START */) {
                 startX = event.getCoordinates()[0];
             } else if (event.getType() == 2 /* STOP */) {
                 if (startX - event.getCoordinates()[0] > (System.getDeviceSettings().screenWidth / 4)) {
-                    onSelectOrSwipe();
+                    onSelectOrSwipe(false);
                 }
             }
             return true;
@@ -60,11 +60,12 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onSelect() as Boolean {
-        return VA4_MODE ? onNextPage() : onSelectOrSwipe();
+        return NOTOUCH_MODE ? (onSelectOrSwipe(true) ? true : onNextPage()) : (NOGLANCE_MODE ? onNextPage() : onSelectOrSwipe(false));
     }
 
-    // Pinnacle coding
-    function onSelectOrSwipe() as Boolean {
+    // If softAction then only iterate through information and don't open any menus
+    // Returns whether the next page should be displayed in softAction mode
+    function onSelectOrSwipe(softAction as Boolean) as Boolean {
         return false;
     }
 

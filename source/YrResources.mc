@@ -107,7 +107,7 @@ class YrResources {
         }
 
         System.println("Loading Resource: " + code);
-        resources[code] = Application.loadResource(Rez.Drawables[resourceNames[code]]) as BitmapResource;
+        resources[code] = WatchUi.loadResource(Rez.Drawables[resourceNames[code]]) as BitmapResource;
         resourceNames.remove(code);
         return resources[code];
     }

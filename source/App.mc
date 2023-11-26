@@ -6,8 +6,9 @@ public var data as YrFullData?;
 public var res as YrResources?;
 (:glance) public var VERSION = "1.3.0";
 (:glance) public var IS_GLANCE as Boolean = false;
-public var VA4_MODE as Boolean = false;
-public var INSTINCT_MODE as Boolean = false;
+public var INSTINCT_MODE as Boolean = false; // Whether Instinct circle is present
+public var NOGLANCE_MODE as Boolean = false; // True if we can't use arrows
+public var NOTOUCH_MODE as Boolean = false; // True if we can't use arrows AND can't use touch
 
 (:glance)
 class App extends Application.AppBase {
@@ -29,8 +30,9 @@ class App extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as Array<Views or InputDelegates>? {
-        VA4_MODE = "1".equals(Application.loadResource(Rez.Strings.VA_MODE));
-        INSTINCT_MODE = "1".equals(Application.loadResource(Rez.Strings.INSTINCT_MODE));
+        INSTINCT_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.INSTINCT_MODE));
+        NOGLANCE_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.NOGLANCE_MODE));
+        NOTOUCH_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.NOTOUCH_MODE));
 
         res = new YrResources();
         data = new YrFullData();

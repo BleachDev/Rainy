@@ -25,14 +25,10 @@ class SpellSearchDelegate extends TextPickerDelegate {
     }
 
     function fetchSearch(responseCode as Number, data as Dictionary?) as Boolean {
-        if (WatchUi.getCurrentView()[0] instanceof Menu2) {
-            WatchUi.popView(WatchUi.SLIDE_IMMEDIATE);
-        }
-
         if (responseCode != 200 || data == null) {
             var menu = new Menu2({:title => "Location"});
             menu.addItem(new MenuItem("Error", "Connection Error", 0, {}));
-            WatchUi.pushView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_BLINK);
+            WatchUi.switchToView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_BLINK);
             return false;
         }
 
@@ -41,7 +37,7 @@ class SpellSearchDelegate extends TextPickerDelegate {
             menu.addItem(new MenuItem(data[i]["name"], data[i]["region"] + " (" + data[i]["code"] + "), El. " + data[i]["elevation"] + "m", i, {}));
         }
 
-        WatchUi.pushView(menu, new SpellListDelegate(data), WatchUi.SLIDE_BLINK);
+        WatchUi.switchToView(menu, new SpellListDelegate(data), WatchUi.SLIDE_BLINK);
         return true;
     }
 }

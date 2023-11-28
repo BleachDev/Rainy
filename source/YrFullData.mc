@@ -97,8 +97,6 @@ class YrFullData extends YrBaseData {
             }
         }
 
-        request("https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/auroraforecast", method(:fetchAuroraData));
-        request("https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/nearestwatertemperatures", method(:fetchWaterData));
         return true;
     }
 
@@ -107,7 +105,13 @@ class YrFullData extends YrBaseData {
             return false;
         }
 
-        BaseView.pageCount = "NO".equals(data[0]["code"]) ? 5 : 4;
+        var showWater = "NO".equals(data[0]["code"]);
+        BaseView.pageCount = showWater ? 5 : 4;
+        
+        request("https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/auroraforecast", method(:fetchAuroraData));
+        if (showWater) {
+            request("https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/nearestwatertemperatures", method(:fetchWaterData));
+        }
         return true;
     }
 

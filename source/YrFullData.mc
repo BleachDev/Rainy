@@ -102,6 +102,15 @@ class YrFullData extends YrBaseData {
         return true;
     }
 
+    function fetchGeoData(responseCode as Number, data as Dictionary?) as Boolean {
+        if (!YrBaseData.fetchGeoData(responseCode, data)) {
+            return false;
+        }
+
+        BaseView.pageCount = "NO".equals(data[0]["code"]) ? 5 : 4;
+        return true;
+    }
+
     function fetchAuroraData(responseCode as Number, data as Dictionary?) as Void {
         System.println("AUR " + responseCode);
         if (responseCode != 200 || data == null) {

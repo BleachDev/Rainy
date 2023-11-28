@@ -101,7 +101,7 @@ class GraphView extends BaseView {
 
         // Page Indicator
         if (!INSTINCT_MODE) {
-            res.indicator.draw(dc, 2);
+            drawIndicator(dc, 2);
         }
     }
 }

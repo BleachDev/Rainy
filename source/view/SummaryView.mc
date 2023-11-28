@@ -93,7 +93,7 @@ class SummaryView extends BaseView {
             data.nowRainfall != null ? "Rainfall next 90 min." : rainBackup ? "Rainfall next 6 hr." : "90 Minute Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
-        res.indicator.draw(dc, 0);
+        drawIndicator(dc, 0);
     }
 
     // thanks Mr. Gpt (may or may not actually calculate the right values)

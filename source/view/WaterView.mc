@@ -18,7 +18,7 @@ class WaterView extends BaseView {
         drawHeader(dc, W, H, "Water");
         if (data.waterNames.size() == 0) {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W / 2, H / 3, Graphics.FONT_TINY, "No Nearby Water\n Temperatures Found.\n(Norway Only)", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(W / 2, H / 2.5, Graphics.FONT_TINY, "No Nearby Water\nTemperatures Found.", Graphics.TEXT_JUSTIFY_CENTER);
         } else {
             for (var i = 0; i < data.waterNames.size() && i < 3; i++) {
                 var offset = mh + i * (H / 4.5);
@@ -43,6 +43,6 @@ class WaterView extends BaseView {
         }
 
         // Page Indicator
-        res.indicator.draw(dc, 4);
+        drawIndicator(dc, 4);
     }
 }

@@ -23,7 +23,7 @@ class BaseDelegate extends BehaviorDelegate {
             return false;
         }
 
-        page = page == 4 ? 0 : page + 1;
+        page = page == (BaseView.pageCount - 1) ? 0 : page + 1;
 
         var view = getView(page);
         WatchUi.switchToView(view[0], view[1], WatchUi.SLIDE_UP);
@@ -35,7 +35,7 @@ class BaseDelegate extends BehaviorDelegate {
             return false;
         }
         
-        page = page == 0 ? 4 : page - 1;
+        page = page == 0 ? BaseView.pageCount - 1 : page - 1;
 
         var view = getView(page);
         WatchUi.switchToView(view[0], view[1], WatchUi.SLIDE_DOWN);

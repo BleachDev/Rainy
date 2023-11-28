@@ -4,7 +4,6 @@ import Toybox.WatchUi;
 
 class YrResources {
     
-    public var indicator as PageIndicator = new PageIndicator(5);
     // The micro-optimizations are real
     private var resources as Dictionary<Number, BitmapResource> = {};
     private var resourceNames as Dictionary<Number, Symbol> = {

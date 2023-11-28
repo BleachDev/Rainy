@@ -30,7 +30,7 @@ class YrBaseData {
 
         var limit = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 24 : 36;
         request("https://api.bleach.dev/weather/forecast?limit=" + limit + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
-        request("https://api.bleach.dev/weather/search?lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
+        request("https://api.bleach.dev/weather/search?limit=1&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
     }
 
     // Request order
@@ -150,11 +150,11 @@ class YrBaseData {
         return true;
     }
 
-    function fetchGeoData(responseCode as Number, data as Dictionary?) as Void {
+    function fetchGeoData(responseCode as Number, data as Dictionary?) as Boolean {
         System.println("GEO " + responseCode);
         if (responseCode != 200 || data == null || data.size() == 0) {
             System.println("GEO EXIT " + data);
-            return;
+            return false;
         }
 
         location = data[0]["name"];
@@ -163,5 +163,6 @@ class YrBaseData {
             WatchUi.requestUpdate();
             save();
         }
+        return true;
     }
 }

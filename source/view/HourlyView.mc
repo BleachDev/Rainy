@@ -60,6 +60,6 @@ class HourlyView extends BaseView {
         dc.drawText(W / 2, H * 0.75 + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/4", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
-        res.indicator.draw(dc, 1);
+        drawIndicator(dc, 1);
     }
 }

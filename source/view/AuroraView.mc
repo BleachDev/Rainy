@@ -71,6 +71,6 @@ class AuroraView extends BaseView {
         }
 
         // Page Indicator
-        res.indicator.draw(dc, 3);
+        drawIndicator(dc, 3);
     }
 }

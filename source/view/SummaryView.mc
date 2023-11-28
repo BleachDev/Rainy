@@ -33,6 +33,7 @@ class SummaryView extends BaseView {
 
         // Temperature
         var sumM = H / 13; // Summary margin
+        var sumM2 = H / 2.6;
         dc.drawBitmap(sumM, sumM * 2.7, res.getSymbol(data.hourlySymbol.size() == 0 ? 2018941991 : data.hourlySymbol[0]));
 
         dc.drawText(sumM + 50, sumM * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.hourlyTemperature[0], data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);

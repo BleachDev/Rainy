@@ -17,7 +17,7 @@ class BaseView extends WatchUi.View {
 
         var W = dc.getWidth();
         var H = dc.getHeight();
-        onDraw(dc, W, H, H / (INSTINCT_MODE ? 9 : 13));
+        onDraw(dc, W, H, H / (INSTINCT_MODE || NOGLANCE_MODE >= 3 ? 9 : 13));
     }
 
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {

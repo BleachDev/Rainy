@@ -3,6 +3,7 @@ import Toybox.WatchUi;
 
 class BaseDelegate extends BehaviorDelegate {
 
+    public static var pageCount = 6;
     private static var page as Number = 0;
     private var startX as Number = 0;
 
@@ -19,11 +20,11 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onNextPage() as Boolean {
-        if (data.hourlyTemperature.size() < 1) {
+        if (data.temperatures.size() < 1) {
             return false;
         }
 
-        page = page == (BaseView.pageCount - 1) ? 0 : page + 1;
+        page = page == (pageCount - 1) ? 0 : page + 1;
 
         var view = getView(page);
         WatchUi.switchToView(view[0], view[1], WatchUi.SLIDE_UP);
@@ -31,11 +32,11 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onPreviousPage() as Boolean {
-        if (data.hourlyTemperature.size() < 1) {
+        if (data.temperatures.size() < 1) {
             return false;
         }
         
-        page = page == 0 ? BaseView.pageCount - 1 : page - 1;
+        page = page == 0 ? pageCount - 1 : page - 1;
 
         var view = getView(page);
         WatchUi.switchToView(view[0], view[1], WatchUi.SLIDE_DOWN);
@@ -71,11 +72,12 @@ class BaseDelegate extends BehaviorDelegate {
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {
         switch (page) {
-            case 0: return [ new SummaryView(), new SummaryDelegate() ];
-            case 1: return [ new HourlyView(), new HourlyDelegate() ];
-            case 2: return [ new GraphView(), new GraphDelegate() ];
-            case 3: return [ new AuroraView(), new BaseDelegate() ];
-            default: return [ new WaterView(), new BaseDelegate() ];
+            case 0: return  [ new SummaryView(), new SummaryDelegate() ];
+            case 1: return  [ new DailyView(),   new DailyDelegate() ];
+            case 2: return  [ new HourlyView(),  new HourlyDelegate() ];
+            case 3: return  [ new GraphView(),   new GraphDelegate() ];
+            case 4: return  [ new AuroraView(),  new BaseDelegate() ];
+            default: return [ new WaterView(),   new BaseDelegate() ];
         }
     }
 }

@@ -6,8 +6,6 @@ class WaterView extends BaseView {
 
     function initialize() {
         BaseView.initialize();
-
-        System.println("Init Water");
     }
 
     // Update the view
@@ -43,6 +41,6 @@ class WaterView extends BaseView {
         }
 
         // Page Indicator
-        drawIndicator(dc, 4);
+        drawIndicator(dc, 5);
     }
 }

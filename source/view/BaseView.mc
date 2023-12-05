@@ -4,8 +4,6 @@ import Toybox.Lang;
 
 class BaseView extends WatchUi.View {
 
-    public static var pageCount = 5;
-
     function initialize() {
         View.initialize();
     }
@@ -34,12 +32,12 @@ class BaseView extends WatchUi.View {
 
     public function drawIndicator(dc as Dc, selectedIndex as Number) as Void {
         var height = dc.getWidth() / 25;
-        for (var i = 0; i < pageCount; i++) {
+        for (var i = 0; i < BaseDelegate.pageCount; i++) {
             var b = dc.getWidth() / 2 - height + 2;
 
             //round page indicator
-            var x_i = b * Math.cos(3.14 + ((pageCount - 1f) / 2) * 0.12 - i * 0.12) + dc.getWidth() / 2;
-            var y_i = b * Math.sin(3.14 + ((pageCount - 1f) / 2) * 0.12 - i * 0.12) + dc.getHeight() / 2;
+            var x_i = b * Math.cos(3.14 + ((BaseDelegate.pageCount - 1f) / 2) * 0.12 - i * 0.12) + dc.getWidth() / 2;
+            var y_i = b * Math.sin(3.14 + ((BaseDelegate.pageCount - 1f) / 2) * 0.12 - i * 0.12) + dc.getHeight() / 2;
 
             if (i == selectedIndex) {
                 dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);

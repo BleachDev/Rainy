@@ -6,8 +6,6 @@ class AuroraView extends BaseView {
 
     function initialize() {
         BaseView.initialize();
-
-        System.println("Init Aurora");
     }
 
     // Update the view
@@ -30,7 +28,7 @@ class AuroraView extends BaseView {
             dc.drawText(mw + cw + 3, mh + ch - ch * 0.4 * 0.15 - H / 26, Graphics.FONT_XTINY, "Lo", Graphics.TEXT_JUSTIFY_LEFT);
             dc.drawText(mw + cw + 3, mh + ch - ch * 0.4 * 0.5 - H / 26, Graphics.FONT_XTINY, "Hi", Graphics.TEXT_JUSTIFY_LEFT);
 
-            var len = data.hourlyClouds.size() > 32 ? 32 : data.hourlyClouds.size();
+            var len = data.hourlyEntries() > 32 ? 32 : data.hourlyEntries();
             var cloudPoints = new [len * 2];
             var auroraPoints = new [len + 2];
 
@@ -71,6 +69,6 @@ class AuroraView extends BaseView {
         }
 
         // Page Indicator
-        drawIndicator(dc, 3);
+        drawIndicator(dc, 4);
     }
 }

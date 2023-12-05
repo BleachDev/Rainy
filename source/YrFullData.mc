@@ -106,7 +106,7 @@ class YrFullData extends YrBaseData {
         }
 
         var showWater = "NO".equals(data[0]["code"]);
-        BaseView.pageCount = showWater ? 5 : 4;
+        BaseDelegate.pageCount = showWater ? 6 : 5;
         
         request("https://www.yr.no/api/v0/locations/" + position[0] + "," + position[1] + "/auroraforecast", method(:fetchAuroraData));
         if (showWater) {
@@ -160,6 +160,10 @@ class YrFullData extends YrBaseData {
     }
 
     // Helper Methods
+
+    function hourlyEntries() {
+        return hours < symbols.size() ? hours : symbols.size();
+    }
 
     // converts rfc3339 formatted timestamp to Time::Moment (null on error)
     // Thanks trisiak @ https://forums.garmin.com/developer/connect-iq/f/discussion/2124/parsing-a-date-string-to-moment

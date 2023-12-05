@@ -7,20 +7,21 @@ import Toybox.Time;
 (:glance)
 class YrBaseData {
 
-    public var autoLocation         as Boolean = true;
-    public var fahrenheit           as Boolean = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
+    public var autoLocation   as Boolean = true;
+    public var fahrenheit     as Boolean = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
 
-    public var position             as Array<Double>?;
-    public var location             as String = "..";
-    public var time                 as Moment = Time.now();
+    public var position       as Array<Double>?;
+    public var location       as String = "..";
+    public var time           as Moment = Time.now();
     // Forecast
-    public var nowRainfall          as Array<Float>? = null; // Null or list of next 90 mins of rain
-    public var hourlyTemperature    as Array<Float> = [];
-    public var hourlyWindSpeed      as Array<Float> = [];
-    public var hourlyWindDirection  as Array<Float> = [];
-    public var hourlyRainfall       as Array<Float> = [];
-    public var hourlyHumidity       as Array<Float> = [];
-    public var hourlySymbol         as Array<Number> = [];
+    public var nowRainfall    as Array<Float>? = null; // Null or list of next 90 mins of rain
+    public var temperatures   as Array<Float> = [];
+    public var windSpeeds     as Array<Float> = [];
+    public var windDirections as Array<Float> = [];
+    public var rainfall       as Array<Float> = [];
+    public var humidity       as Array<Float> = [];
+    public var symbols        as Array<Number> = [];
+    public var hours          as Number = 0;
 
     function update(coords as Array<Double>) as Void {
         System.println("Refreshing, " + coords);
@@ -28,8 +29,9 @@ class YrBaseData {
 
         syncData();
 
-        var limit = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 24 : 36;
-        request("https://api.bleach.dev/weather/forecast?limit=" + limit + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
+        hours = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 13 : 36;
+        var days = IS_GLANCE ? 0 : 14;
+        request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
         request("https://api.bleach.dev/weather/search?limit=1&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
     }
 
@@ -54,12 +56,12 @@ class YrBaseData {
         Storage.setValue("time", time.value());
 
         Storage.setValue("nowRainfall", nowRainfall);
-        Storage.setValue("hourlyTemperature", hourlyTemperature);
-        Storage.setValue("hourlyWindSpeed", hourlyWindSpeed);
-        Storage.setValue("hourlyWindDirection", hourlyWindDirection);
-        Storage.setValue("hourlyRainfall", hourlyRainfall);
-        Storage.setValue("hourlyHumidity", hourlyHumidity);
-        Storage.setValue("hourlySymbol", hourlySymbol);
+        Storage.setValue("temperatures", temperatures);
+        Storage.setValue("windSpeeds", windSpeeds);
+        Storage.setValue("windDirections", windDirections);
+        Storage.setValue("rainfall", rainfall);
+        Storage.setValue("humidity", humidity);
+        Storage.setValue("symbols", symbols);
     }
 
     function load() {
@@ -71,12 +73,13 @@ class YrBaseData {
         if (Storage.getValue("time") != null) { time = new Moment(Storage.getValue("time")); }
 
         if (Storage.getValue("nowRainfall") != null) { nowRainfall = Storage.getValue("nowRainfall"); }
-        if (Storage.getValue("hourlyTemperature") != null) { hourlyTemperature = Storage.getValue("hourlyTemperature"); }
-        if (Storage.getValue("hourlyWindSpeed") != null) { hourlyWindSpeed = Storage.getValue("hourlyWindSpeed"); }
-        if (Storage.getValue("hourlyWindDirection") != null) { hourlyWindDirection = Storage.getValue("hourlyWindDirection"); }
-        if (Storage.getValue("hourlyRainfall") != null) { hourlyRainfall = Storage.getValue("hourlyRainfall"); }
-        if (Storage.getValue("hourlyHumidity") != null) { hourlyHumidity = Storage.getValue("hourlyHumidity"); }
-        if (Storage.getValue("hourlySymbol") != null) { hourlySymbol = Storage.getValue("hourlySymbol"); }
+        if (Storage.getValue("temperatures") != null) { temperatures = Storage.getValue("temperatures"); }
+        if (Storage.getValue("windSpeeds") != null) { windSpeeds = Storage.getValue("windSpeeds"); }
+        if (Storage.getValue("windDirections") != null) { windDirections = Storage.getValue("windDirections"); }
+        if (Storage.getValue("rainfall") != null) { rainfall = Storage.getValue("rainfall"); }
+        if (Storage.getValue("humidity") != null) { humidity = Storage.getValue("humidity"); }
+        if (Storage.getValue("symbols") != null) { symbols = Storage.getValue("symbols"); }
+        if (Storage.getValue("hours") != null) { hours = Storage.getValue("hours"); }
         WatchUi.requestUpdate();
 
         // Update if we have a valid position
@@ -97,13 +100,14 @@ class YrBaseData {
         var nowTime = Time.now().value();
         for (var i = 0; time.value() + 3600 < nowTime && i < 20; i++) {
             nowRainfall = null; // No more 90 minute rain
-            if (hourlyTemperature.size() > 0) { hourlyTemperature.remove(hourlyTemperature[0]); }
-            if (hourlyWindSpeed.size() > 0) { hourlyWindSpeed.remove(hourlyWindSpeed[0]); }
-            if (hourlyWindDirection.size() > 0) { hourlyWindDirection.remove(hourlyWindDirection[0]); }
-            if (hourlyRainfall.size() > 0) { hourlyRainfall.remove(hourlyRainfall[0]); }
-            if (hourlyHumidity.size() > 0) { hourlyHumidity.remove(hourlyHumidity[0]); }
-            if (hourlySymbol.size() > 0) { hourlySymbol.remove(hourlySymbol[0]); }
+            if (temperatures.size() > 0) { temperatures.remove(temperatures[0]); }
+            if (windSpeeds.size() > 0) { windSpeeds.remove(windSpeeds[0]); }
+            if (windDirections.size() > 0) { windDirections.remove(windDirections[0]); }
+            if (rainfall.size() > 0) { rainfall.remove(rainfall[0]); }
+            if (humidity.size() > 0) { humidity.remove(humidity[0]); }
+            if (symbols.size() > 0) { symbols.remove(symbols[0]); }
             time = new Moment(time.value() + 3600);
+            hours--;
         }
     }
 
@@ -118,20 +122,20 @@ class YrBaseData {
         var forecastData = data["forecast"] as Dictionary;
 
         var hours = forecastData.size();
-        hourlyTemperature = new [hours];
-        hourlyWindSpeed = new [hours];
-        hourlyWindDirection = new [hours];
-        hourlyRainfall = new [hours];
-        hourlyHumidity = new [hours];
-        hourlySymbol = new [hours];
+        temperatures = new [hours];
+        windSpeeds = new [hours];
+        windDirections = new [hours];
+        rainfall = new [hours];
+        humidity = new [hours];
+        symbols = new [hours];
         for (var i = 0; i < hours; i++) {
             var hour = forecastData[i];
-            hourlyTemperature[i] = hour["air_temperature"];
-            hourlyWindSpeed[i] = hour["wind_speed"];
-            hourlyWindDirection[i] = hour["wind_from_direction"];
-            hourlyRainfall[i] = hour["precipitation_amount"];
-            hourlyHumidity[i] = hour["relative_humidity"];
-            hourlySymbol[i] = hour["symbol_code"].hashCode();
+            temperatures[i] = hour["air_temperature"];
+            windSpeeds[i] = hour["wind_speed"];
+            windDirections[i] = hour["wind_from_direction"];
+            rainfall[i] = hour["precipitation_amount"];
+            humidity[i] = hour["relative_humidity"];
+            symbols[i] = hour["symbol_code"].hashCode();
         }
 
         if (data["nowcast"] != null) {

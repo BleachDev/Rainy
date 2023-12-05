@@ -8,8 +8,6 @@ class GraphView extends BaseView {
 
     function initialize() {
         BaseView.initialize();
-
-        System.println("Init Graph");
     }
 
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
@@ -21,17 +19,17 @@ class GraphView extends BaseView {
         var mh = H * 0.25; // Margin Height
         var lw = (W - mw * 2) / 12.0; // Line Width
         var lh = (H - mh * 2) / 9.0; // Line Height
-        var points = data.hourlySymbol.size() - offset > 12 ? 12 : data.hourlySymbol.size() - offset - 1;
+        var points = data.hourlyEntries() - offset > 12 ? 12 : data.hourlyEntries() - offset - 1;
         var startHour = Time.Gregorian.info(data.time, Time.FORMAT_SHORT).hour;
 
-        var minTemp = data.hourlyTemperature[0];
-        var maxTemp = data.hourlyTemperature[0];
-        for (var i = 0; i < data.hourlyTemperature.size(); i++) {
-            if (data.hourlyTemperature[i] - 2 < minTemp) {
-                minTemp = data.hourlyTemperature[i] - 2;
+        var minTemp = data.temperatures[0];
+        var maxTemp = data.temperatures[0];
+        for (var i = 0; i < data.temperatures.size(); i++) {
+            if (data.temperatures[i] - 2 < minTemp) {
+                minTemp = data.temperatures[i] - 2;
             }
-            if (data.hourlyTemperature[i] + 2 > maxTemp) {
-                maxTemp = data.hourlyTemperature[i] + 2;
+            if (data.temperatures[i] + 2 > maxTemp) {
+                maxTemp = data.temperatures[i] + 2;
             }
         }
         var diffTemp = maxTemp - minTemp;
@@ -65,15 +63,15 @@ class GraphView extends BaseView {
         for (var i = 0; i < points; i++) {
             // Rain (fillRectancle uses wh instead of xy :troll:)
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
-            var rain = data.hourlyRainfall[offset + i];
+            var rain = data.rainfall[offset + i];
             dc.fillRectangle(mw + lw * i, H - mh - lh * rain, lw, lh * rain);
 
             // Temperature
-            var t1 = H - mh - ((data.hourlyTemperature[offset + i].toFloat() - minTemp) / diffTemp) * (H - mh * 2);
+            var t1 = H - mh - ((data.temperatures[offset + i].toFloat() - minTemp) / diffTemp) * (H - mh * 2);
             tempPoints[i] = [ mw + lw * i, t1 ];
             tempPoints[tempPoints.size() - 1 - i] = [ mw + lw * i, t1 - lh / 4 ];
             if (i + 1 == points) {
-                var t2 = H - mh - ((data.hourlyTemperature[offset + i + 1].toFloat() - minTemp) / diffTemp) * (H - mh * 2);
+                var t2 = H - mh - ((data.temperatures[offset + i + 1].toFloat() - minTemp) / diffTemp) * (H - mh * 2);
                 tempPoints[i + 1] = [ mw + lw * (i + 1), t2 ];
                 tempPoints[i + 2] = [ mw + lw * (i + 1), t2 - lh / 4 ];
             }
@@ -97,11 +95,11 @@ class GraphView extends BaseView {
 
         // Local Page Indicator
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 2, H - mh + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + ((data.hourlySymbol.size() - 1) / 12 + 1), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H - mh + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + ((data.hourlyEntries() - 2) / 12 + 1), Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         if (!INSTINCT_MODE) {
-            drawIndicator(dc, 2);
+            drawIndicator(dc, 3);
         }
     }
 }

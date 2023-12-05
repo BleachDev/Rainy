@@ -1,15 +1,15 @@
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class GraphDelegate extends BaseDelegate {
+class DailyDelegate extends BaseDelegate {
 
     function initialize() {
         BaseDelegate.initialize();
     }
 
     function onSelectOrSwipe(softAction as Boolean) as Boolean {
-        GraphView.page = GraphView.page >= (data.hourlyEntries() - 2) / 12 ? 0 : GraphView.page + 1;
+        DailyView.page = DailyView.page == 3 ? 0 : DailyView.page + 1;
         WatchUi.requestUpdate();
-        return GraphView.page != 0 || !softAction;
+        return DailyView.page != 0 || !softAction;
     }
 }

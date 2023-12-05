@@ -21,15 +21,15 @@ class YrGlanceView extends WatchUi.GlanceView {
 
         var W = dc.getWidth();
         var H = dc.getHeight();
-        var loaded = data.hourlyTemperature.size() > 0;
+        var loaded = data.temperatures.size() > 0;
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(0, H * 0.15, Graphics.FONT_GLANCE, data.location.toUpper(), Graphics.TEXT_JUSTIFY_LEFT);
-        dc.drawText(0, H * 0.4, Graphics.FONT_GLANCE_NUMBER, (loaded ? degrees(data.hourlyTemperature[0], data.fahrenheit) : "--") + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(0, H * 0.4, Graphics.FONT_GLANCE_NUMBER, (loaded ? degrees(data.temperatures[0], data.fahrenheit) : "--") + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.fillPolygon(generateArrow([ W * 0.28, H * 0.65 ], loaded ? data.hourlyWindDirection[0] + 180 : 0, H / 4));
-        dc.drawText(W * 0.35, H * 0.4, Graphics.FONT_GLANCE_NUMBER, loaded ? data.hourlyWindSpeed[0].format("%d") : "--", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.fillPolygon(generateArrow([ W * 0.28, H * 0.65 ], loaded ? data.windDirections[0] + 180 : 0, H / 4));
+        dc.drawText(W * 0.35, H * 0.4, Graphics.FONT_GLANCE_NUMBER, loaded ? data.windSpeeds[0].format("%d") : "--", Graphics.TEXT_JUSTIFY_LEFT);
 
         var mw = W * 0.55; // Rain chart width margin (left)
         var mh = H / 5.5; // Rain chart height margin (bottom)
@@ -46,13 +46,13 @@ class YrGlanceView extends WatchUi.GlanceView {
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
-        } else if (data.hourlyRainfall.size() >= 6) {
+        } else if (data.rainfall.size() >= 6) {
             var rainPoints = new [8];
             rainPoints[0] = [ mw, H - mh ];
             rainPoints[7] = [ mw + chartWidth, H - mh ];
             for (var i = 0; i < 6; i++) {
                 rainPoints[i + 1] = [ mw + (chartWidth / 6) * i,
-                                      H - mh - (data.hourlyRainfall[i] <= 0 ? 0 : data.hourlyRainfall[i] > 5 ? lh * 3 : ((data.hourlyRainfall[i] + 0.3) * (lh * 0.6))) ];
+                                      H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
             }
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);

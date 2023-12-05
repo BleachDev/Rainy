@@ -6,8 +6,6 @@ class SummaryView extends BaseView {
 
     function initialize() {
         BaseView.initialize();
-
-        System.println("Init Summary");
     }
 
     // Update the view
@@ -20,7 +18,7 @@ class SummaryView extends BaseView {
             return;
         }
 
-        if (data.hourlySymbol.size() < 1) {
+        if (data.symbols.size() < 1) {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 6.5, Graphics.FONT_LARGE, "Loading..", Graphics.TEXT_JUSTIFY_CENTER);
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -33,18 +31,17 @@ class SummaryView extends BaseView {
 
         // Temperature
         var sumM = H / 13; // Summary margin
-        var sumM2 = H / 2.6;
-        dc.drawBitmap(sumM, sumM * 2.7, res.getSymbol(data.hourlySymbol.size() == 0 ? 2018941991 : data.hourlySymbol[0]));
+        dc.drawBitmap(sumM, sumM * 2.7, res.getSymbol(data.symbols.size() == 0 ? 2018941991 : data.symbols[0]));
 
-        dc.drawText(sumM + 50, sumM * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.hourlyTemperature[0], data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(sumM + 50, sumM * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.temperatures[0], data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        var apTemp = calcApparentTemperature(data.hourlyTemperature[0], data.hourlyHumidity[0], data.hourlyWindSpeed[0]);
+        var apTemp = calcApparentTemperature(data.temperatures[0], data.humidity[0], data.windSpeeds[0]);
         dc.drawText(sumM, sumM * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         // Wind
-        dc.drawText(W - sumM * 3, sumM * 2.5, Graphics.FONT_NUMBER_MILD, data.hourlyWindSpeed[0].format("%d"), Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(W - sumM * 3, sumM * 2.5, Graphics.FONT_NUMBER_MILD, data.windSpeeds[0].format("%d"), Graphics.TEXT_JUSTIFY_RIGHT);
         dc.drawText(W - sumM, sumM * 5, Graphics.FONT_XTINY, "(m/s)", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.fillPolygon(generateArrow([ W - sumM * 1.9, sumM * 4 ], data.hourlyWindDirection[0] + 180, (sumM * 1.6).toNumber()));
+        dc.fillPolygon(generateArrow([ W - sumM * 1.9, sumM * 4 ], data.windDirections[0] + 180, (sumM * 1.6).toNumber()));
         dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
 
         // Rain chart
@@ -52,7 +49,7 @@ class SummaryView extends BaseView {
         var mh = H / 7.42; // Rain chart height margin
         var lh = H / 13; // Rain chart line height
         var chartWidth = W - mw * 2;
-        var rainBackup = data.hourlyRainfall.size() >= 6;
+        var rainBackup = data.rainfall.size() >= 6;
 
         if (data.nowRainfall != null) {
             var rainPoints = new [data.nowRainfall.size() + 2];
@@ -71,7 +68,7 @@ class SummaryView extends BaseView {
             rainPoints[7] = [ mw + chartWidth, H - mh ];
             for (var i = 0; i < 6; i++) {
                 rainPoints[i + 1] = [ mw + (chartWidth / 6) * i,
-                                      H - mh - (data.hourlyRainfall[i] <= 0 ? 0 : data.hourlyRainfall[i] > 5 ? lh * 3.25 : ((data.hourlyRainfall[i] + 0.3) * (lh * 0.6))) ];
+                                      H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3.25 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
             }
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);

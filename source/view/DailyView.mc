@@ -24,7 +24,7 @@ class DailyView extends BaseView {
         var date = Time.Gregorian.info(new Time.Moment(data.time.value() + 86400 * (page + (hour > 18 ? 1 : 0))), Time.FORMAT_MEDIUM);
         drawHeader(dc, W, H, page ? date.day_of_week + " " + date.day + "." : "Daily");
 
-        hour = hour % 6 == 0 ? hour : hour + hour % 6;
+        hour = hour % 6 == 0 ? hour : hour + (6 - (hour % 6));
         var filler = (hour % 24) / 6;
         for (var i = page == 0 ? filler : 0; i < 4; i++) {
             var entry = page * 4 + i - filler;

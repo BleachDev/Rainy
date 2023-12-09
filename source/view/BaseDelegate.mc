@@ -43,25 +43,20 @@ class BaseDelegate extends BehaviorDelegate {
         return true;
     }
 
-    // Vivoactive 3/4 swipe controls
-    // Note: Only supported on API 3.3.0+ so vivoactive 3 has kinda broken interactions.
+    // Swipe left to go to next page in multiplage views
     function onDrag(event as DragEvent) as Boolean {
-        if (NOGLANCE_MODE >= 1) {
-            if (event.getType() == 0 /* START */) {
-                startX = event.getCoordinates()[0];
-            } else if (event.getType() == 2 /* STOP */) {
-                if (startX - event.getCoordinates()[0] > (System.getDeviceSettings().screenWidth / 4)) {
-                    onSelectOrSwipe(false);
-                }
+        if (event.getType() == 0 /* START */) {
+            startX = event.getCoordinates()[0];
+        } else if (event.getType() == 2 /* STOP */) {
+            if (startX - event.getCoordinates()[0] > (System.getDeviceSettings().screenWidth / 4)) {
+                onSelectOrSwipe(false);
             }
-            return true;
         }
-
-        return BehaviorDelegate.onDrag(event);
+        return true;
     }
 
     function onSelect() as Boolean {
-        return NOGLANCE_MODE >= 2 ? (onSelectOrSwipe(true) ? true : onNextPage()) : (NOGLANCE_MODE  >= 1 ? onNextPage() : onSelectOrSwipe(false));
+        return NOGLANCE_MODE >= 2 ? (onSelectOrSwipe(true) ? true : onNextPage()) : (NOGLANCE_MODE >= 1 ? onNextPage() : onSelectOrSwipe(false));
     }
 
     // If softAction then only iterate through information and don't open any menus

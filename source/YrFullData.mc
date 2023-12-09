@@ -7,6 +7,7 @@ import Toybox.Time;
 class YrFullData extends YrBaseData {
 
     public var hints               as Number = 0;
+    public var pageOrder           as Boolean = false;
     // Aurora
     public var hourlyAurora        as Array<Float>? = null;
     public var hourlyClouds        as Array<Float>? = null;
@@ -31,6 +32,7 @@ class YrFullData extends YrBaseData {
         YrBaseData.save();
 
         Storage.setValue("hints", hints);
+        Storage.setValue("pageOrder", pageOrder);
 
         Storage.setValue("hourlyAurora", hourlyAurora);
         Storage.setValue("hourlyClouds", hourlyClouds);
@@ -50,6 +52,7 @@ class YrFullData extends YrBaseData {
         YrBaseData.load();
 
         if (Storage.getValue("hints") != null) { hints = Storage.getValue("hints"); }
+        if (Storage.getValue("pageOrder") != null) { pageOrder = Storage.getValue("pageOrder"); }
 
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
         if (Storage.getValue("hourlyClouds") != null) { hourlyClouds = Storage.getValue("hourlyClouds"); }
@@ -67,7 +70,7 @@ class YrFullData extends YrBaseData {
         Storage.clearValues();
         WatchUi.requestUpdate();
 
-        // Save back sints so we're sure that its saved
+        // Save back hints so we're sure that its saved
         Storage.setValue("hints", hints);
     }
 

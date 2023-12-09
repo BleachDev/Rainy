@@ -99,7 +99,7 @@ class GraphView extends BaseView {
 
         // Page Indicator
         if (!INSTINCT_MODE) {
-            drawIndicator(dc, 3);
+            drawIndicator(dc, data.pageOrder ? 1 : 3);
         }
     }
 }

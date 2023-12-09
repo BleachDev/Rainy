@@ -14,7 +14,8 @@ class BaseDelegate extends BehaviorDelegate {
     function onMenu() {
         var menu = new Menu2({:title=> "Yr " + VERSION });
         menu.addItem(new MenuItem("Location", data.autoLocation ? "Automatic (GPS)" : data.location, 0, {}));
-        menu.addItem(new MenuItem("Temperature Units", data.fahrenheit ? "Fahrenheit" : "Celcius", 1, {}));
+        menu.addItem(new MenuItem("Page Order", data.pageOrder ? "Graph First" : "Tables First", 1, {}));
+        menu.addItem(new MenuItem("Temperature Units", data.fahrenheit ? "Fahrenheit" : "Celcius", 2, {}));
         WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_BLINK);
         return true;
     }
@@ -70,7 +71,7 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {
-        switch (page) {
+        switch (data.pageOrder ? (page == 1 ? 3 : page == 3 ? 1 : page) : page) {
             case 0: return  [ new SummaryView(), new SummaryDelegate() ];
             case 1: return  [ new DailyView(),   new DailyDelegate() ];
             case 2: return  [ new HourlyView(),  new HourlyDelegate() ];

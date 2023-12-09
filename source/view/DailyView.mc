@@ -45,7 +45,7 @@ class DailyView extends BaseView {
         dc.drawText(W / 2, H * 0.75 + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/4", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
-        drawIndicator(dc, 1);
+        drawIndicator(dc, data.pageOrder ? 3 : 1);
     }
 
     function dailyIndices() as Array<Number> {

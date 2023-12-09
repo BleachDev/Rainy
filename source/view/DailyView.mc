@@ -20,19 +20,25 @@ class DailyView extends BaseView {
         }
 
         var indices = dailyIndices();
-        var hour = Time.Gregorian.info(data.time, Time.FORMAT_SHORT).hour;
-        var date = Time.Gregorian.info(new Time.Moment(data.time.value() + 86400 * (page + (hour > 18 ? 1 : 0))), Time.FORMAT_MEDIUM);
+        var realHour = Time.Gregorian.info(data.time, Time.FORMAT_SHORT).hour;
+        var hour = realHour % 6 == 0 ? realHour : realHour + (6 - (realHour % 6));
+        var date = Time.Gregorian.info(new Time.Moment(data.time.value() + 86400 * (page + (realHour > 18 ? 1 : 0))), Time.FORMAT_MEDIUM);
         drawHeader(dc, W, H, page ? date.day_of_week + " " + date.day + "." : "Daily");
 
-        hour = hour % 6 == 0 ? hour : hour + (6 - (hour % 6));
         var filler = (hour % 24) / 6;
-        for (var i = page == 0 ? filler : 0; i < 4; i++) {
+        for (var i = 0; i < 4; i++) {
             var entry = page * 4 + i - filler;
             if (indices.size() <= entry) {
                 break;
             }
 
-            HourlyView.drawTableEntry(dc, W, H, (hour + entry * 6) % 24, indices[entry], i);
+            if (entry == -1 && realHour % 6 != 0) {
+                HourlyView.drawTableEntry(dc, W, H, realHour, indices[0], i);
+            } else if (entry <= -1) {
+                HourlyView.drawTableEntry(dc, W, H, "--", null, i);
+            } else {
+                HourlyView.drawTableEntry(dc, W, H, (hour + entry * 6) % 24, indices[entry], i);
+            }
         }
 
         // Local Page Indicator

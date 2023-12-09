@@ -31,14 +31,17 @@ class HourlyView extends BaseView {
         drawIndicator(dc, 2);
     }
 
-    static function drawTableEntry(dc as Dc, W as Number, H as Number, hour as Number, dataIndex as Number, entry as Number) {
+    static function drawTableEntry(dc as Dc, W as Number, H as Number, hour as Number or String, dataIndex as Number?, entry as Number) {
         var mh = H * 0.2;
         var lh = H / 6.75;
         var offset = entry * lh;
 
         // Time
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 15, mh + lh / 3 + offset, Graphics.FONT_XTINY, hour.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W / 15, mh + lh / 3 + offset, Graphics.FONT_XTINY, hour instanceof String ? hour : hour.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);
+        if (dataIndex == null) {
+            return;
+        }
 
         // Temperature
         dc.drawBitmap(W / 7, mh + offset, res.getSymbol(data.symbols[dataIndex]));

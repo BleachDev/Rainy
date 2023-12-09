@@ -45,14 +45,18 @@ class BaseDelegate extends BehaviorDelegate {
 
     // Swipe left to go to next page in multiplage views
     function onDrag(event as DragEvent) as Boolean {
-        if (event.getType() == 0 /* START */) {
-            startX = event.getCoordinates()[0];
-        } else if (event.getType() == 2 /* STOP */) {
-            if (startX - event.getCoordinates()[0] > (System.getDeviceSettings().screenWidth / 4)) {
-                onSelectOrSwipe(false);
+        if (NOGLANCE_MODE >= 1) {
+            if (event.getType() == 0 /* START */) {
+                startX = event.getCoordinates()[0];
+            } else if (event.getType() == 2 /* STOP */) {
+                if (startX - event.getCoordinates()[0] > (System.getDeviceSettings().screenWidth / 4)) {
+                    onSelectOrSwipe(false);
+                }
             }
+            return true;
         }
-        return true;
+        
+        return BehaviorDelegate.onDrag(event);
     }
 
     function onSelect() as Boolean {

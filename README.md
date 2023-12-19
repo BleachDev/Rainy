@@ -1,8 +1,10 @@
 # Yr For Garmin
 
-A weather app i made because i wanted to make something "simple" for my watch (And Garmins weather app kinda sucks).
+A weather app i made because i wanted to make something "simple" for my watch (And Garmins weather app kinda sucks).  
+The app is completely free, has more features, is more accurate and is prettier than Garmins weather app.
 
-Download on the [Garmin store](https://apps.garmin.com/en-US/apps/e7c0c39c-cb76-475f-b5bc-7811b0fee104)
+Supports <span title="Literally just a lie, some old watch are not supported.">all<sup>[*]</sup></span> Garmin watches.  
+Download on the [Connect IQ store](https://apps.garmin.com/en-US/apps/e7c0c39c-cb76-475f-b5bc-7811b0fee104)
 
 Showcase of pages: 
 <br/>

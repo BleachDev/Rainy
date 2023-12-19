@@ -34,10 +34,11 @@ class AuroraView extends BaseView {
 
             var hour = Time.Gregorian.info(Time.now(), Time.FORMAT_SHORT).hour;
             var maxAurora = 0;
+            var cloudY = mh + FONT_HEIGHT + ch * 0.12;
             for (var i = 0; i < len; i++) {
-                var x = mw + (cw / (len - 1.0) * i);
-                cloudPoints[i] = [ x, mh + ch * 0.26 + ch * data.hourlyClouds[i] / 1000 ];
-                cloudPoints[len * 2 - 1 - i] = [ x, mh + ch * 0.26 - ch * data.hourlyClouds[i] / 1000 ];
+                var x = mw + (cw / (len - 1.0) * i);    
+                cloudPoints[i] = [ x, cloudY + ch * data.hourlyClouds[i] / 1000 ];
+                    cloudPoints[len * 2 - 1 - i] = [ x, cloudY - ch * data.hourlyClouds[i] / 1000 ];
 
                 var aurStrength = data.hourlyAurora != null && data.hourlyAurora.size() > i ? data.hourlyAurora[i] : 0;
                 auroraPoints[i] = [ x, mh + ch - (ch * aurStrength * 0.4)];
@@ -64,8 +65,9 @@ class AuroraView extends BaseView {
             dc.setColor(INSTINCT_MODE ? Graphics.COLOR_WHITE : Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(auroraPoints);
 
-            dc.drawText(mw + cw, mh, Graphics.FONT_XTINY,
-                (maxAurora == 0 ? "No" : maxAurora < 0.5 ? "Low" : "High") + " Kp", Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(INSTINCT_MODE ? W * 0.81 : mw + cw, INSTINCT_MODE ? H * 0.12 : mh, Graphics.FONT_XTINY,
+                (maxAurora == 0 ? "No" : maxAurora < 0.5 ? "Low" : "High") + " Kp",
+                INSTINCT_MODE ? Graphics.TEXT_JUSTIFY_CENTER : Graphics.TEXT_JUSTIFY_RIGHT);
         }
 
         // Page Indicator

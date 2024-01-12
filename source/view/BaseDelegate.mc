@@ -15,7 +15,6 @@ class BaseDelegate extends BehaviorDelegate {
         var menu = new Menu2({:title=> "Yr " + VERSION });
         menu.addItem(new MenuItem("Location", data.autoLocation ? "Automatic (GPS)" : data.location, 0, {}));
         menu.addItem(new MenuItem("Page Order", data.pageOrder ? "Graph First" : "Tables First", 1, {}));
-        menu.addItem(new MenuItem("Temperature Units", data.fahrenheit ? "Fahrenheit" : "Celcius", 2, {}));
         WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_BLINK);
         return true;
     }

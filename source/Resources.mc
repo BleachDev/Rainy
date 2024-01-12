@@ -2,7 +2,7 @@ import Toybox.Application;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-class YrResources {
+class Resources {
     
     // The micro-optimizations are real
     private var resources as Dictionary<Number, BitmapResource> = {};

@@ -3,11 +3,11 @@ import Toybox.WatchUi;
 import Toybox.Lang;
 
 (:glance)
-class YrGlanceView extends WatchUi.GlanceView {
+class AppGlanceView extends WatchUi.GlanceView {
 
-    private var data as YrBaseData;
+    private var data as BaseData;
 
-    function initialize(data as YrBaseData) {
+    function initialize(data as BaseData) {
         GlanceView.initialize();
 
         System.println("Init Glance");
@@ -25,7 +25,7 @@ class YrGlanceView extends WatchUi.GlanceView {
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(0, H * 0.15, Graphics.FONT_GLANCE, data.location.toUpper(), Graphics.TEXT_JUSTIFY_LEFT);
-        dc.drawText(0, H * 0.4, Graphics.FONT_GLANCE_NUMBER, (loaded ? degrees(data.temperatures[0], data.fahrenheit) : "--") + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(0, H * 0.4, Graphics.FONT_GLANCE_NUMBER, (loaded ? degrees(data.temperatures[0]) : "--") + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon(generateArrow([ W * 0.28, H * 0.65 ], loaded ? data.windDirections[0] + 180 : 0, H / 4));

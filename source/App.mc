@@ -1,9 +1,10 @@
 import Toybox.Application;
 import Toybox.Lang;
+import Toybox.System;
 import Toybox.WatchUi;
 
-public var data as YrFullData?;
-public var res as YrResources?;
+public var data as FullData?;
+public var res as Resources?;
 (:glance) public var VERSION = "1.4.4";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var INSTINCT_MODE as Boolean = false; // Whether Instinct circle is present
@@ -33,8 +34,8 @@ class App extends Application.AppBase {
         var ngm = WatchUi.loadResource(Rez.Strings.NOGLANCE_MODE);
         NOGLANCE_MODE = "3".equals(ngm) ? 3 : "2".equals(ngm) ? 2 : "1".equals(ngm) ? 1 : 0; // No parseInt!!! :angry:
 
-        res = new YrResources();
-        data = new YrFullData();
+        res = new Resources();
+        data = new FullData();
         data.load();
 
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:posCB));
@@ -45,10 +46,10 @@ class App extends Application.AppBase {
     function getGlanceView() as Array<GlanceView or GlanceViewDelegate>? {
         IS_GLANCE = true;
 
-        var data = new YrBaseData();
+        var data = new BaseData();
         data.load();
 
-        return [ new YrGlanceView(data) ];
+        return [ new AppGlanceView(data) ];
     }
 }
 
@@ -79,6 +80,6 @@ function generateArrow(centerPoint as Array<Number>, angle as Float, length as N
 }
 
 (:glance)
-function degrees(c as Float, fahrenheit as Boolean) {
-    return (fahrenheit ? c * (9.0/5.0) + 32 : c).toNumber();
+function degrees(c as Float) {
+    return (System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE ? c * (9.0/5.0) + 32 : c).toNumber();
 }

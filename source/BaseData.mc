@@ -5,10 +5,9 @@ import Toybox.Application;
 import Toybox.Time;
 
 (:glance)
-class YrBaseData {
+class BaseData {
 
     public var autoLocation   as Boolean = true;
-    public var fahrenheit     as Boolean = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
 
     public var position       as Array<Double>?;
     public var location       as String = "..";
@@ -49,7 +48,6 @@ class YrBaseData {
 
     function save() {
         Storage.setValue("autoLocation", autoLocation);
-        Storage.setValue("fahrenheit", fahrenheit);
 
         Storage.setValue("geo", position);
         Storage.setValue("location", location);
@@ -66,7 +64,6 @@ class YrBaseData {
 
     function load() {
         if (Storage.getValue("autoLocation") != null) { autoLocation = Storage.getValue("autoLocation"); }
-        if (Storage.getValue("fahrenheit") != null) { fahrenheit = Storage.getValue("fahrenheit"); }
 
         if (Storage.getValue("geo") != null) { position = Storage.getValue("geo"); }
         if (Storage.getValue("location") != null) { location = Storage.getValue("location"); }

@@ -4,7 +4,7 @@ import Toybox.Lang;
 import Toybox.Application;
 import Toybox.Time;
 
-class YrFullData extends YrBaseData {
+class FullData extends BaseData {
 
     public var hints               as Number = 0;
     public var pageOrder           as Boolean = false;
@@ -18,7 +18,7 @@ class YrFullData extends YrBaseData {
     public var waterTimestamps     as Array<Moment> = [];
 
     function initialize() {
-        YrBaseData.initialize();
+        BaseData.initialize();
     }
 
     // Callback function for Position.enableLocationEvents
@@ -29,7 +29,7 @@ class YrFullData extends YrBaseData {
     }
 
     function save() {
-        YrBaseData.save();
+        BaseData.save();
 
         Storage.setValue("hints", hints);
         Storage.setValue("pageOrder", pageOrder);
@@ -49,7 +49,7 @@ class YrFullData extends YrBaseData {
     }
 
     function load() {
-        YrBaseData.load();
+        BaseData.load();
 
         if (Storage.getValue("hints") != null) { hints = Storage.getValue("hints"); }
         if (Storage.getValue("pageOrder") != null) { pageOrder = Storage.getValue("pageOrder"); }
@@ -77,7 +77,7 @@ class YrFullData extends YrBaseData {
     // Fetching Methods
 
     function fetchForecastData(responseCode as Number, data as Dictionary?) as Boolean {
-        if (!YrBaseData.fetchForecastData(responseCode, data)) {
+        if (!BaseData.fetchForecastData(responseCode, data)) {
             return false;
         }
 
@@ -104,7 +104,7 @@ class YrFullData extends YrBaseData {
     }
 
     function fetchGeoData(responseCode as Number, data as Dictionary?) as Boolean {
-        if (!YrBaseData.fetchGeoData(responseCode, data)) {
+        if (!BaseData.fetchGeoData(responseCode, data)) {
             return false;
         }
 

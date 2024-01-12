@@ -22,7 +22,7 @@ class SummaryView extends BaseView {
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 6.5, Graphics.FONT_LARGE, "Loading..", Graphics.TEXT_JUSTIFY_CENTER);
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W / 2, H / 2.6, Graphics.FONT_TINY, "Phone Bluetooth\nconnection required\nto load Yr.", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(W / 2, H / 2.6, Graphics.FONT_TINY, "Phone Bluetooth\nconnection required\nto load Weather.", Graphics.TEXT_JUSTIFY_CENTER);
             return;
         }
 
@@ -33,10 +33,10 @@ class SummaryView extends BaseView {
         var sumM = H / 13; // Summary margin
         dc.drawBitmap(sumM, sumM * 2.7, res.getSymbol(data.symbols.size() == 0 ? 2018941991 : data.symbols[0]));
 
-        dc.drawText(sumM + 50, sumM * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.temperatures[0], data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(sumM + 50, sumM * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.temperatures[0]) + "°", Graphics.TEXT_JUSTIFY_LEFT);
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         var apTemp = calcApparentTemperature(data.temperatures[0], data.humidity[0], data.windSpeeds[0]);
-        dc.drawText(sumM, sumM * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(sumM, sumM * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp) + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         // Wind
         dc.drawText(W - sumM * 3, sumM * (INSTINCT_MODE ? 0.45 : 2.5), Graphics.FONT_NUMBER_MILD, data.windSpeeds[0].format("%d"), Graphics.TEXT_JUSTIFY_RIGHT);

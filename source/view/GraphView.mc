@@ -82,10 +82,10 @@ class GraphView extends BaseView {
 
         // Left side temperature text
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(mw - 3, mh, Graphics.FONT_XTINY, degrees(maxTemp, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.drawText(mw - 3, mh + (H - mh * 2) * 0.28, Graphics.FONT_XTINY, degrees(maxTemp - diffTemp * 0.33, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.drawText(mw - 3, mh + (H - mh * 2) * 0.58, Graphics.FONT_XTINY, degrees(maxTemp - diffTemp * 0.66, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.drawText(mw - 3, H - mh - FONT_HEIGHT, Graphics.FONT_XTINY, degrees(minTemp, data.fahrenheit) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(mw - 3, mh, Graphics.FONT_XTINY, degrees(maxTemp) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(mw - 3, mh + (H - mh * 2) * 0.28, Graphics.FONT_XTINY, degrees(maxTemp - diffTemp * 0.33) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(mw - 3, mh + (H - mh * 2) * 0.58, Graphics.FONT_XTINY, degrees(maxTemp - diffTemp * 0.66) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(mw - 3, H - mh - FONT_HEIGHT, Graphics.FONT_XTINY, degrees(minTemp) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
 
         // Right side rainfall text
         dc.drawText(W - mw + 3, mh, Graphics.FONT_XTINY, "9", Graphics.TEXT_JUSTIFY_LEFT);

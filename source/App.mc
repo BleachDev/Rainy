@@ -5,7 +5,7 @@ import Toybox.WatchUi;
 
 public var data as FullData?;
 public var res as Resources?;
-(:glance) public var VERSION = "1.4.4";
+(:glance) public var VERSION = "1.5.0";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var INSTINCT_MODE as Boolean = false; // Whether Instinct circle is present
 public var NOGLANCE_MODE as Number = 0; // 0 = Can use arrows, 1 = Can't use arrows, 2 = Can't use arrows or touch

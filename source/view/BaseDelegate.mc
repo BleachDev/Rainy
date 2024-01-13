@@ -12,7 +12,7 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onMenu() {
-        var menu = new Menu2({:title=> "Yr " + VERSION });
+        var menu = new Menu2({:title=> "Rainy " + VERSION });
         menu.addItem(new MenuItem("Location", data.autoLocation ? "Automatic (GPS)" : data.location, 0, {}));
         menu.addItem(new MenuItem("Page Order", data.pageOrder ? "Graph First" : "Tables First", 1, {}));
         WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_BLINK);

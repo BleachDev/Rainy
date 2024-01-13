@@ -1,4 +1,4 @@
-# Yr For Garmin
+<h1>Rainy <span style="font-size: 22px">(Garmin App)</span></h1>
 
 A weather app i made because i wanted to make something "simple" for my watch (And Garmins weather app kinda sucks).  
 The app is completely free, has more features, is more accurate and is prettier than Garmins weather app.

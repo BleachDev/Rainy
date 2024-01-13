@@ -60,7 +60,7 @@ class HourlyView extends BaseView {
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(insLine ? W * 0.81 : W - lh * 0.9,
                     insLine ? H * 0.16 : mh + lh / 10 + offset,
-                    Graphics.FONT_MEDIUM, data.windSpeeds[dataIndex].format("%d"), Graphics.TEXT_JUSTIFY_RIGHT);
+                    Graphics.FONT_MEDIUM, wind(data.windSpeeds[dataIndex], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
         dc.fillPolygon(generateArrow([ insLine ? W * 0.87 : W - lh / 2, insLine ? H * 0.25 : mh + lh / 1.75 + offset ],
                        data.windDirections[dataIndex] + 180, (lh / 1.9).toNumber()));
     }

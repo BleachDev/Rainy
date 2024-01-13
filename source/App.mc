@@ -5,6 +5,7 @@ import Toybox.WatchUi;
 
 public var data as FullData?;
 public var res as Resources?;
+(:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
 (:glance) public var VERSION = "1.5.0";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var INSTINCT_MODE as Boolean = false; // Whether Instinct circle is present
@@ -81,5 +82,10 @@ function generateArrow(centerPoint as Array<Number>, angle as Float, length as N
 
 (:glance)
 function degrees(c as Float) {
-    return (System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE ? c * (9.0/5.0) + 32 : c).toNumber();
+    return (fahrenheit ? c * (9.0/5.0) + 32 : c).toNumber();
+}
+
+(:glance)
+function wind(ms as Float, unit as Number) {
+    return (unit == 0 ? ms : unit == 1 ? ms * 3.6 : ms * 2.237).toNumber();
 }

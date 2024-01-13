@@ -36,8 +36,7 @@ class WaterView extends BaseView {
 
                 dc.setColor(INSTINCT_MODE ? Graphics.COLOR_WHITE : Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(W - mw * 0.8, offset + H / 40, Graphics.FONT_SMALL, 
-                    (System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE
-                        ? degrees(data.waterTemperatures[i]) : data.waterTemperatures[i].format("%.1f")) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
+                    (fahrenheit ? degrees(data.waterTemperatures[i]) : data.waterTemperatures[i].format("%.1f")) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
             }
         }
 

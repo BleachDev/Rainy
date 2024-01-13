@@ -8,6 +8,7 @@ import Toybox.Time;
 class BaseData {
 
     public var autoLocation   as Boolean = true;
+    public var windUnits      as Number  = 0;
 
     public var position       as Array<Double>?;
     public var location       as String = "..";
@@ -48,6 +49,7 @@ class BaseData {
 
     function save() {
         Storage.setValue("autoLocation", autoLocation);
+        Storage.setValue("windUnits", windUnits);
 
         Storage.setValue("geo", position);
         Storage.setValue("location", location);
@@ -64,6 +66,7 @@ class BaseData {
 
     function load() {
         if (Storage.getValue("autoLocation") != null) { autoLocation = Storage.getValue("autoLocation"); }
+        if (Storage.getValue("windUnits") != null) { windUnits = Storage.getValue("windUnits"); }
 
         if (Storage.getValue("geo") != null) { position = Storage.getValue("geo"); }
         if (Storage.getValue("location") != null) { location = Storage.getValue("location"); }

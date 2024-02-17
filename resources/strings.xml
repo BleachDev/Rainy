@@ -2,4 +2,5 @@
     <string id="AppName">Rainy</string>
     <string id="INSTINCT_MODE">0</string>
     <string id="NOGLANCE_MODE">0</string>
+    <string id="LOWTEXT_MODE">0</string>
 </strings>

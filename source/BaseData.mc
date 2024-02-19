@@ -31,6 +31,7 @@ class BaseData {
 
         hours = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 13 : 36;
         var days = IS_GLANCE ? 0 : 14;
+        time = Time.now();
         request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
         request("https://api.bleach.dev/weather/search?limit=1&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
     }
@@ -98,7 +99,7 @@ class BaseData {
 
     function syncData() {
         var nowTime = Time.now().value();
-        for (var i = 0; time.value() + 3600 < nowTime && i < 20; i++) {
+        for (var i = time.value(); i + 3600 < nowTime; i += 3600) {
             nowRainfall = null; // No more 90 minute rain
             if (temperatures.size() > 0) { temperatures.remove(temperatures[0]); }
             if (windSpeeds.size() > 0) { windSpeeds.remove(windSpeeds[0]); }
@@ -106,7 +107,6 @@ class BaseData {
             if (rainfall.size() > 0) { rainfall.remove(rainfall[0]); }
             if (humidity.size() > 0) { humidity.remove(humidity[0]); }
             if (symbols.size() > 0) { symbols.remove(symbols[0]); }
-            time = new Moment(time.value() + 3600);
             hours--;
         }
     }

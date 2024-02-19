@@ -16,6 +16,7 @@ class BaseDelegate extends BehaviorDelegate {
         menu.addItem(new MenuItem("Location", data.autoLocation ? "Automatic (GPS)" : data.location, 0, {}));
         menu.addItem(new MenuItem("Page Order", data.pageOrder ? "Graph First" : "Tables First", 1, {}));
         menu.addItem(new MenuItem("Wind Units", data.windUnits == 0 ? "m/s" : data.windUnits == 1 ? "km/h" : "mph", 2, {}));
+        menu.addItem(new MenuItem("Refresh Weather", "Updated " + ((Time.now().value() - data.time.value()) / 60) + " minutes ago", 3, {}));
         WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_BLINK);
         return true;
     }

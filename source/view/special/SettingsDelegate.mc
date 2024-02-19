@@ -31,6 +31,10 @@ class SettingsDelegate extends Menu2InputDelegate {
         } else if (item.getId() == 2) {
             data.windUnits = (data.windUnits + 1) % 3;
             item.setSubLabel(data.windUnits == 0 ? "m/s" : data.windUnits == 1 ? "km/h" : "mph");
+        } else if (item.getId() == 3) {
+            data.update(data.position);
+            WatchUi.popView(WatchUi.SLIDE_BLINK);
         }
+        
     }
 }

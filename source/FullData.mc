@@ -89,8 +89,6 @@ class FullData extends BaseData {
             var hour = forecastData[i];
             hourlyClouds[i] = hour["cloud_area_fraction"];
         }
-        
-        time = parseISODate(forecastData[0]["time"]);
 
         if (data["nowcast"] != null) {
             var nowData = data["nowcast"] as Dictionary;

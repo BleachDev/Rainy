@@ -25,6 +25,10 @@ class BaseData {
 
     function update(coords as Array<Double>) as Void {
         System.println("Refreshing, " + coords);
+        if (coords == null) {
+            return;
+        }
+
         position = coords;
 
         syncData();

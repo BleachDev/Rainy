@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 public var data as FullData?;
 public var res as Resources?;
 (:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
-(:glance) public var VERSION = "1.5.2";
+(:glance) public var VERSION = "1.5.3";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var INSTINCT_MODE as Boolean = false; // Whether Instinct circle is present
 public var NOGLANCE_MODE as Number = 0; // 0 = Can use arrows, 1 = Can't use arrows, 2 = Can't use arrows or touch
@@ -31,7 +31,7 @@ class App extends Application.AppBase {
     }
 
     // Return the initial view of your application here
-    function getInitialView() as Array<Views or InputDelegates>? {
+    function getInitialView() as [Views] or [Views, InputDelegates] {
         INSTINCT_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.INSTINCT_MODE));
         var ngm = WatchUi.loadResource(Rez.Strings.NOGLANCE_MODE);
         NOGLANCE_MODE = "2".equals(ngm) ? 2 : "1".equals(ngm) ? 1 : 0; // No parseInt!!! :angry:
@@ -43,10 +43,10 @@ class App extends Application.AppBase {
 
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:posCB));
 
-        return [ new SummaryView(), new SummaryDelegate() ] as Array<Views or InputDelegates>;
+        return [ new SummaryView(), new SummaryDelegate() ];
     }
 
-    function getGlanceView() as Array<GlanceView or GlanceViewDelegate>? {
+    function getGlanceView() as [GlanceView] or [GlanceView, GlanceViewDelegate] or Null {
         IS_GLANCE = true;
 
         var data = new BaseData();
@@ -58,14 +58,14 @@ class App extends Application.AppBase {
 
 // This definetely shouldn't be here but thats a later problem
 (:glance)
-function generateArrow(centerPoint as Array<Number>, angle as Float, length as Number) as Array<Array<Float>> {
+function generateArrow(centerPoint as [Float, Float], angle as Float, length as Number) as Array<Array<Float>> {
     // Map out the coordinates of the arrow
-    var coords = [[0, length / 2] as Array<Number>,
-                  [(length * 0.07).toNumber(), (-length / 2 * 0.5).toNumber()] as Array<Number>,
-                  [(length * 0.3).toNumber(), (-length / 2 * 0.3).toNumber()] as Array<Number>,
-                  [0, -length / 2] as Array<Number>,
-                  [-(length * 0.3).toNumber(), (-length / 2 * 0.3).toNumber()] as Array<Number>,
-                  [-(length * 0.07).toNumber(), (-length / 2 * 0.5).toNumber()] as Array<Number>] as Array<Array<Number>>;
+    var coords = [[0, length / 2],
+                  [(length * 0.07).toNumber(), (-length / 2 * 0.5).toNumber()] ,
+                  [(length * 0.3).toNumber(), (-length / 2 * 0.3).toNumber()],
+                  [0, -length / 2],
+                  [-(length * 0.3).toNumber(), (-length / 2 * 0.3).toNumber()],
+                  [-(length * 0.07).toNumber(), (-length / 2 * 0.5).toNumber()]];
     var result = new Array<Array<Float>>[coords.size()];
     var rad = Toybox.Math.toRadians(angle);
     var cos = Toybox.Math.cos(rad);

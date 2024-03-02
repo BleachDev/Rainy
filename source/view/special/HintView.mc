@@ -25,27 +25,13 @@ class HintView extends WatchUi.View {
         dc.drawText(INSTINCT_MODE ? W / 2.9 : W / 2,
                     H / 8, Graphics.FONT_LARGE, "HINT", Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 2, H / 2.8, Graphics.FONT_TINY, text, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H / 2.5, Graphics.FONT_TINY, text, Graphics.TEXT_JUSTIFY_CENTER);
 
-        if (buttons.indexOf(0) != -1) {
-            drawIndicator(dc, 5.63);
+        if (!INSTINCT_MODE && buttons.indexOf(0) != -1) {
+            BaseView.drawDots(dc, 5, -1, 5.73, 0.06);
         }
-        if (buttons.indexOf(1) != -1) {
-            drawIndicator(dc, 3.0);
-        }
-    }
-
-    function drawIndicator(dc, angle) {
-        var _size = 5;
-        var height = 6;
-        for (var i = 0; i < _size; i++) {
-            var b = dc.getWidth() / 2 - height + 2;
-
-            var x_i = b * Math.cos(angle + i * 0.06) + dc.getWidth() / 2;
-            var y_i = b * Math.sin(angle + i * 0.06) + dc.getHeight() / 2;
-
-            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.fillCircle(x_i, y_i, height / 2);
-        }
+        /*if (buttons.indexOf(1) != -1) {
+            BaseView.drawDots(dc, 5, -1, 3.14, 0.06);
+        }*/
     }
 }

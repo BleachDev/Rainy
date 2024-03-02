@@ -1,6 +1,7 @@
 import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Lang;
+import Toybox.Math;
 
 class HourlyView extends BaseView {
 
@@ -54,7 +55,7 @@ class HourlyView extends BaseView {
         dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(insLine ? W * 0.82 : W / 1.55,
                     insLine ? H * 0.05 : mh + lh / 10 + offset, Graphics.FONT_MEDIUM,
-                    rain.format("%.1f"), Graphics.TEXT_JUSTIFY_CENTER);
+                    rain.format(Math.round(rain) == rain ? "%d" : "%.1f"), Graphics.TEXT_JUSTIFY_CENTER);
 
         // Wind
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);

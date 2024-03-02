@@ -30,16 +30,24 @@ class BaseView extends WatchUi.View {
                     Graphics.TEXT_JUSTIFY_CENTER);
     }
 
-    public function drawIndicator(dc as Dc, selectedIndex as Number) as Void {
+    public static function drawIndicator(dc as Dc, selectedIndex as Number) as Void {
+        drawDots(dc, BaseDelegate.pageCount, selectedIndex, 3.14, 0.12);
+    }
+
+    public static function drawDots(dc as Dc, count as Number, selected as Number, angle as Float, space as Float) as Void {
         var height = dc.getWidth() / 25;
-        for (var i = 0; i < BaseDelegate.pageCount; i++) {
+        for (var i = 0; i < count; i++) {
             var b = dc.getWidth() / 2 - height + 2;
 
             //round page indicator
-            var x_i = b * Math.cos(3.14 + ((BaseDelegate.pageCount - 1f) / 2) * 0.12 - i * 0.12) + dc.getWidth() / 2;
-            var y_i = b * Math.sin(3.14 + ((BaseDelegate.pageCount - 1f) / 2) * 0.12 - i * 0.12) + dc.getHeight() / 2;
+            var x_i = b * Toybox.Math.cos(angle + ((count - 1f) / 2) * space - i * space) + dc.getWidth() / 2;
+            var y_i = b * Toybox.Math.sin(angle + ((count - 1f) / 2) * space - i * space) + dc.getHeight() / 2;
 
-            if (i == selectedIndex) {
+            if (INSTINCT_MODE) {
+                x_i = x_i < dc.getWidth() / 2 ? height - 2 : dc.getWidth() - height + 2;
+            }
+
+            if (i == selected || selected == -1) {
                 dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
                 dc.fillCircle(x_i, y_i, height / 2);
             } else {

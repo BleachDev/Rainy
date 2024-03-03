@@ -3,7 +3,7 @@
 A weather app i made because i wanted to make something "simple" for my watch (And Garmins weather app kinda sucks).  
 The app is completely free, has more features, is more accurate and is prettier than Garmins weather app.
 
-Supports <span title="Literally not true, CIQ 2.x and earlier watches are not supported. (but few people still use those)">all<sup>[*]</sup></span> Garmin watches.  
+Supports <span title="CIQ 2.x and earlier watches are not supported"><i>most</i></span> Garmin watches.  
 Download on the [Connect IQ store](https://apps.garmin.com/en-US/apps/e7c0c39c-cb76-475f-b5bc-7811b0fee104)
 
 Showcase of pages: 
@@ -15,4 +15,4 @@ Showcase of pages:
 1. Follow Garmins SDK and VSCode Setup.
 2. Select **SDK 6.4.2** and install all the neccesary watches in Garmins SDK Manager.
 3. Clone and Import the project into VSCode.
-4. Maybe it works?? ¯\_(ツ)_/¯
+4. Maybe it works?? ¯\\\_(ツ)_/¯

@@ -43,7 +43,7 @@ class BaseView extends WatchUi.View {
             var x_i = b * Toybox.Math.cos(angle + ((count - 1f) / 2) * space - i * space) + dc.getWidth() / 2;
             var y_i = b * Toybox.Math.sin(angle + ((count - 1f) / 2) * space - i * space) + dc.getHeight() / 2;
 
-            if (INSTINCT_MODE) {
+            if (INSTINCT_MODE || SQUARE_MODE) {
                 x_i = x_i < dc.getWidth() / 2 ? height - 2 : dc.getWidth() - height + 2;
             }
 

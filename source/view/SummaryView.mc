@@ -39,11 +39,11 @@ class SummaryView extends BaseView {
         dc.drawText(sumM, sumM * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp) + "°" + (fahrenheit ? "F" : "C"), Graphics.TEXT_JUSTIFY_LEFT);
 
         // Wind
-        dc.drawText(W - sumM * 3, sumM * (INSTINCT_MODE ? 0.45 : 2.5), Graphics.FONT_NUMBER_MILD, wind(data.windSpeeds[0], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.drawText(W - sumM, sumM * (INSTINCT_MODE ? 2.7 : 5), Graphics.FONT_XTINY,
+        dc.drawText(W - sumM * (INSTINCT_MODE ? 2.4 : 3.1), sumM * (INSTINCT_MODE ? 0.45 : 2.5), Graphics.FONT_NUMBER_MILD, wind(data.windSpeeds[0], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(W - sumM * 1.1, sumM * (INSTINCT_MODE ? 2.6 : 5), Graphics.FONT_XTINY,
                     data.windUnits == 0 ? "m/s" : data.windUnits == 1 ? "km/h" : "mph", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.fillPolygon(generateArrow([ W - sumM * 1.9, sumM * (INSTINCT_MODE ? 1.8 : 4) ], data.windDirections[0] + 180, (sumM * 1.6).toNumber()));
-        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+        dc.fillPolygon(generateArrow([ W - sumM * (INSTINCT_MODE ? 2.2 : 2.9), sumM * (INSTINCT_MODE ? 1 : 2.9) ], data.windDirections[0] + 180, (sumM * 1.8).toNumber()));
+        dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
 
         // Rain chart
         var mw = W / 8.66; // Rain chart width margin
@@ -61,7 +61,6 @@ class SummaryView extends BaseView {
                                       H - mh - (data.nowRainfall[i] <= 0 ? 0 : data.nowRainfall[i] > 5 ? lh * 3.25 : ((data.nowRainfall[i] + 0.3) * (lh * 0.6))) ];
             }
 
-            dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
         } else if (rainBackup) {
             var rainPoints = new [8];
@@ -72,7 +71,6 @@ class SummaryView extends BaseView {
                                       H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3.25 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
             }
 
-            dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
         }
 

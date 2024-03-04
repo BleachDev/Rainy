@@ -75,10 +75,10 @@ function generateArrow(centerPoint as Array<Number>, angle as Float, length as N
 
     // Transform the coordinates
     for (var i = 0; i < coords.size(); i++) {
-        var x = (coords[i][0] * cos) - (coords[i][1] * sin) + 0.5;
-        var y = (coords[i][0] * sin) + (coords[i][1] * cos) + 0.5;
+        var x = (coords[i][0] * cos) - (coords[i][1] * sin);
+        var y = (coords[i][0] * sin) + (coords[i][1] * cos);
 
-        result[i] = [centerPoint[0] + x, centerPoint[1] + y] as Array<Float>;
+        result[i] = [centerPoint[0] + x + length / 2, centerPoint[1] + y + length / 2] as Array<Float>;
     }
 
     return result;

@@ -35,7 +35,7 @@ class HourlyView extends BaseView {
     static function drawTableEntry(dc as Dc, W as Number, H as Number, hour as Number or String, dataIndex as Number?, entry as Number) {
         var mh = H * 0.2;
         var lh = H / 6.75;
-        var offset = entry * lh;
+        var offset = entry * lh + (INSTINCT_MODE && entry > 0 ? lh * 0.25 : 0);
         var insLine = INSTINCT_MODE && entry == 0;
 
         // Time
@@ -48,21 +48,21 @@ class HourlyView extends BaseView {
         // Temperature
         dc.drawBitmap(W / 7, mh + offset, res.getSymbol(data.symbols[dataIndex]));
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 7 + 47, mh + lh / 10 + offset, Graphics.FONT_MEDIUM, degrees(data.temperatures[dataIndex]) + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W / 7 + 47, mh + offset, Graphics.FONT_MEDIUM, degrees(data.temperatures[dataIndex]) + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         // Rainfall
         var rain = data.rainfall[dataIndex];
         dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(insLine ? W * 0.82 : W / 1.55,
-                    insLine ? H * 0.05 : mh + lh / 10 + offset, Graphics.FONT_MEDIUM,
+        dc.drawText(insLine ? W * 0.82 : INSTINCT_MODE ? W / 1.5 : W / 1.62,
+                    insLine ? H * 0.05 : mh + offset, Graphics.FONT_MEDIUM,
                     rain.format(Math.round(rain) == rain ? "%d" : "%.1f"), Graphics.TEXT_JUSTIFY_CENTER);
 
         // Wind
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(insLine ? W * 0.81 : W - lh * 0.9,
-                    insLine ? H * 0.16 : mh + lh / 10 + offset,
+                    insLine ? H * 0.16 : mh + offset,
                     Graphics.FONT_MEDIUM, wind(data.windSpeeds[dataIndex], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.fillPolygon(generateArrow([ insLine ? W * 0.87 : W - lh / 2, insLine ? H * 0.25 : mh + lh / 1.75 + offset ],
-                       data.windDirections[dataIndex] + 180, (lh / 1.9).toNumber()));
+        dc.fillPolygon(generateArrow([ insLine ? W * 0.83 : W - lh * 0.84, insLine ? H * 0.2 : mh + lh / 8 + offset ],
+                       data.windDirections[dataIndex] + 180, (lh * 0.73).toNumber()));
     }
 }

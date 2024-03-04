@@ -8,6 +8,6 @@ class SummaryDelegate extends BaseDelegate {
     }
 
     function onSelectOrSwipe(softAction as Boolean) as Boolean {
-        return softAction ? false : onMenu();
+        return false;
     }
 }

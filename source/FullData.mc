@@ -49,8 +49,6 @@ class FullData extends BaseData {
     }
 
     function load() {
-        BaseData.load();
-
         if (Storage.getValue("hints") != null) { hints = Storage.getValue("hints"); }
         if (Storage.getValue("pageOrder") != null) { pageOrder = Storage.getValue("pageOrder"); }
 
@@ -67,11 +65,8 @@ class FullData extends BaseData {
                 waterTimestamps[t] = new Moment(serialized[t]);
             }
         }
-        Storage.clearValues();
-        WatchUi.requestUpdate();
-
-        // Save back hints so we're sure that its saved
-        Storage.setValue("hints", hints);
+        
+        BaseData.load();
     }
 
     // Fetching Methods

@@ -35,7 +35,7 @@ class AppGlanceView extends WatchUi.GlanceView {
         var mh = H / 5.5; // Rain chart height margin (bottom)
         var lh = (H - mh * 3) / 3; // Rain chart line height
         var chartWidth = W - mw;
-        if (data.nowRainfall != null) {
+        if (data.nowRainfall != null && data.nowRainfall.size() > 0) {
             var rainPoints = new [data.nowRainfall.size() + 2];
             rainPoints[0] = [ mw, H - mh ];
             rainPoints[data.nowRainfall.size() + 1] = [ mw + chartWidth, H - mh ];
@@ -57,8 +57,10 @@ class AppGlanceView extends WatchUi.GlanceView {
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(rainPoints);
-            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W, H * 0.2, Graphics.FONT_GLANCE, "6hr", Graphics.TEXT_JUSTIFY_RIGHT);
+            if (data.nowRainfall != null) {
+                dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+                dc.drawText(W, H * 0.2, Graphics.FONT_GLANCE, "6hr", Graphics.TEXT_JUSTIFY_RIGHT);
+            }
         } else {
             dc.drawText(W * 0.8, H * 0.3, Graphics.FONT_GLANCE, "Rain\nUnavailable", Graphics.TEXT_JUSTIFY_CENTER);
         }

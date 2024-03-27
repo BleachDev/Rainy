@@ -90,14 +90,6 @@ class FullData extends BaseData {
             hourlyClouds[i] = hour["cloud_area_fraction"];
         }
 
-        if (data["nowcast"] != null) {
-            var nowData = data["nowcast"] as Dictionary;
-            nowRainfall = new [nowData.size() < 19 ? nowData.size() : 19];
-            for (var i = 0; i < nowRainfall.size(); i++) {
-                nowRainfall[i] = nowData[i];
-            }
-        }
-
         return true;
     }
 

@@ -14,7 +14,7 @@ class BaseData {
     public var location       as String = "..";
     public var time           as Moment = Time.now();
     // Forecast
-    public var nowRainfall    as Array<Float>? = null; // Null or list of next 90 mins of rain
+    public var nowRainfall    as Array<Float>? = null; // Null (If unavailable) or empty (If outdated) or list of next 90 mins of rain
     public var temperatures   as Array<Float> = [];
     public var windSpeeds     as Array<Float> = [];
     public var windDirections as Array<Float> = [];
@@ -104,7 +104,9 @@ class BaseData {
     function syncData() {
         var nowTime = Time.now().value();
         for (var i = time.value(); i + 3600 < nowTime; i += 3600) {
-            nowRainfall = null; // No more 90 minute rain
+            if (nowRainfall != null) {
+                nowRainfall = []; // No more 90 minute rain
+            }
             if (temperatures.size() > 0) { temperatures.remove(temperatures[0]); }
             if (windSpeeds.size() > 0) { windSpeeds.remove(windSpeeds[0]); }
             if (windDirections.size() > 0) { windDirections.remove(windDirections[0]); }

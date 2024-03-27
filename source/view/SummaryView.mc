@@ -50,9 +50,10 @@ class SummaryView extends BaseView {
         var mh = H / 7.42; // Rain chart height margin
         var lh = H / 13; // Rain chart line height
         var chartWidth = W - mw * 2;
+        var rainPrimary = data.nowRainfall != null && data.nowRainfall.size() > 0;
         var rainBackup = data.rainfall.size() >= 6;
 
-        if (data.nowRainfall != null) {
+        if (rainPrimary) {
             var rainPoints = new [data.nowRainfall.size() + 2];
             rainPoints[0] = [ mw, H - mh ];
             rainPoints[data.nowRainfall.size() + 1] = [ mw + (chartWidth / 18) * (data.nowRainfall.size() - 1), H - mh ];
@@ -76,8 +77,8 @@ class SummaryView extends BaseView {
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W * 0.27, H - mh + 2, Graphics.FONT_XTINY, "Now", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, data.nowRainfall == null && rainBackup ? "3hr" : "45", Graphics.TEXT_JUSTIFY_CENTER);
-        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, data.nowRainfall == null && rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H - mh + 2, Graphics.FONT_XTINY, !rainPrimary && rainBackup ? "3hr" : "45", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, !rainPrimary && rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.drawLine(mw, H - mh, W - mw, H - mh);
         dc.setColor(INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
@@ -87,7 +88,7 @@ class SummaryView extends BaseView {
         
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W / 2, H - mh - lh * 3 - FONT_HEIGHT, Graphics.FONT_XTINY,
-            data.nowRainfall != null ? "Rainfall next 90 min." : rainBackup ? "Rainfall next 6 hr." : "90 Minute Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
+            rainPrimary ? "Rainfall next 90 min." : rainBackup ? "Rainfall next 6 hr." : "90 Min. Rainfall Unavailable.", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         drawIndicator(dc, 0);

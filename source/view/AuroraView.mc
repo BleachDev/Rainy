@@ -62,12 +62,11 @@ class AuroraView extends BaseView {
                 dc.drawText(mw, mh, Graphics.FONT_XTINY, data.hourlyClouds[0].format("%d") + "% Cloudy", Graphics.TEXT_JUSTIFY_LEFT);
             }
 
-            dc.setColor(INSTINCT_MODE ? Graphics.COLOR_WHITE : Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
+            dc.setColor(Graphics.COLOR_GREEN, Graphics.COLOR_TRANSPARENT);
             dc.fillPolygon(auroraPoints);
 
-            dc.drawText(INSTINCT_MODE ? W * 0.81 : mw + cw, INSTINCT_MODE ? H * 0.12 : mh, Graphics.FONT_XTINY,
-                (maxAurora == 0 ? "No" : maxAurora < 0.5 ? "Low" : "High") + " Kp",
-                INSTINCT_MODE ? Graphics.TEXT_JUSTIFY_CENTER : Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(mw + cw, mh, Graphics.FONT_XTINY,
+                (maxAurora == 0 ? "No" : maxAurora < 0.5 ? "Low" : "High") + " Kp", Graphics.TEXT_JUSTIFY_RIGHT);
         }
 
         // Page Indicator

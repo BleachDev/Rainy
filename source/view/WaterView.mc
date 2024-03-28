@@ -34,7 +34,7 @@ class WaterView extends BaseView {
                     time.month + " " + time.day.format("%02d") + " " + time.hour.format("%02d") + ":" + time.min.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);
 
 
-                dc.setColor(INSTINCT_MODE ? Graphics.COLOR_WHITE : Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+                dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(W - mw * 0.8, offset + H / 40, Graphics.FONT_SMALL, 
                     (fahrenheit ? degrees(data.waterTemperatures[i]) : data.waterTemperatures[i].format("%.1f")) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
             }

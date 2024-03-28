@@ -39,10 +39,10 @@ class SummaryView extends BaseView {
         dc.drawText(sumM, sumM * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp) + "°" + (fahrenheit ? "F" : "C"), Graphics.TEXT_JUSTIFY_LEFT);
 
         // Wind
-        dc.drawText(W - sumM * (INSTINCT_MODE ? 2.4 : 3.1), sumM * (INSTINCT_MODE ? 0.45 : 2.5), Graphics.FONT_NUMBER_MILD, wind(data.windSpeeds[0], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.drawText(W - sumM * 1.1, sumM * (INSTINCT_MODE ? 2.6 : 5), Graphics.FONT_XTINY,
+        dc.drawText(W - sumM * 3.1, sumM * 2.5, Graphics.FONT_NUMBER_MILD, wind(data.windSpeeds[0], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(W - sumM * 1.1, sumM * 5, Graphics.FONT_XTINY,
                     data.windUnits == 0 ? "m/s" : data.windUnits == 1 ? "km/h" : "mph", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.fillPolygon(generateArrow([ W - sumM * (INSTINCT_MODE ? 2.2 : 2.9), sumM * (INSTINCT_MODE ? 1 : 2.9) ], data.windDirections[0] + 180, (sumM * 1.8).toNumber()));
+        dc.fillPolygon(generateArrow([ W - sumM * 2.9, sumM * 2.9 ], data.windDirections[0] + 180, (sumM * 1.8).toNumber()));
         dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
 
         // Rain chart
@@ -81,7 +81,7 @@ class SummaryView extends BaseView {
         dc.drawText(W * 0.73, H - mh + 2, Graphics.FONT_XTINY, !rainPrimary && rainBackup ? "6hr" : "90", Graphics.TEXT_JUSTIFY_CENTER);
 
         dc.drawLine(mw, H - mh, W - mw, H - mh);
-        dc.setColor(INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawLine(mw, H - mh - lh, W - mw, H - mh - lh);
         dc.drawLine(mw, H - mh - lh * 2, W - mw, H - mh - lh * 2);
         dc.drawLine(mw, H - mh - lh * 3, W - mw, H - mh - lh * 3);

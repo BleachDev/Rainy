@@ -35,8 +35,7 @@ class HourlyView extends BaseView {
     static function drawTableEntry(dc as Dc, W as Number, H as Number, hour as Number or String, dataIndex as Number?, entry as Number) {
         var mh = H * 0.2;
         var lh = H / 6.75;
-        var offset = entry * lh + (INSTINCT_MODE && entry > 0 ? lh * 0.25 : 0);
-        var insLine = INSTINCT_MODE && entry == 0;
+        var offset = entry * lh;
 
         // Time
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
@@ -53,16 +52,16 @@ class HourlyView extends BaseView {
         // Rainfall
         var rain = data.rainfall[dataIndex];
         dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(insLine ? W * 0.82 : INSTINCT_MODE ? W / 1.5 : W / 1.62,
-                    insLine ? H * 0.05 : mh + offset, Graphics.FONT_MEDIUM,
+        dc.drawText(W / 1.62,
+                    mh + offset, Graphics.FONT_MEDIUM,
                     rain.format(Math.round(rain) == rain ? "%d" : "%.1f"), Graphics.TEXT_JUSTIFY_CENTER);
 
         // Wind
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(insLine ? W * 0.81 : W - lh * 0.9,
-                    insLine ? H * 0.16 : mh + offset,
+        dc.drawText(W - lh * 0.9,
+                    mh + offset,
                     Graphics.FONT_MEDIUM, wind(data.windSpeeds[dataIndex], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.fillPolygon(generateArrow([ insLine ? W * 0.83 : W - lh * 0.84, insLine ? H * 0.2 : mh + lh / 8 + offset ],
+        dc.fillPolygon(generateArrow([ W - lh * 0.84, mh + lh / 8 + offset ],
                        data.windDirections[dataIndex] + 180, (lh * 0.73).toNumber()));
     }
 }

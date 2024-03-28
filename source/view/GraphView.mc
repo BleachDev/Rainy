@@ -35,7 +35,7 @@ class GraphView extends BaseView {
         var diffTemp = maxTemp - minTemp;
 
         // Horizontal Graph Background
-        dc.setColor(INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
         for (var i = 0; i < 10; i++) {
             dc.drawLine(mw, mh + lh * i, W - mw - lw * (12 - points), mh + lh * i);
         }
@@ -49,7 +49,7 @@ class GraphView extends BaseView {
 
         // Vertical Graph Background + Timestamps
         for (var i = 0; i < points + 1; i++) {
-            dc.setColor((startHour + offset + i) % 24 == 0 || INSTINCT_MODE ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
+            dc.setColor((startHour + offset + i) % 24 == 0 ? Graphics.COLOR_LT_GRAY : Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawLine(mw + lw * i, mh, mw + lw * i, H - mh);
 
             // Bottom time text
@@ -77,18 +77,18 @@ class GraphView extends BaseView {
             }
         }
 
-        dc.setColor(INSTINCT_MODE ? Graphics.COLOR_WHITE : Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
+        dc.setColor(Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon(tempPoints);
 
         // Left side temperature text
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(mw - 3, mh - (INSTINCT_MODE ? 6 : 0), Graphics.FONT_XTINY, degrees(maxTemp) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(mw - 3, mh, Graphics.FONT_XTINY, degrees(maxTemp) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
         dc.drawText(mw - 3, mh + (H - mh * 2) * 0.27, Graphics.FONT_XTINY, degrees(maxTemp - diffTemp * 0.33) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
         dc.drawText(mw - 3, mh + (H - mh * 2) * 0.55, Graphics.FONT_XTINY, degrees(maxTemp - diffTemp * 0.66) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
         dc.drawText(mw - 3, H - mh - FONT_HEIGHT, Graphics.FONT_XTINY, degrees(minTemp) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
 
         // Right side rainfall text
-        dc.drawText(W - mw + 3, mh - (INSTINCT_MODE ? 6 : 0), Graphics.FONT_XTINY, "9", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W - mw + 3, mh, Graphics.FONT_XTINY, "9", Graphics.TEXT_JUSTIFY_LEFT);
         dc.drawText(W - mw + 3, mh + (H - mh * 2) * 0.27, Graphics.FONT_XTINY, "6", Graphics.TEXT_JUSTIFY_LEFT);
         dc.drawText(W - mw + 3, mh + (H - mh * 2) * 0.55, Graphics.FONT_XTINY, "3", Graphics.TEXT_JUSTIFY_LEFT);
         dc.drawText(W - mw + 3, H - mh - FONT_HEIGHT, Graphics.FONT_XTINY, "0", Graphics.TEXT_JUSTIFY_LEFT);
@@ -98,8 +98,6 @@ class GraphView extends BaseView {
         dc.drawText(W / 2, H - mh + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + ((data.hourlyEntries() - 2) / 12 + 1), Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
-        if (!INSTINCT_MODE) {
-            drawIndicator(dc, data.pageOrder ? 1 : 3);
-        }
+        drawIndicator(dc, data.pageOrder ? 1 : 3);
     }
 }

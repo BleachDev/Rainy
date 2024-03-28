@@ -22,12 +22,12 @@ class HintView extends WatchUi.View {
         var H = dc.getHeight();
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(INSTINCT_MODE ? W / 2.9 : W / 2,
+        dc.drawText(W / 2,
                     H / 8, Graphics.FONT_LARGE, "HINT", Graphics.TEXT_JUSTIFY_CENTER);
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W / 2, H / 2.5, Graphics.FONT_TINY, text, Graphics.TEXT_JUSTIFY_CENTER);
 
-        if (!INSTINCT_MODE && buttons.indexOf(0) != -1) {
+        if (buttons.indexOf(0) != -1) {
             BaseView.drawDots(dc, 5, -1, 5.73, 0.06);
         }
         /*if (buttons.indexOf(1) != -1) {

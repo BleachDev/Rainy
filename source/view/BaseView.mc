@@ -15,7 +15,7 @@ class BaseView extends WatchUi.View {
 
         var W = dc.getWidth();
         var H = dc.getHeight();
-        onDraw(dc, W, H, H / (INSTINCT_MODE || LOWTEXT_MODE ? 9 : 13));
+        onDraw(dc, W, H, H / (LOWTEXT_MODE ? 9 : 13));
     }
 
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
@@ -23,7 +23,7 @@ class BaseView extends WatchUi.View {
 
     function drawHeader(dc as Dc, W as Number, H as Number, text as String) {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(INSTINCT_MODE ? W / 2.9 : W / 2,
+        dc.drawText(W / 2,
                     text.length() > 12 ? H / 15 : H / 26,
                     text.length() > 15 ? Graphics.FONT_TINY : text.length() > 12 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM,
                     text,
@@ -43,7 +43,7 @@ class BaseView extends WatchUi.View {
             var x_i = b * Toybox.Math.cos(angle + ((count - 1f) / 2) * space - i * space) + dc.getWidth() / 2;
             var y_i = b * Toybox.Math.sin(angle + ((count - 1f) / 2) * space - i * space) + dc.getHeight() / 2;
 
-            if (INSTINCT_MODE || SQUARE_MODE) {
+            if (SQUARE_MODE) {
                 x_i = x_i < dc.getWidth() / 2 ? height - 2 : dc.getWidth() - height + 2;
             }
 

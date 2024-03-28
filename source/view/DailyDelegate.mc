@@ -8,7 +8,7 @@ class DailyDelegate extends BaseDelegate {
     }
 
     function onSelectOrSwipe(softAction as Boolean) as Boolean {
-        DailyView.page = DailyView.page == 3 ? 0 : DailyView.page + 1;
+        DailyView.page = DailyView.page == DailyView.pageCount - 1 ? 0 : DailyView.page + 1;
         WatchUi.requestUpdate();
         return DailyView.page != 0 || !softAction;
     }

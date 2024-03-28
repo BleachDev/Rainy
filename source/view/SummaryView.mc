@@ -110,6 +110,6 @@ class SummaryView extends BaseView {
             return windChill;
         }
 
-        return temp;
+        return temp + (humidity / 100.0) * 5;
     }
 }

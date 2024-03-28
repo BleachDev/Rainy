@@ -41,6 +41,6 @@ class WaterView extends BaseView {
         }
 
         // Page Indicator
-        drawIndicator(dc, 5);
+        drawIndicator(dc, 6);
     }
 }

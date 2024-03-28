@@ -11,6 +11,8 @@ class FullData extends BaseData {
     // Aurora
     public var hourlyAurora        as Array<Float>? = null;
     public var hourlyClouds        as Array<Float>? = null;
+    // Uv
+    public var uv                  as Array<Float> = [];
     // Water
     public var waterNames          as Array<String> = [];
     public var waterTemperatures   as Array<Float> = [];
@@ -37,6 +39,8 @@ class FullData extends BaseData {
         Storage.setValue("hourlyAurora", hourlyAurora);
         Storage.setValue("hourlyClouds", hourlyClouds);
 
+        Storage.setValue("uv", uv);
+
         Storage.setValue("waterNames", waterNames);
         Storage.setValue("waterTemperatures", waterTemperatures);
         Storage.setValue("waterDistances", waterDistances);
@@ -54,6 +58,8 @@ class FullData extends BaseData {
 
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
         if (Storage.getValue("hourlyClouds") != null) { hourlyClouds = Storage.getValue("hourlyClouds"); }
+
+        if (Storage.getValue("uv") != null) { uv = Storage.getValue("uv"); }
         
         if (Storage.getValue("waterNames") != null) { waterNames = Storage.getValue("waterNames"); }
         if (Storage.getValue("waterTemperatures") != null) { waterTemperatures = Storage.getValue("waterTemperatures"); }
@@ -80,9 +86,11 @@ class FullData extends BaseData {
 
         var hours = forecastData.size();
         hourlyClouds = new [hours];
+        uv = new [hours];
         for (var i = 0; i < hours; i++) {
             var hour = forecastData[i];
             hourlyClouds[i] = hour["cloud_area_fraction"];
+            uv[i] = hour["uv"];
         }
 
         return true;
@@ -94,7 +102,7 @@ class FullData extends BaseData {
         }
 
         var showWater = "NO".equals(data[0]["code"]);
-        BaseDelegate.pageCount = showWater ? 6 : 5;
+        BaseDelegate.pageCount = showWater ? 7 : 6;
         
         request("https://api.bleach.dev/weather/aurora?noclouds&limit=32&lat=" + position[0] + "&lon=" + position[1], method(:fetchAuroraData));
         if (showWater) {

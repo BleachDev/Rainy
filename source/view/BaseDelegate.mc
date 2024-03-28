@@ -75,6 +75,7 @@ class BaseDelegate extends BehaviorDelegate {
             case 2: return  [ new HourlyView(),  new HourlyDelegate() ];
             case 3: return  [ new GraphView(),   new GraphDelegate() ];
             case 4: return  [ new AuroraView(),  new BaseDelegate() ];
+            case 5: return  [ new UvView(),      new BaseDelegate() ];
             default: return [ new WaterView(),   new BaseDelegate() ];
         }
     }

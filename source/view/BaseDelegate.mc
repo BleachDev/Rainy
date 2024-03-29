@@ -3,7 +3,7 @@ import Toybox.WatchUi;
 
 class BaseDelegate extends BehaviorDelegate {
 
-    public static var pageCount = 6;
+    public static var pageCount = 7;
     private static var page as Number = 0;
     private var startX as Number = 0;
 
@@ -70,13 +70,14 @@ class BaseDelegate extends BehaviorDelegate {
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {
         switch (data.pageOrder ? (page == 1 ? 3 : page == 3 ? 1 : page) : page) {
-            case 0: return  [ new SummaryView(), new SummaryDelegate() ];
-            case 1: return  [ new DailyView(),   new DailyDelegate() ];
-            case 2: return  [ new HourlyView(),  new HourlyDelegate() ];
-            case 3: return  [ new GraphView(),   new GraphDelegate() ];
-            case 4: return  [ new AuroraView(),  new BaseDelegate() ];
-            case 5: return  [ new UvView(),      new BaseDelegate() ];
-            default: return [ new WaterView(),   new BaseDelegate() ];
+            case 0: return  [ new SummaryView(),   new SummaryDelegate() ];
+            case 1: return  [ new DailyView(),     new DailyDelegate() ];
+            case 2: return  [ new HourlyView(),    new HourlyDelegate() ];
+            case 3: return  [ new GraphView(),     new GraphDelegate() ];
+            case 4: return  [ new AuroraView(),    new BaseDelegate() ];
+            case 5: return  [ new UvView(),        new BaseDelegate() ];
+            case 6: return  [ new CelestialView(), new CelestialDelegate() ];
+            default: return [ new WaterView(),     new BaseDelegate() ];
         }
     }
 }

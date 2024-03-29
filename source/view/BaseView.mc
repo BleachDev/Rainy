@@ -31,11 +31,11 @@ class BaseView extends WatchUi.View {
     }
 
     public static function drawIndicator(dc as Dc, selectedIndex as Number) as Void {
-        drawDots(dc, BaseDelegate.pageCount, selectedIndex, 3.14, 0.12);
+        drawDots(dc, BaseDelegate.pageCount, selectedIndex, 3.14, 0.1);
     }
 
     public static function drawDots(dc as Dc, count as Number, selected as Number, angle as Float, space as Float) as Void {
-        var height = dc.getWidth() / 25;
+        var height = dc.getWidth() / 30;
         for (var i = 0; i < count; i++) {
             var b = dc.getWidth() / 2 - height + 2;
 

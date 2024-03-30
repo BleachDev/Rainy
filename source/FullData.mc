@@ -6,6 +6,9 @@ import Toybox.Time;
 
 class FullData extends BaseData {
 
+    public var DEVICE_ID = uniqueId();
+    public var blocked   = false;
+
     public var hints               as Number = 0;
     public var pageOrder           as Boolean = false;
     // Aurora
@@ -140,6 +143,8 @@ class FullData extends BaseData {
             return false;
         }
 
+        request("https://api.bleach.dev/rainy/license?id=" + DEVICE_ID, method(:fetchLicense));
+
         var showWater = "NO".equals(data[0]["code"]);
         BaseDelegate.pageCount = showWater ? 8 : 7;
         
@@ -178,6 +183,7 @@ class FullData extends BaseData {
         sunRise = data["sun"]["rise"];
         sunMax = data["sun"]["max"];
         sunSet = data["sun"]["set"];
+        sunElevation = data["sun"]["elevation"];
         sunNextEclipse = data["sun"]["next_eclipse_time"];
         sunEclipseObsc = data["sun"]["next_eclipse_obscuration"];
         moonNextNew = data["moon"]["next_new"];
@@ -211,9 +217,29 @@ class FullData extends BaseData {
         WatchUi.requestUpdate();
     }
 
+    function fetchLicense(responseCode as Number, data as Dictionary?) as Void {
+        System.println("LIC " + responseCode);
+        if (responseCode == 200 && data != null) {
+            if (data["demo"]) {
+                blocked = data["demo"] == 0;
+                WatchUi.pushView(new RegisterView(data["demo"]), new RegisterDelegate(), WatchUi.SLIDE_BLINK);
+            }
+        }
+    }
+
     // Helper Methods
 
     function hourlyEntries() {
         return hours < symbols.size() ? hours : symbols.size();
+    }
+
+    function uniqueId() {
+        var alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+        var deviceId = System.getDeviceSettings().uniqueIdentifier.toUpper().toCharArray();
+        var rainyId = "";
+        for (var i = 0; i < 5; i++) {
+            rainyId = rainyId + alphabet[alphabet.indexOf(deviceId[i * 2]) + alphabet.indexOf(deviceId[i * 2 + 1])];
+        }
+        return rainyId;
     }
 }

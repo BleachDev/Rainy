@@ -54,6 +54,10 @@ class App extends Application.AppBase {
 
         return [ new AppGlanceView(data) ];
     }
+
+    function getTrialDaysRemaining() as Lang.Number or Null {
+        return 7;
+    }
 }
 
 // This definetely shouldn't be here but thats a later problem

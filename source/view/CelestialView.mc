@@ -14,6 +14,7 @@ class CelestialView extends BaseView {
     // Update the view
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         drawHeader(dc, W, H, page == 0 ? "Sun" : "Moon");
+        System.println(data.DEVICE_ID);
         
         var mw = W * 0.14; // Margin Width
         var mh = H * 0.23; // Margin Height
@@ -28,7 +29,7 @@ class CelestialView extends BaseView {
             dc.drawLine(mw, H - mh - ch,       mw + cw, H - mh - ch);
 
             var len = data.sunElevation.size();
-            var sunPoints = new [len * 2];
+            var sunPoints = new [len * 2] as Array<Array<Float>>;
             var lightPoints = [];
             for (var i = 0; i < len; i++) {
                 var x = mw + (cw / (len - 1.0) * i);    
@@ -49,7 +50,7 @@ class CelestialView extends BaseView {
             // Sun ball
             var time = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
             var minute = time.hour * 60 + time.min;
-            var sunY = getSolarY(sunPoints, minute);
+            var sunY = sunPoints[(sunPoints.size() / 2 * (minute / 1441.0)).toNumber()][1];
 
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(mw + cw * (minute / 1440.0), sunY, W / 28);
@@ -131,10 +132,6 @@ class CelestialView extends BaseView {
 
         // Page Indicator
         drawIndicator(dc, 6);
-    }
-
-    function getSolarY(sunPoints as Array<Array<Float>>, minute) {
-        return sunPoints[(sunPoints.size() / 2 * (minute / 1441.0)).toNumber()][1];
     }
 
 

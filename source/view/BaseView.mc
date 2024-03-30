@@ -15,6 +15,12 @@ class BaseView extends WatchUi.View {
 
         var W = dc.getWidth();
         var H = dc.getHeight();
+        if (data.blocked) {
+        dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(W / 2, H / 4, Graphics.FONT_MEDIUM, "Relaunch App and\nfollow activation\ninstructions.", Graphics.TEXT_JUSTIFY_CENTER);
+            return;
+        }
+
         onDraw(dc, W, H, H / (LOWTEXT_MODE ? 9 : 13));
     }
 

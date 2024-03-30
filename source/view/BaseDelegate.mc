@@ -59,7 +59,7 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function onSelect() as Boolean {
-        return NOGLANCE_MODE >= 2 ? (onSelectOrSwipe(true) ? true : onNextPage()) : (NOGLANCE_MODE >= 1 ? onNextPage() : onSelectOrSwipe(false));
+        return onSelectOrSwipe(false);
     }
 
     // If softAction then only iterate through information and don't open any menus

@@ -12,7 +12,7 @@ class UvView extends BaseView {
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         drawHeader(dc, W, H, "UV / Air");
         
-        var mw = W * 0.14; // Margin Width
+        var mw = W * 0.1; // Margin Width
         var mh = H * 0.23; // Margin Height
         var cw = W - mw * 2.0; // Chart Width
         var ch = (H - mh * 2.0) * 0.4; // Chart Height

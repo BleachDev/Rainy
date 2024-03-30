@@ -13,10 +13,9 @@ class DailyView extends BaseView {
 
     // Update the view
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
-        if (data.hints & 2 == 0 && NOGLANCE_MODE <= 1) {
+        if (data.hints & 2 == 0) {
             data.hints |= 2;
-            WatchUi.pushView(new HintView((NOGLANCE_MODE == 0 ? "Press Select" : "Swipe Left")
-                    + " to scroll\nin the Table and\nGraph Forecasts", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
+            WatchUi.pushView(new HintView("Press Select to scroll\nin the Table and\nGraph Forecasts", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
             return;
         }
 

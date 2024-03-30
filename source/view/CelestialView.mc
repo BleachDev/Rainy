@@ -16,7 +16,7 @@ class CelestialView extends BaseView {
         drawHeader(dc, W, H, page == 0 ? "Sun" : "Moon");
         System.println(data.DEVICE_ID);
         
-        var mw = W * 0.14; // Margin Width
+        var mw = W * 0.1; // Margin Width
         var mh = H * 0.23; // Margin Height
         var cw = W - mw * 2.0; // Chart Width
         var ch = (H - mh * 2.0) * 0.4; // Chart Height

@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 public var data as FullData?;
 public var res as Resources?;
 (:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
-(:glance) public var VERSION = "1.5.6";
+(:glance) public var VERSION = "2.0.0";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var LOWTEXT_MODE as Boolean = false; // Whether FONT_HEIGHT should be lower when drawing
 public var SQUARE_MODE as Boolean = false; // Whether the watch is rectangle/semiround
@@ -50,10 +50,6 @@ class App extends Application.AppBase {
         data.load();
 
         return [ new AppGlanceView(data) ];
-    }
-
-    function getTrialDaysRemaining() as Lang.Number or Null {
-        return 7;
     }
 }
 

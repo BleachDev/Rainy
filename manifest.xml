@@ -128,8 +128,5 @@
             command palette to edit the included barrels.
         -->
         <iq:barrels/>
-        <!--iq:trialMode enable="true">
-            <iq:unlockURL>https://bleach.dev</iq:unlockURL>
-        </iq:trialMode-->
     </iq:application>
 </iq:manifest>

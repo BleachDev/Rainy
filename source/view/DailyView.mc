@@ -15,7 +15,7 @@ class DailyView extends BaseView {
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         if (data.hints & 2 == 0) {
             data.hints |= 2;
-            WatchUi.pushView(new HintView("Press Select to scroll\nin the Table and\nGraph Forecasts", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
+            WatchUi.pushView(new HintView("Press Select to scroll\non pages with\nmultiple slides.", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
             return;
         }
 

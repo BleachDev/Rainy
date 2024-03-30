@@ -14,9 +14,8 @@ class CelestialView extends BaseView {
     // Update the view
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         drawHeader(dc, W, H, page == 0 ? "Sun" : "Moon");
-        System.println(data.DEVICE_ID);
         
-        var mw = W * 0.1; // Margin Width
+        var mw = W * ((dc.getFontHeight(Graphics.FONT_XTINY).toFloat() / H > 0.09) ? 0.1 : 0.14); // Margin Width (Less for devices with bigger fonts)
         var mh = H * 0.23; // Margin Height
         var cw = W - mw * 2.0; // Chart Width
         var ch = (H - mh * 2.0) * 0.4; // Chart Height
@@ -71,7 +70,7 @@ class CelestialView extends BaseView {
             dc.drawText(riseX, H - mh, Graphics.FONT_XTINY,
                         riseTime.hour.format("%02d") + ":" + riseTime.min.format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
 
-            dc.drawText(maxX, H - mh - ch - FONT_HEIGHT, Graphics.FONT_XTINY, "NOON", Graphics.TEXT_JUSTIFY_CENTER);
+            dc.drawText(maxX, H - mh - ch - FONT_HEIGHT, Graphics.FONT_XTINY, "HIGH", Graphics.TEXT_JUSTIFY_CENTER);
             dc.drawText(maxX, H - mh, Graphics.FONT_XTINY,
                         maxTime.hour.format("%02d") + ":" + maxTime.min.format("%02d"), Graphics.TEXT_JUSTIFY_CENTER);
 
@@ -104,9 +103,13 @@ class CelestialView extends BaseView {
             // Top Text
             var eclipseTime = Gregorian.info(new Moment(data.sunNextEclipse), Time.FORMAT_MEDIUM);
             dc.drawText(mw, mh, Graphics.FONT_XTINY,
-                        "Next Solar\nEclipse (" + (data.sunEclipseObsc > 0.99 ? "total" : "partial") + ")\n" +
-                        eclipseTime.day + ". " + eclipseTime.month + " " + eclipseTime.year, Graphics.TEXT_JUSTIFY_LEFT);
+                        "Next Solar", Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(mw, mh + FONT_HEIGHT, Graphics.FONT_XTINY,
+                        "Eclipse (" + (data.sunEclipseObsc > 0.99 ? "total" : "partial") + ")", Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(mw, mh + FONT_HEIGHT * 2, Graphics.FONT_XTINY,
+                        eclipseTime.day + " " + eclipseTime.month + " " + eclipseTime.year, Graphics.TEXT_JUSTIFY_LEFT);
 
+            // Moon Icon
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(W - mw - W / 10, mh + H / 10, W / 13);
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);
@@ -114,16 +117,20 @@ class CelestialView extends BaseView {
 
             // Bottom Text
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
+            dc.drawText(mw, H - mh - ch, Graphics.FONT_XTINY, "Now: " + data.moonIllumination.toNumber() + "%", Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(mw, H - mh - ch + FONT_HEIGHT, Graphics.FONT_XTINY,
+                        data.moonPhase.substring(0, data.moonPhase.find(" ")), Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(mw, H - mh - ch + FONT_HEIGHT * 2, Graphics.FONT_XTINY,
+                        data.moonPhase.substring(data.moonPhase.find(" ") + 1, data.moonPhase.length()), Graphics.TEXT_JUSTIFY_LEFT);
+
             var fullTime = Gregorian.info(new Moment(data.moonNextFull), Time.FORMAT_MEDIUM);
             var newTime = Gregorian.info(new Moment(data.moonNextNew), Time.FORMAT_MEDIUM);
-            dc.drawText(mw, H - mh - ch, Graphics.FONT_XTINY,
-                        "Full Moon\n" + fullTime.month + ". " + fullTime.day + " " +
-                        fullTime.hour.format("%02d") + ":" + fullTime.min.format("%02d") +
-                        "\nNew Moon\n" + newTime.month + ". " + newTime.day + " " +
-                        newTime.hour.format("%02d") + ":" + newTime.min.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);
-
-            dc.drawText(W - mw, H - mh - ch, Graphics.FONT_XTINY,
-                        data.moonIllumination.toNumber() + "% Visible\n" + replace(data.moonPhase, " ", "\n"), Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W - mw, H - mh - ch, Graphics.FONT_XTINY, "Full Moon", Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W - mw, H - mh - ch + FONT_HEIGHT, Graphics.FONT_XTINY,
+                        fullTime.month + " " + fullTime.day + " " + fullTime.hour.format("%02d") + ":" + fullTime.min.format("%02d"), Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W - mw, H - mh - ch + FONT_HEIGHT * 2, Graphics.FONT_XTINY, "New Moon", Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W - mw, H - mh - ch + FONT_HEIGHT * 3, Graphics.FONT_XTINY,
+                        newTime.month + " " + newTime.day + " " + newTime.hour.format("%02d") + ":" + newTime.min.format("%02d"), Graphics.TEXT_JUSTIFY_RIGHT);
         }
 
         // Local Page Indicator
@@ -133,22 +140,4 @@ class CelestialView extends BaseView {
         // Page Indicator
         drawIndicator(dc, 6);
     }
-
-
-    function replace(str, oldString, newString) {
-        var result = str;
-
-        while (true) {
-            var index = result.find(oldString);
-
-            if (index != null) {
-                var index2 = index+oldString.length();
-                result = result.substring(0, index) + newString + result.substring(index2, result.length());
-            } else {
-                return result;
-            }
-        }
-
-        return "";
-    } 
 }

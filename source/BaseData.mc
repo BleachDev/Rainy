@@ -33,7 +33,7 @@ class BaseData {
 
         syncData();
 
-        hours = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 13 : 48;
+        hours = IS_GLANCE ? 20 : 48;
         var days = IS_GLANCE ? 0 : 22;
         time = Time.now();
         request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));

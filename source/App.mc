@@ -86,5 +86,5 @@ function degrees(c as Float) {
 
 (:glance)
 function wind(ms as Float, unit as Number) {
-    return (unit == 0 ? ms : unit == 1 ? ms * 3.6 : ms * 2.237).toNumber();
+    return (unit == 0 ? ms : unit == 1 ? ms * 3.6 : unit == 2 ? ms * 2.237 : Toybox.Math.round(Toybox.Math.pow(ms / 0.836, 2.0 / 3))).toNumber();
 }

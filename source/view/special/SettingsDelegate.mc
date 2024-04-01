@@ -3,6 +3,8 @@ import Toybox.WatchUi;
 
 class SettingsDelegate extends Menu2InputDelegate {
 
+    public static var WIND_UNITS = [ "m/s", "km/h", "mph", "Bft." ];
+
     function initialize() {
         Menu2InputDelegate.initialize();
     }
@@ -29,8 +31,8 @@ class SettingsDelegate extends Menu2InputDelegate {
             data.pageOrder = !data.pageOrder;
             item.setSubLabel(data.pageOrder ? "Graph First" : "Tables First");
         } else if (item.getId() == 2) {
-            data.windUnits = (data.windUnits + 1) % 3;
-            item.setSubLabel(data.windUnits == 0 ? "m/s" : data.windUnits == 1 ? "km/h" : "mph");
+            data.windUnits = (data.windUnits + 1) % 4;
+            item.setSubLabel(WIND_UNITS[data.windUnits]);
         } else if (item.getId() == 3) {
             data.update(data.position);
             WatchUi.popView(WatchUi.SLIDE_BLINK);

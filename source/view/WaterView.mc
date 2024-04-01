@@ -5,7 +5,7 @@ import Toybox.Lang;
 class WaterView extends BaseView {
 
     function initialize() {
-        BaseView.initialize();
+        BaseView.initialize(1);
     }
 
     // Update the view

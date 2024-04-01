@@ -89,7 +89,8 @@ class Resources {
         403685698 => :snowshowers_polartwilight,
         1492424179 => :snowshowersandthunder_day,
         22722294 => :snowshowersandthunder_night,
-        -1631461623 => :snowshowersandthunder_polartwilight
+        -1631461623 => :snowshowersandthunder_polartwilight,
+        0 => :LauncherIcon
     };
 
     function getSymbol(code as Number) {
@@ -98,14 +99,14 @@ class Resources {
         }
 
         if (resourceNames[code] == null) {
-            System.println("! Bad Resource: " + code);
+            System.println("! " + code);
             if (resources[/*"clearsky_day"*/ -1331507130] != null) {
                 return resources[/*"clearsky_day"*/ -1331507130];
             }
             code = -1331507130;
         }
 
-        System.println("Loading Resource: " + code);
+        System.println("Loading Res: " + code);
         resources[code] = WatchUi.loadResource(Rez.Drawables[resourceNames[code]]) as BitmapResource;
         resourceNames.remove(code);
         return resources[code];

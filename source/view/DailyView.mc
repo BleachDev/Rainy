@@ -4,10 +4,8 @@ import Toybox.Lang;
 
 class DailyView extends BaseView {
 
-    public static var page as Number = 0;
-
     function initialize() {
-        BaseView.initialize();
+        BaseView.initialize(4);
     }
 
     // Update the view

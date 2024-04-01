@@ -8,6 +8,7 @@ class FullData extends BaseData {
 
     public var hints               as Number = 0;
     public var pageOrder           as Boolean = false;
+    public var showUpgrade         as Boolean = true;
     // Aurora
     public var hourlyAurora        as Array<Float>? = null;
     public var hourlyClouds        as Array<Float>? = null;
@@ -33,6 +34,7 @@ class FullData extends BaseData {
 
         Storage.setValue("hints", hints);
         Storage.setValue("pageOrder", pageOrder);
+        Storage.setValue("showUpgrade", showUpgrade);
 
         Storage.setValue("hourlyAurora", hourlyAurora);
         Storage.setValue("hourlyClouds", hourlyClouds);
@@ -51,6 +53,7 @@ class FullData extends BaseData {
     function load() {
         if (Storage.getValue("hints") != null) { hints = Storage.getValue("hints"); }
         if (Storage.getValue("pageOrder") != null) { pageOrder = Storage.getValue("pageOrder"); }
+        if (Storage.getValue("showUpgrade") != null) { showUpgrade = Storage.getValue("showUpgrade"); }
 
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
         if (Storage.getValue("hourlyClouds") != null) { hourlyClouds = Storage.getValue("hourlyClouds"); }
@@ -94,7 +97,7 @@ class FullData extends BaseData {
         }
 
         var showWater = "NO".equals(data[0]["code"]);
-        BaseDelegate.pageCount = showWater ? 6 : 5;
+        BaseDelegate.showWater = showWater;
         
         request("https://api.bleach.dev/weather/aurora?noclouds&limit=32&lat=" + position[0] + "&lon=" + position[1], method(:fetchAuroraData));
         if (showWater) {

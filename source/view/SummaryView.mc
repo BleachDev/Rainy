@@ -41,7 +41,7 @@ class SummaryView extends BaseView {
         // Wind
         dc.drawText(W - sumM * (INSTINCT_MODE ? 2.4 : 3.1), sumM * (INSTINCT_MODE ? 0.45 : 2.5), Graphics.FONT_NUMBER_MILD, wind(data.windSpeeds[0], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);
         dc.drawText(W - sumM * 1.1, sumM * (INSTINCT_MODE ? 2.6 : 5), Graphics.FONT_XTINY,
-                    data.windUnits == 0 ? "m/s" : data.windUnits == 1 ? "km/h" : "mph", Graphics.TEXT_JUSTIFY_RIGHT);
+                    SettingsDelegate.WIND_UNITS[data.windUnits], Graphics.TEXT_JUSTIFY_RIGHT);
         dc.fillPolygon(generateArrow([ W - sumM * (INSTINCT_MODE ? 2.2 : 2.9), sumM * (INSTINCT_MODE ? 1 : 2.9) ], data.windDirections[0] + 180, (sumM * 1.8).toNumber()));
         dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
 

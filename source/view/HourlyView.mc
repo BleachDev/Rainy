@@ -5,10 +5,8 @@ import Toybox.Math;
 
 class HourlyView extends BaseView {
 
-    public static var page as Number = 0;
-
     function initialize() {
-        BaseView.initialize();
+        BaseView.initialize(6);
     }
 
     // Update the view

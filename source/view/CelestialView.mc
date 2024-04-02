@@ -5,10 +5,8 @@ import Toybox.Time;
 
 class CelestialView extends BaseView {
 
-    public static var page as Number = 0;
-
     function initialize() {
-        BaseView.initialize();
+        BaseView.initialize(2);
     }
 
     // Update the view

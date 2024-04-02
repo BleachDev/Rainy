@@ -4,11 +4,8 @@ import Toybox.Lang;
 
 class DailyView extends BaseView {
 
-    public static var page as Number = 0;
-    public static var pageCount as Number = 7;
-
     function initialize() {
-        BaseView.initialize();
+        BaseView.initialize(Math.floor(dailyIndices().size() / 4));
     }
 
     // Update the view
@@ -20,7 +17,6 @@ class DailyView extends BaseView {
         }
 
         var indices = dailyIndices();
-        pageCount = Math.floor(indices.size() / 4);
         
         var realHour = Time.Gregorian.info(data.time, Time.FORMAT_SHORT).hour;
         var hour = realHour % 6 == 0 ? realHour : realHour + (6 - (realHour % 6));
@@ -44,7 +40,7 @@ class DailyView extends BaseView {
         }
 
         // Local Page Indicator
-        dc.drawText(W / 2, H * 0.75 + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + pageCount, Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H * 0.75 + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + pages, Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         drawIndicator(dc, data.pageOrder ? 3 : 1);

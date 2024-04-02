@@ -3,9 +3,12 @@ import Toybox.WatchUi;
 import Toybox.Lang;
 
 class BaseView extends WatchUi.View {
+    public static var page as Number = 0;
+    public static var pages as Number = 1; // Super not correct use of static but we do what the voices in my head tell us to
 
-    function initialize() {
+    function initialize(pages) {
         View.initialize();
+        self.pages = pages;
     }
 
     // Update the view

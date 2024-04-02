@@ -65,18 +65,20 @@ class BaseDelegate extends BehaviorDelegate {
     // If softAction then only iterate through information and don't open any menus
     // Returns whether the next page should be displayed in softAction mode
     function onSelectOrSwipe(softAction as Boolean) as Boolean {
-        return false;
+        BaseView.page = (BaseView.page + 1) % BaseView.pages;
+        WatchUi.requestUpdate();
+        return BaseView.page != 0 || !softAction;
     }
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {
         switch (data.pageOrder ? (page == 1 ? 3 : page == 3 ? 1 : page) : page) {
-            case 0: return  [ new SummaryView(),   new SummaryDelegate() ];
-            case 1: return  [ new DailyView(),     new DailyDelegate() ];
-            case 2: return  [ new HourlyView(),    new HourlyDelegate() ];
-            case 3: return  [ new GraphView(),     new GraphDelegate() ];
+            case 0: return  [ new SummaryView(),   new BaseDelegate() ];
+            case 1: return  [ new DailyView(),     new BaseDelegate() ];
+            case 2: return  [ new HourlyView(),    new BaseDelegate() ];
+            case 3: return  [ new GraphView(),     new BaseDelegate() ];
             case 4: return  [ new AuroraView(),    new BaseDelegate() ];
             case 5: return  [ new UvView(),        new BaseDelegate() ];
-            case 6: return  [ new CelestialView(), new CelestialDelegate() ];
+            case 6: return  [ new CelestialView(), new BaseDelegate() ];
             default: return [ new WaterView(),     new BaseDelegate() ];
         }
     }

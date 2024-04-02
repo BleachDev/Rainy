@@ -5,7 +5,7 @@ import Toybox.Lang;
 class SummaryView extends BaseView {
 
     function initialize() {
-        BaseView.initialize();
+        BaseView.initialize(1);
     }
 
     // Update the view

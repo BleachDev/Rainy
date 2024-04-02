@@ -40,7 +40,7 @@ class App extends Application.AppBase {
 
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:posCB));
 
-        return [ new SummaryView(), new SummaryDelegate() ];
+        return [ new SummaryView(), new BaseDelegate() ];
     }
 
     function getGlanceView() as Array<GlanceView or GlanceViewDelegate>? {

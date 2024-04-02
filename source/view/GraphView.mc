@@ -4,10 +4,8 @@ import Toybox.Lang;
 
 class GraphView extends BaseView {
 
-    public static var page as Number = 0;
-
     function initialize() {
-        BaseView.initialize();
+        BaseView.initialize((data.hourlyEntries() - 2) / 12 + 1);
     }
 
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {

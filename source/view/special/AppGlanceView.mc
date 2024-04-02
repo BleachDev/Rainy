@@ -17,7 +17,7 @@ class AppGlanceView extends WatchUi.GlanceView {
     // Update the view
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
-        View.onUpdate(dc);
+        GlanceView.onUpdate(dc);
 
         var W = dc.getWidth();
         var H = dc.getHeight();

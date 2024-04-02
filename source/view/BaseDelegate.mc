@@ -74,7 +74,7 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {
-        pageCount = 7 - (showWater ? 0 : 1) - (data.showUpgrade ? 0 : 1);
+        pageCount = 7 - (showWater ? 0 : 1) - (data.showUpgrade && !INSTINCT_MODE ? 0 : 1);
         switch (page == 5 && !showWater ? 6 : data.pageOrder ? (page == 1 ? 3 : page == 3 ? 1 : page) : page) {
             case 0: return  [ new SummaryView(), new BaseDelegate() ];
             case 1: return  [ new DailyView(),   new BaseDelegate() ];

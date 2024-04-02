@@ -13,7 +13,7 @@ class DailyView extends BaseView {
         if (data.hints & 2 == 0 && NOGLANCE_MODE <= 1) {
             data.hints |= 2;
             WatchUi.pushView(new HintView((NOGLANCE_MODE == 0 ? "Press Select" : "Swipe Left")
-                    + " to scroll\nin the Table and\nGraph Forecasts", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
+                    + " to scroll\non pages with\nmultiple slides.", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
             return;
         }
 

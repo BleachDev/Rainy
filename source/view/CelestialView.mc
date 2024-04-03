@@ -26,7 +26,7 @@ class CelestialView extends BaseView {
             dc.drawLine(mw, H - mh - ch,       mw + cw, H - mh - ch);
 
             var len = data.sunElevation.size();
-            var sunPoints = new [len * 2] as Array<Array<Float>>;
+            var sunPoints = new [len * 2] as Array<[Float, Float]>;
             var lightPoints = [];
             for (var i = 0; i < len; i++) {
                 var x = mw + (cw / (len - 1.0) * i);    

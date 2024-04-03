@@ -34,7 +34,7 @@ class BaseView extends WatchUi.View {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W / 2,
                     text.length() > 15 ? H / 9.2 : text.length() > 12 ? H / 13 : H / 26,
-                    text.length() > 15 ? Graphics.FONT_XTINY : text.length() > 12 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM,,
+                    text.length() > 15 ? Graphics.FONT_XTINY : text.length() > 12 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM,
                     text,
                     Graphics.TEXT_JUSTIFY_CENTER);
     }

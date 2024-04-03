@@ -115,6 +115,7 @@ class FullData extends BaseData {
         }
         
         BaseData.load();
+        Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:posCB));
     }
 
     // Fetching Methods

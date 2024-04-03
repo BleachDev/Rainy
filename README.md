@@ -17,7 +17,7 @@ This branch has more features than 1.x but drops support for Instinct watches.
 ## Contributing
 
 1. Follow Garmins SDK and VSCode Setup.
-2. Select **SDK 6.4.2** and install all the neccesary watches in Garmins SDK Manager.
+2. Select **SDK 7.1.0** and install all the neccesary watches in Garmins SDK Manager.
 3. Clone and Import the project into VSCode.
 4. Maybe it works?? ¯\\\_(ツ)_/¯
 5. Create a Pull Request.

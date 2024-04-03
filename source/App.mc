@@ -26,13 +26,15 @@ class App extends Application.AppBase {
 
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
+        Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
+        
         if (data != null) {
             data.save();
         }
     }
 
     // Return the initial view of your application here
-    function getInitialView() as Array<Views or InputDelegates>? {
+    function getInitialView() as [ WatchUi.Views ] or [ WatchUi.Views, WatchUi.InputDelegates ] {
         INSTINCT_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.INSTINCT_MODE));
         var ngm = WatchUi.loadResource(Rez.Strings.NOGLANCE_MODE);
         NOGLANCE_MODE = "2".equals(ngm) ? 2 : "1".equals(ngm) ? 1 : 0; // No parseInt!!! :angry:
@@ -43,12 +45,10 @@ class App extends Application.AppBase {
         data = new FullData();
         data.load();
 
-        Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, data.method(:posCB));
-
         return [ new SummaryView(), new BaseDelegate() ];
     }
 
-    function getGlanceView() as Array<GlanceView or GlanceViewDelegate>? {
+    function getGlanceView() as [ WatchUi.GlanceView ] or [ WatchUi.GlanceView, WatchUi.GlanceViewDelegate ] or Null {
         IS_GLANCE = true;
 
         var data = new BaseData();
@@ -60,7 +60,7 @@ class App extends Application.AppBase {
 
 // This definetely shouldn't be here but thats a later problem
 (:glance)
-function generateArrow(centerPoint as Array<Number>, angle as Float, length as Number) as Array<Array<Float>> {
+function generateArrow(centerPoint as [Float, Float], angle as Float, length as Number) as Array<Toybox.Graphics.Point2D> {
     // Map out the coordinates of the arrow
     var coords = [[0, length / 2] as Array<Number>,
                   [(length * 0.07).toNumber(), (-length / 2 * 0.5).toNumber()] as Array<Number>,
@@ -68,7 +68,7 @@ function generateArrow(centerPoint as Array<Number>, angle as Float, length as N
                   [0, -length / 2] as Array<Number>,
                   [-(length * 0.3).toNumber(), (-length / 2 * 0.3).toNumber()] as Array<Number>,
                   [-(length * 0.07).toNumber(), (-length / 2 * 0.5).toNumber()] as Array<Number>] as Array<Array<Number>>;
-    var result = new Array<Array<Float>>[coords.size()];
+    var result = new Array<Toybox.Graphics.Point2D>[coords.size()];
     var rad = Toybox.Math.toRadians(angle);
     var cos = Toybox.Math.cos(rad);
     var sin = Toybox.Math.sin(rad);
@@ -78,7 +78,7 @@ function generateArrow(centerPoint as Array<Number>, angle as Float, length as N
         var x = (coords[i][0] * cos) - (coords[i][1] * sin);
         var y = (coords[i][0] * sin) + (coords[i][1] * cos);
 
-        result[i] = [centerPoint[0] + x + length / 2, centerPoint[1] + y + length / 2] as Array<Float>;
+        result[i] = [centerPoint[0] + x + length / 2, centerPoint[1] + y + length / 2];
     }
 
     return result;

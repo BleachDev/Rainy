@@ -14,7 +14,7 @@ class BaseData {
     public var location       as String = "..";
     public var time           as Moment = Time.now();
     // Forecast
-    public var nowRainfall    as Array<Float>? = null; // Null (If unavailable) or empty (If outdated) or list of next 90 mins of rain
+    public var nowRainfall    as Array<Float>?; // Null (If unavailable) or empty (If outdated) or list of next 90 mins of rain
     public var temperatures   as Array<Float> = [];
     public var windSpeeds     as Array<Float> = [];
     public var windDirections as Array<Float> = [];

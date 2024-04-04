@@ -93,7 +93,7 @@ class GraphView extends BaseView {
 
         // Local Page Indicator
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 2, H - mh + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + ((data.hourlyEntries() - 2) / 12 + 1), Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H - mh + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + pages, Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         drawIndicator(dc, data.pageOrder ? 1 : 3);

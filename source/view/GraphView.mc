@@ -13,7 +13,7 @@ class GraphView extends BaseView {
         dc.setColor(Graphics.COLOR_DK_GRAY, Graphics.COLOR_TRANSPARENT);
 
         var offset = page * 12;
-        var mw = W * 0.14; // Margin Width
+        var mw = W * 0.16; // Margin Width
         var mh = H * 0.25; // Margin Height
         var lw = (W - mw * 2) / 12.0; // Line Width
         var lh = (H - mh * 2) / 9.0; // Line Height

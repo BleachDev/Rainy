@@ -15,7 +15,7 @@ class AuroraView extends BaseView {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 2.5, Graphics.FONT_TINY, "Aurora & Cloud Data\nUnavailable.", Graphics.TEXT_JUSTIFY_CENTER);
         } else {
-            var mw = W * 0.14; // Margin Width
+            var mw = W * 0.15; // Margin Width
             var mh = H * 0.23; // Margin Height
             var cw = W - mw * 2.0; // Chart Width
             var ch = H - mh * 2.0; // Chart Height

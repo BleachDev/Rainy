@@ -46,34 +46,22 @@ class SummaryView extends BaseView {
         dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
 
         // Rain chart
-        var mw = W / 8.66; // Rain chart width margin
-        var mh = H / 7.42; // Rain chart height margin
-        var lh = H / 13; // Rain chart line height
-        var chartWidth = W - mw * 2;
+        var mw = W / 8.5; // Rain chart width margin
+        var mh = H / 6.7; // Rain chart height margin
+        var lh = H / 14; // Rain chart line height
         var rainPrimary = data.nowRainfall != null && data.nowRainfall.size() > 0;
         var rainBackup = data.rainfall.size() >= 6;
 
-        if (rainPrimary) {
-            var rainPoints = new [data.nowRainfall.size() + 2];
-            rainPoints[0] = [ mw, H - mh ];
-            rainPoints[data.nowRainfall.size() + 1] = [ mw + (chartWidth / 18) * (data.nowRainfall.size() - 1), H - mh ];
-            for (var i = 0; i < data.nowRainfall.size(); i++) {
-                rainPoints[i + 1] = [ mw + (chartWidth / 18) * i,
-                                      H - mh - (data.nowRainfall[i] <= 0 ? 0 : data.nowRainfall[i] > 5 ? lh * 3.25 : ((data.nowRainfall[i] + 0.3) * (lh * 0.6))) ];
-            }
-
-            dc.fillPolygon(rainPoints);
-        } else if (rainBackup) {
-            var rainPoints = new [8];
-            rainPoints[0] = [ mw, H - mh ];
-            rainPoints[7] = [ mw + chartWidth, H - mh ];
-            for (var i = 0; i < 6; i++) {
-                rainPoints[i + 1] = [ mw + (chartWidth / 6) * i,
-                                      H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3.25 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
-            }
-
-            dc.fillPolygon(rainPoints);
+        var rainCount = rainPrimary ? data.nowRainfall.size() : rainBackup ? 6 : 0;
+        var rainPolygon = new [rainCount + 2];
+        rainPolygon[0] = [ W - mw, H - mh ];
+        rainPolygon[1] = [ mw, H - mh ];
+        for (var i = 0; i < rainCount; i++) {
+            var r = rainPrimary ? data.nowRainfall[i] : data.rainfall[i];
+            rainPolygon[i + 2] = [ mw + ((W - (mw * 2)) / (rainCount - 1)) * i, H - mh - (r <= 0 ? 0 : r > 5 ? lh * 3.25 : ((r + 0.3) * lh * 0.6)) ];
         }
+
+        dc.fillPolygon(rainPolygon);
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.drawText(W * 0.27, H - mh + 2, Graphics.FONT_XTINY, "Now", Graphics.TEXT_JUSTIFY_CENTER);

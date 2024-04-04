@@ -13,7 +13,7 @@ class CelestialView extends BaseView {
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         drawHeader(dc, W, H, page == 0 ? "Sun" : "Moon");
         
-        var mw = W * ((dc.getFontHeight(Graphics.FONT_XTINY).toFloat() / H > 0.09) ? 0.1 : 0.14); // Margin Width (Less for devices with bigger fonts)
+        var mw = W * ((dc.getFontHeight(Graphics.FONT_XTINY).toFloat() / H > 0.09) ? 0.1 : 0.13); // Margin Width (Less for devices with bigger fonts)
         var mh = H * 0.23; // Margin Height
         var cw = W - mw * 2.0; // Chart Width
         var ch = (H - mh * 2.0) * 0.4; // Chart Height

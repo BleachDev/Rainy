@@ -10,7 +10,6 @@ public var res as Resources?;
 (:glance) public var IS_GLANCE as Boolean = false;
 public var INSTINCT_MODE as Boolean = false; // Whether Instinct circle is present
 public var NOGLANCE_MODE as Number = 0; // 0 = Can use arrows, 1 = Can't use arrows, 2 = Can't use arrows or touch
-public var LOWTEXT_MODE as Boolean = false; // Whether FONT_HEIGHT should be lower when drawing
 public var SQUARE_MODE as Boolean = false; // Whether the watch is rectangle/semiround
 
 (:glance)
@@ -38,7 +37,6 @@ class App extends Application.AppBase {
         INSTINCT_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.INSTINCT_MODE));
         var ngm = WatchUi.loadResource(Rez.Strings.NOGLANCE_MODE);
         NOGLANCE_MODE = "2".equals(ngm) ? 2 : "1".equals(ngm) ? 1 : 0; // No parseInt!!! :angry:
-        LOWTEXT_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.LOWTEXT_MODE));
         SQUARE_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.SQUARE_MODE));
 
         res = new Resources();

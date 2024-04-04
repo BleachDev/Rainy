@@ -24,7 +24,7 @@ class UpgradeView extends BaseView {
 
             dc.drawBitmap(W / 7, H / 4.6, res.getSymbol(0));
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(W / 6 + 40, H / 4.6, Graphics.FONT_LARGE, "Rainy Pro", Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(W / 5 + 40, H / 4.6, Graphics.FONT_LARGE, "Rainy Pro", Graphics.TEXT_JUSTIFY_LEFT);
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 4.5 + FONT_HEIGHT * 1.9, Graphics.FONT_TINY, "In the Connect-IQ", Graphics.TEXT_JUSTIFY_CENTER);
             dc.drawText(W / 2, H / 4.5 + FONT_HEIGHT * 2.9, Graphics.FONT_TINY, "Store", Graphics.TEXT_JUSTIFY_CENTER);

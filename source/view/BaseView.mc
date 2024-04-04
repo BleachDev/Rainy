@@ -27,11 +27,8 @@ class BaseView extends WatchUi.View {
 
     function drawHeader(dc as Dc, W as Number, H as Number, text as String) {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(INSTINCT_MODE ? W / 2.9 : W / 2,
-                    text.length() > 15 ? H / 9.2 : text.length() > 12 ? H / 13 : H / 26,
-                    text.length() > 15 ? Graphics.FONT_XTINY : text.length() > 12 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM,
-                    text,
-                    Graphics.TEXT_JUSTIFY_CENTER);
+        var font = text.length() > 15 ? Graphics.FONT_XTINY : text.length() > 13 ? Graphics.FONT_TINY : text.length() > 11 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM;
+        dc.drawText(INSTINCT_MODE ? W / 2.9 : W / 2, H / 5.1 - dc.getFontHeight(font), font, text, Graphics.TEXT_JUSTIFY_CENTER);
     }
 
     public static function drawIndicator(dc as Dc, selectedIndex as Number) as Void {

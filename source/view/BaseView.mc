@@ -10,6 +10,7 @@ class BaseView extends WatchUi.View {
     function initialize(pages) {
         View.initialize();
         self.pages = pages;
+        self.page = 0;
     }
 
     // Update the view

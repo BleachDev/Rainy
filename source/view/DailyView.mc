@@ -40,7 +40,7 @@ class DailyView extends BaseView {
         }
 
         // Local Page Indicator
-        dc.drawText(W / 2, H * 0.75 + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/4", Graphics.TEXT_JUSTIFY_CENTER);
+        dc.drawText(W / 2, H * 0.75 + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/" + pages, Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
         drawIndicator(dc, data.pageOrder ? 3 : 1);

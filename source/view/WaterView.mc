@@ -1,6 +1,7 @@
 import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Lang;
+import Toybox.Time;
 
 class WaterView extends BaseView {
 
@@ -28,7 +29,7 @@ class WaterView extends BaseView {
                 dc.drawText(W - mw - H / 4.25, offset + H / (small ? 11 : 10), Graphics.FONT_XTINY,
                     (data.waterDistances[i] / 1000.0).format(data.waterDistances[i] > 10000 ? "%d" : "%.1f") + "km", Graphics.TEXT_JUSTIFY_RIGHT);
 
-                var time = Time.Gregorian.info(data.waterTimestamps[i], Time.FORMAT_MEDIUM);
+                var time = Time.Gregorian.info(new Moment(data.waterTimestamps[i]), Time.FORMAT_MEDIUM);
                 dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(mw, offset + H / (small ? 11 : 10), Graphics.FONT_XTINY,
                     time.month + " " + time.day.format("%02d") + " " + time.hour.format("%02d") + ":" + time.min.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);

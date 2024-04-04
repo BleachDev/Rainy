@@ -8,7 +8,6 @@ public var res as Resources?;
 (:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
 (:glance) public var VERSION = "2.0.2";
 (:glance) public var IS_GLANCE as Boolean = false;
-public var LOWTEXT_MODE as Boolean = false; // Whether FONT_HEIGHT should be lower when drawing
 public var SQUARE_MODE as Boolean = false; // Whether the watch is rectangle/semiround
 
 (:glance)
@@ -33,7 +32,6 @@ class App extends Application.AppBase {
 
     // Return the initial view of your application here
     function getInitialView() as [ WatchUi.Views ] or [ WatchUi.Views, WatchUi.InputDelegates ] {
-        LOWTEXT_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.LOWTEXT_MODE));
         SQUARE_MODE = "1".equals(WatchUi.loadResource(Rez.Strings.SQUARE_MODE));
 
         res = new Resources();

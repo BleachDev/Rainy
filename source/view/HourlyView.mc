@@ -37,7 +37,7 @@ class HourlyView extends BaseView {
 
         // Time
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 15, mh + lh / 3 + offset, Graphics.FONT_XTINY, hour instanceof String ? hour : hour.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W / 15, mh + lh / 4 + offset, Graphics.FONT_XTINY, hour instanceof String ? hour : hour.format("%02d"), Graphics.TEXT_JUSTIFY_LEFT);
         if (dataIndex == null) {
             return;
         }

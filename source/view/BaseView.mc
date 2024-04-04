@@ -25,7 +25,7 @@ class BaseView extends WatchUi.View {
             return;
         }
 
-        onDraw(dc, W, H, H / (LOWTEXT_MODE ? 10.5 : 13));
+        onDraw(dc, W, H, dc.getFontHeight(Graphics.FONT_XTINY));
     }
 
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {

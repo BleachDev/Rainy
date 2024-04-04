@@ -1,3 +1,4 @@
+import Toybox.Application;
 import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Lang;
@@ -12,6 +13,7 @@ class DailyView extends BaseView {
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         if (data.hints & 2 == 0 && NOGLANCE_MODE <= 1) {
             data.hints |= 2;
+            Storage.setValue("hints", data.hints);
             WatchUi.pushView(new HintView((NOGLANCE_MODE == 0 ? "Press Select" : "Swipe Left")
                     + " to scroll\non pages with\nmultiple slides.", [ 0 ]), new HintDelegate([ 0 ]), WatchUi.SLIDE_BLINK);
             return;

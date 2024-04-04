@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 public var data as FullData?;
 public var res as Resources?;
 (:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
-(:glance) public var VERSION = "1.6.2";
+(:glance) public var VERSION = "1.7.0";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var INSTINCT_MODE as Boolean = false; // Whether Instinct circle is present
 public var NOGLANCE_MODE as Number = 0; // 0 = Can use arrows, 1 = Can't use arrows, 2 = Can't use arrows or touch
@@ -26,10 +26,6 @@ class App extends Application.AppBase {
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
-        
-        if (data != null) {
-            data.save();
-        }
     }
 
     // Return the initial view of your application here

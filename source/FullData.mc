@@ -3,6 +3,7 @@ import Toybox.Position;
 import Toybox.Lang;
 import Toybox.Application;
 import Toybox.Time;
+import Toybox.WatchUi;
 
 class FullData extends BaseData {
 
@@ -29,26 +30,11 @@ class FullData extends BaseData {
         }
     }
 
-    function save() {
-        BaseData.save();
-
-        Storage.setValue("hints", hints);
-        Storage.setValue("pageOrder", pageOrder);
-        Storage.setValue("showUpgrade", showUpgrade);
-
-        Storage.setValue("hourlyAurora", hourlyAurora);
-        Storage.setValue("hourlyClouds", hourlyClouds);
-
-        Storage.setValue("waterNames", waterNames);
-        Storage.setValue("waterTemperatures", waterTemperatures);
-        Storage.setValue("waterDistances", waterDistances);
-        Storage.setValue("waterTimestamps", waterTimestamps);
-    }
-
     function load() {
         if (Storage.getValue("hints") != null) { hints = Storage.getValue("hints"); }
-        if (Storage.getValue("pageOrder") != null) { pageOrder = Storage.getValue("pageOrder"); }
-        if (Storage.getValue("showUpgrade") != null) { showUpgrade = Storage.getValue("showUpgrade"); }
+
+        if (Properties.getValue("pageOrder") != null) { pageOrder = Properties.getValue("pageOrder"); }
+        if (Properties.getValue("showUpgrade") != null) { showUpgrade = Properties.getValue("showUpgrade"); }
 
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
         if (Storage.getValue("hourlyClouds") != null) { hourlyClouds = Storage.getValue("hourlyClouds"); }
@@ -59,6 +45,7 @@ class FullData extends BaseData {
         if (Storage.getValue("waterTimestamps") != null) { waterTimestamps = Storage.getValue("waterTimestamps"); }
         
         BaseData.load();
+
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:posCB));
     }
 
@@ -78,6 +65,7 @@ class FullData extends BaseData {
             hourlyClouds[i] = hour["cloud_area_fraction"];
         }
 
+        Storage.setValue("hourlyClouds", hourlyClouds);
         return true;
     }
 
@@ -108,6 +96,7 @@ class FullData extends BaseData {
             hourlyAurora[i] = data["aurora"][i]["activity"];
         }
 
+        Storage.setValue("hourlyAurora", hourlyAurora);
         WatchUi.requestUpdate();
     }
 
@@ -131,6 +120,10 @@ class FullData extends BaseData {
             waterTimestamps[i] = waterData["time"];
         }
 
+        Storage.setValue("waterNames", waterNames);
+        Storage.setValue("waterTemperatures", waterTemperatures);
+        Storage.setValue("waterDistances", waterDistances);
+        Storage.setValue("waterTimestamps", waterTimestamps);
         WatchUi.requestUpdate();
     }
 
@@ -138,5 +131,30 @@ class FullData extends BaseData {
 
     function hourlyEntries() {
         return hours < symbols.size() ? hours : symbols.size();
+    }
+
+    function enterText(text) {
+        var menu = new Menu2({:title => "Location"});
+        menu.addItem(new MenuItem("Loading Locations..", "Please Wait :)", 0, {}));
+
+        WatchUi.pushView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        data.request("https://api.bleach.dev/weather/search?q=" + text, method(:fetchSearch));
+    }
+
+    function fetchSearch(responseCode as Number, data as Dictionary?) as Boolean {
+        if (responseCode != 200 || data == null) {
+            var menu = new Menu2({:title => "Location"});
+            menu.addItem(new MenuItem("Error", "Connection Error", 0, {}));
+            WatchUi.switchToView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_BLINK);
+            return false;
+        }
+
+        var menu = new Menu2({:title => "Location" });
+        for (var i = 0; i < data.size(); i++) {
+            menu.addItem(new MenuItem(data[i]["name"], data[i]["region"] + " (" + data[i]["code"] + "), El. " + data[i]["elevation"] + "m", i, {}));
+        }
+
+        WatchUi.switchToView(menu, new SpellListDelegate(data), WatchUi.SLIDE_BLINK);
+        return true;
     }
 }

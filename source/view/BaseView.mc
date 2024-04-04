@@ -1,3 +1,4 @@
+import Toybox.Application;
 import Toybox.Graphics;
 import Toybox.WatchUi;
 import Toybox.Lang;
@@ -17,6 +18,13 @@ class BaseView extends WatchUi.View {
     function onUpdate(dc as Dc) as Void {
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
+
+        // Bad place but yeah
+        if (Properties.getValue("manLocation").length() > 0) {
+            data.enterText(Properties.getValue("manLocation"));
+            Properties.setValue("manLocation", "");
+            return;
+        }
 
         var W = dc.getWidth();
         var H = dc.getHeight();

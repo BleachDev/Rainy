@@ -33,7 +33,7 @@ class FullData extends BaseData {
     public var waterNames          as Array<String> = [];
     public var waterTemperatures   as Array<Float> = [];
     public var waterDistances      as Array<Number> = [];
-    public var waterTimestamps     as Array<Moment> = [];
+    public var waterTimestamps     as Array<Number> = [];
 
     function initialize() {
         BaseData.initialize();
@@ -73,12 +73,7 @@ class FullData extends BaseData {
         Storage.setValue("waterNames", waterNames);
         Storage.setValue("waterTemperatures", waterTemperatures);
         Storage.setValue("waterDistances", waterDistances);
-
-        var serialized = new Array<Number>[waterTimestamps.size()];
-        for (var t = 0; t < waterTimestamps.size(); t++) {
-            serialized[t] = waterTimestamps[t].value();
-        }
-        Storage.setValue("waterTimestamps", serialized);
+        Storage.setValue("waterTimestamps", waterTimestamps);
     }
 
     function load() {
@@ -106,13 +101,7 @@ class FullData extends BaseData {
         if (Storage.getValue("waterNames") != null) { waterNames = Storage.getValue("waterNames"); }
         if (Storage.getValue("waterTemperatures") != null) { waterTemperatures = Storage.getValue("waterTemperatures"); }
         if (Storage.getValue("waterDistances") != null) { waterDistances = Storage.getValue("waterDistances"); }
-        if (Storage.getValue("waterTimestamps") != null) {
-            var serialized = Storage.getValue("waterTimestamps");
-            waterTimestamps = new [serialized.size()];
-            for (var t = 0; t < serialized.size(); t++) {
-                waterTimestamps[t] = new Moment(serialized[t]);
-            }
-        }
+        if (Storage.getValue("waterTimestamps") != null) { waterTimestamps = Storage.getValue("waterTimestamps"); }
         
         BaseData.load();
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:posCB));
@@ -212,7 +201,7 @@ class FullData extends BaseData {
             waterNames[i] = waterData["name"];
             waterTemperatures[i] = waterData["temperature"];
             waterDistances[i] = waterData["distance"];
-            waterTimestamps[i] = new Moment(waterData["time"]);
+            waterTimestamps[i] = waterData["time"];
         }
 
         WatchUi.requestUpdate();

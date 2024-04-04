@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 public var data as FullData?;
 public var res as Resources?;
 (:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
-(:glance) public var VERSION = "2.0.2";
+(:glance) public var VERSION = "2.1.0";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var SQUARE_MODE as Boolean = false; // Whether the watch is rectangle/semiround
 
@@ -24,10 +24,6 @@ class App extends Application.AppBase {
     // onStop() is called when your application is exiting
     function onStop(state as Dictionary?) as Void {
         Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
-        
-        if (data != null) {
-            data.save();
-        }
     }
 
     // Return the initial view of your application here

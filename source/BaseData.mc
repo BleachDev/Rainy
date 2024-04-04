@@ -30,12 +30,15 @@ class BaseData {
         }
 
         position = coords;
+        Storage.setValue("geo", position);
 
         syncData();
 
+        time = Time.now();
+        Storage.setValue("time", time.value());
+
         hours = IS_GLANCE ? 20 : 48;
         var days = IS_GLANCE ? 0 : 22;
-        time = Time.now();
         request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
         request("https://api.bleach.dev/weather/search?limit=1&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
     }
@@ -52,26 +55,9 @@ class BaseData {
         }, callback);
     }
 
-    function save() {
-        Storage.setValue("autoLocation", autoLocation);
-        Storage.setValue("windUnits", windUnits);
-
-        Storage.setValue("geo", position);
-        Storage.setValue("location", location);
-        Storage.setValue("time", time.value());
-
-        Storage.setValue("nowRainfall", nowRainfall);
-        Storage.setValue("temperatures", temperatures);
-        Storage.setValue("windSpeeds", windSpeeds);
-        Storage.setValue("windDirections", windDirections);
-        Storage.setValue("rainfall", rainfall);
-        Storage.setValue("humidity", humidity);
-        Storage.setValue("symbols", symbols);
-    }
-
     function load() {
-        if (Storage.getValue("autoLocation") != null) { autoLocation = Storage.getValue("autoLocation"); }
-        if (Storage.getValue("windUnits") != null) { windUnits = Storage.getValue("windUnits"); }
+        if (Properties.getValue("autoLocation") != null) { autoLocation = Properties.getValue("autoLocation"); }
+        if (Properties.getValue("windUnits") != null) { windUnits = Properties.getValue("windUnits"); }
 
         if (Storage.getValue("geo") != null) { position = Storage.getValue("geo"); }
         if (Storage.getValue("location") != null) { location = Storage.getValue("location"); }
@@ -88,6 +74,10 @@ class BaseData {
         WatchUi.requestUpdate();
 
         // Update if we have a valid position
+        if (!autoLocation && Properties.getValue("manLocation").length() > 0) {
+            return;
+        }
+        
         var pos = Position.getInfo().position.toDegrees();
         if (autoLocation && pos[0] > -90 && pos[0] < 90 && pos[1] > -180 && pos[1] < 180) {
             update(pos);
@@ -154,9 +144,15 @@ class BaseData {
 
         if (IS_GLANCE) {
             WatchUi.requestUpdate();
-            save();
         }
 
+        Storage.setValue("nowRainfall", nowRainfall);
+        Storage.setValue("temperatures", temperatures);
+        Storage.setValue("windSpeeds", windSpeeds);
+        Storage.setValue("windDirections", windDirections);
+        Storage.setValue("rainfall", rainfall);
+        Storage.setValue("humidity", humidity);
+        Storage.setValue("symbols", symbols);
         return true;
     }
 
@@ -168,10 +164,10 @@ class BaseData {
         }
 
         location = data[0]["name"];
+        Storage.setValue("location", location);
 
         if (IS_GLANCE) {
             WatchUi.requestUpdate();
-            save();
         }
         return true;
     }

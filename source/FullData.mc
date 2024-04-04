@@ -3,6 +3,7 @@ import Toybox.Position;
 import Toybox.Lang;
 import Toybox.Application;
 import Toybox.Time;
+import Toybox.WatchUi;
 
 class FullData extends BaseData {
 
@@ -46,39 +47,10 @@ class FullData extends BaseData {
         }
     }
 
-    function save() {
-        BaseData.save();
-
-        Storage.setValue("hints", hints);
-        Storage.setValue("pageOrder", pageOrder);
-
-        Storage.setValue("hourlyAurora", hourlyAurora);
-        Storage.setValue("hourlyClouds", hourlyClouds);
-
-        Storage.setValue("uv", uv);
-
-        Storage.setValue("sunLength", sunLength);
-        Storage.setValue("sunDifference", sunDifference);
-        Storage.setValue("sunRise", sunRise);
-        Storage.setValue("sunMax", sunMax);
-        Storage.setValue("sunSet", sunSet);
-        Storage.setValue("sunElevation", sunElevation);
-        Storage.setValue("sunNextEclipse", sunNextEclipse);
-        Storage.setValue("sunEclipseObsc", sunEclipseObsc);
-        Storage.setValue("moonNextNew", moonNextNew);
-        Storage.setValue("moonNextFull", moonNextFull);
-        Storage.setValue("moonIllumination", moonIllumination);
-        Storage.setValue("moonPhase", moonPhase);
-
-        Storage.setValue("waterNames", waterNames);
-        Storage.setValue("waterTemperatures", waterTemperatures);
-        Storage.setValue("waterDistances", waterDistances);
-        Storage.setValue("waterTimestamps", waterTimestamps);
-    }
-
     function load() {
         if (Storage.getValue("hints") != null) { hints = Storage.getValue("hints"); }
-        if (Storage.getValue("pageOrder") != null) { pageOrder = Storage.getValue("pageOrder"); }
+
+        if (Properties.getValue("pageOrder") != null) { pageOrder = Properties.getValue("pageOrder"); }
 
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
         if (Storage.getValue("hourlyClouds") != null) { hourlyClouds = Storage.getValue("hourlyClouds"); }
@@ -104,6 +76,7 @@ class FullData extends BaseData {
         if (Storage.getValue("waterTimestamps") != null) { waterTimestamps = Storage.getValue("waterTimestamps"); }
         
         BaseData.load();
+
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:posCB));
     }
 
@@ -125,6 +98,8 @@ class FullData extends BaseData {
             uv[i] = hour["uv"];
         }
 
+        Storage.setValue("hourlyClouds", hourlyClouds);
+        Storage.setValue("uv", uv);
         return true;
     }
 
@@ -158,6 +133,7 @@ class FullData extends BaseData {
             hourlyAurora[i] = data["aurora"][i]["activity"];
         }
 
+        Storage.setValue("hourlyAurora", hourlyAurora);
         WatchUi.requestUpdate();
     }
 
@@ -181,6 +157,18 @@ class FullData extends BaseData {
         moonIllumination = data["moon"]["illumination_percent"];
         moonPhase = data["moon"]["phase"];
 
+        Storage.setValue("sunLength", sunLength);
+        Storage.setValue("sunDifference", sunDifference);
+        Storage.setValue("sunRise", sunRise);
+        Storage.setValue("sunMax", sunMax);
+        Storage.setValue("sunSet", sunSet);
+        Storage.setValue("sunElevation", sunElevation);
+        Storage.setValue("sunNextEclipse", sunNextEclipse);
+        Storage.setValue("sunEclipseObsc", sunEclipseObsc);
+        Storage.setValue("moonNextNew", moonNextNew);
+        Storage.setValue("moonNextFull", moonNextFull);
+        Storage.setValue("moonIllumination", moonIllumination);
+        Storage.setValue("moonPhase", moonPhase);
         WatchUi.requestUpdate();
     }
 
@@ -204,6 +192,10 @@ class FullData extends BaseData {
             waterTimestamps[i] = waterData["time"];
         }
 
+        Storage.setValue("waterNames", waterNames);
+        Storage.setValue("waterTemperatures", waterTemperatures);
+        Storage.setValue("waterDistances", waterDistances);
+        Storage.setValue("waterTimestamps", waterTimestamps);
         WatchUi.requestUpdate();
     }
 
@@ -231,5 +223,30 @@ class FullData extends BaseData {
             rainyId = rainyId + alphabet[alphabet.indexOf(deviceId[i * 2]) + alphabet.indexOf(deviceId[i * 2 + 1])];
         }
         return rainyId;
+    }
+
+    function enterText(text) {
+        var menu = new Menu2({:title => "Location"});
+        menu.addItem(new MenuItem("Loading Locations..", "Please Wait :)", 0, {}));
+
+        WatchUi.pushView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_IMMEDIATE);
+        data.request("https://api.bleach.dev/weather/search?q=" + text, method(:fetchSearch));
+    }
+
+    function fetchSearch(responseCode as Number, data as Dictionary?) as Boolean {
+        if (responseCode != 200 || data == null) {
+            var menu = new Menu2({:title => "Location"});
+            menu.addItem(new MenuItem("Error", "Connection Error", 0, {}));
+            WatchUi.switchToView(menu, new Menu2InputDelegate(), WatchUi.SLIDE_BLINK);
+            return false;
+        }
+
+        var menu = new Menu2({:title => "Location" });
+        for (var i = 0; i < data.size(); i++) {
+            menu.addItem(new MenuItem(data[i]["name"], data[i]["region"] + " (" + data[i]["code"] + "), El. " + data[i]["elevation"] + "m", i, {}));
+        }
+
+        WatchUi.switchToView(menu, new SpellListDelegate(data), WatchUi.SLIDE_BLINK);
+        return true;
     }
 }

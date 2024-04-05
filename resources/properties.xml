@@ -5,7 +5,6 @@
         <property id="manLocation" type="string"></property>
         <property id="pageOrder" type="boolean">false</property>
         <property id="windUnits" type="number">0</property>
-        <property id="showUpgrade" type="boolean">true</property>
     </properties>
 
     <settings>
@@ -25,9 +24,6 @@
                 <listEntry value="2">mph</listEntry>
                 <listEntry value="3">Bft.</listEntry>
             </settingConfig>
-        </setting>
-        <setting propertyKey="@Properties.showUpgrade" title="Show Upgrade Page">
-            <settingConfig type="boolean" />
         </setting>
     </settings>
 </resources>

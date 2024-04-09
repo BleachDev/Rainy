@@ -34,10 +34,7 @@ class BaseData {
 
         syncData();
 
-        time = Time.now();
-        Storage.setValue("time", time.value());
-
-        hours = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 13 : 36;
+        var hours = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 13 : 36;
         var days = IS_GLANCE ? 0 : 14;
         request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
         request("https://api.bleach.dev/weather/search?limit=1&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));
@@ -115,16 +112,22 @@ class BaseData {
             return false;
         }
 
+        time = Time.now();
+        Storage.setValue("time", time.value());
+
+        hours = data["hourly"];
+        Storage.setValue("hours", hours);
+
         var forecastData = data["forecast"] as Dictionary;
 
-        var hours = forecastData.size();
-        temperatures = new [hours];
-        windSpeeds = new [hours];
-        windDirections = new [hours];
-        rainfall = new [hours];
-        humidity = new [hours];
-        symbols = new [hours];
-        for (var i = 0; i < hours; i++) {
+        var size = forecastData.size();
+        temperatures = new [size];
+        windSpeeds = new [size];
+        windDirections = new [size];
+        rainfall = new [size];
+        humidity = new [size];
+        symbols = new [size];
+        for (var i = 0; i < size; i++) {
             var hour = forecastData[i];
             temperatures[i] = hour["air_temperature"];
             windSpeeds[i] = hour["wind_speed"];

@@ -32,7 +32,7 @@ class SettingsDelegate extends Menu2InputDelegate {
         } else if (item.getId() == 1) {
             data.pageOrder = !data.pageOrder;
             Properties.setValue("pageOrder", data.pageOrder);
-            item.setSubLabel(data.pageOrder ? "Graph First" : "Tables First");
+            item.setSubLabel(data.pageOrder ? "Yes" : "No");
         } else if (item.getId() == 2) {
             data.windUnits = (data.windUnits + 1) % 4;
             Properties.setValue("windUnits", data.windUnits);

@@ -34,9 +34,6 @@ class BaseData {
 
         syncData();
 
-        time = Time.now();
-        Storage.setValue("time", time.value());
-
         var hours = IS_GLANCE ? 20 : 48;
         var days = IS_GLANCE ? 0 : 22;
         request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));

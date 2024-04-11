@@ -6,7 +6,7 @@ import Toybox.WatchUi;
 public var data as FullData?;
 public var res as Resources?;
 (:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
-(:glance) public var VERSION = "2.1.0";
+(:glance) public var VERSION = "2.1.2";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var SQUARE_MODE as Boolean = false; // Whether the watch is rectangle/semiround
 

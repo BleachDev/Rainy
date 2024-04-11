@@ -87,7 +87,7 @@ class CelestialView extends BaseView {
                         "Daylight " + (data.sunLength / 3600).format("%d") +
                         "h " + ((data.sunLength / 60) % 60).format("%d") + "m", Graphics.TEXT_JUSTIFY_LEFT);
             dc.drawText(mw, mh + FONT_HEIGHT, Graphics.FONT_XTINY,
-                        "Today " + (data.sunLength >= 0 ? "+" : "-") + (data.sunDifference.abs() / 60).format("%d") +
+                        "Today " + (data.sunDifference >= 0 ? "+" : "-") + (data.sunDifference.abs() / 60).format("%d") +
                         "m " + (data.sunDifference.abs() % 60).format("%d") + "s", Graphics.TEXT_JUSTIFY_LEFT);
 
             // Sun Icon
@@ -115,19 +115,19 @@ class CelestialView extends BaseView {
 
             // Bottom Text
             dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(mw, H - mh - ch, Graphics.FONT_XTINY, "Now: " + data.moonIllumination.toNumber() + "%", Graphics.TEXT_JUSTIFY_LEFT);
-            dc.drawText(mw, H - mh - ch + FONT_HEIGHT, Graphics.FONT_XTINY,
+            dc.drawText(mw, H - mh - FONT_HEIGHT * 2, Graphics.FONT_XTINY, "Now: " + data.moonIllumination.toNumber() + "%", Graphics.TEXT_JUSTIFY_LEFT);
+            dc.drawText(mw, H - mh - FONT_HEIGHT, Graphics.FONT_XTINY,
                         data.moonPhase.substring(0, data.moonPhase.find(" ")), Graphics.TEXT_JUSTIFY_LEFT);
-            dc.drawText(mw, H - mh - ch + FONT_HEIGHT * 2, Graphics.FONT_XTINY,
+            dc.drawText(mw, H - mh, Graphics.FONT_XTINY,
                         data.moonPhase.substring(data.moonPhase.find(" ") + 1, data.moonPhase.length()), Graphics.TEXT_JUSTIFY_LEFT);
 
             var fullTime = Gregorian.info(new Moment(data.moonNextFull), Time.FORMAT_MEDIUM);
             var newTime = Gregorian.info(new Moment(data.moonNextNew), Time.FORMAT_MEDIUM);
-            dc.drawText(W - mw, H - mh - ch, Graphics.FONT_XTINY, "Full Moon", Graphics.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(W - mw, H - mh - ch + FONT_HEIGHT, Graphics.FONT_XTINY,
+            dc.drawText(W - mw, H - mh - FONT_HEIGHT * 3, Graphics.FONT_XTINY, "Full Moon", Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W - mw, H - mh - FONT_HEIGHT * 2, Graphics.FONT_XTINY,
                         fullTime.month + " " + fullTime.day + " " + fullTime.hour.format("%02d") + ":" + fullTime.min.format("%02d"), Graphics.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(W - mw, H - mh - ch + FONT_HEIGHT * 2, Graphics.FONT_XTINY, "New Moon", Graphics.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(W - mw, H - mh - ch + FONT_HEIGHT * 3, Graphics.FONT_XTINY,
+            dc.drawText(W - mw, H - mh - FONT_HEIGHT, Graphics.FONT_XTINY, "New Moon", Graphics.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(W - mw, H - mh, Graphics.FONT_XTINY,
                         newTime.month + " " + newTime.day + " " + newTime.hour.format("%02d") + ":" + newTime.min.format("%02d"), Graphics.TEXT_JUSTIFY_RIGHT);
         }
 

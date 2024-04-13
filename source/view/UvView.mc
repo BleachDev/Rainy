@@ -45,7 +45,7 @@ class UvView extends BaseView {
         colorUv(dc, data.uv[0]);
         dc.drawText(mw, mh * 0.8, Graphics.FONT_NUMBER_MEDIUM, data.uv[0].format("%d"), Graphics.TEXT_JUSTIFY_LEFT);
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(mw, mh * 1.8, Graphics.FONT_XTINY,
+        dc.drawText(mw, mh * 1.85, Graphics.FONT_XTINY,
                     data.uv[0] >= 11 ? "Extreme" : data.uv[0] >= 8 ? "Strong" : data.uv[0] >= 6 ? "High" :
                     data.uv[0] >= 3 ? "Medium" : data.uv[0] >= 0.3 ? "Low" : "No UV", Graphics.TEXT_JUSTIFY_LEFT);
 

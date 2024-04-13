@@ -113,10 +113,7 @@ class BaseData {
         }
 
         time = Time.now();
-        Storage.setValue("time", time.value());
-
         hours = data["hourly"];
-        Storage.setValue("hours", hours);
 
         var forecastData = data["forecast"] as Dictionary;
 
@@ -145,17 +142,19 @@ class BaseData {
             }
         }
 
-        if (IS_GLANCE) {
-            WatchUi.requestUpdate();
-        }
+        WatchUi.requestUpdate();
+        if (!IS_GLANCE) {
+            Storage.setValue("time", time.value());
+            Storage.setValue("hours", hours);
 
-        Storage.setValue("nowRainfall", nowRainfall);
-        Storage.setValue("temperatures", temperatures);
-        Storage.setValue("windSpeeds", windSpeeds);
-        Storage.setValue("windDirections", windDirections);
-        Storage.setValue("rainfall", rainfall);
-        Storage.setValue("humidity", humidity);
-        Storage.setValue("symbols", symbols);
+            Storage.setValue("nowRainfall", nowRainfall);
+            Storage.setValue("temperatures", temperatures);
+            Storage.setValue("windSpeeds", windSpeeds);
+            Storage.setValue("windDirections", windDirections);
+            Storage.setValue("rainfall", rainfall);
+            Storage.setValue("humidity", humidity);
+            Storage.setValue("symbols", symbols);
+        }
         return true;
     }
 

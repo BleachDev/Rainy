@@ -36,7 +36,7 @@ class BaseView extends WatchUi.View {
 
     function drawHeader(dc as Dc, W as Number, H as Number, text as String) {
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        var font = text.length() > 15 ? Graphics.FONT_XTINY : text.length() > 13 ? Graphics.FONT_TINY : text.length() > 11 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM;
+        var font = text.length() > 16 ? Graphics.FONT_XTINY : text.length() > 13 ? Graphics.FONT_TINY : text.length() > 11 ? Graphics.FONT_SMALL : Graphics.FONT_MEDIUM;
         dc.drawText(INSTINCT_MODE ? W / 2.9 : W / 2, H / 5.1 - dc.getFontHeight(font), font, text, Graphics.TEXT_JUSTIFY_CENTER);
     }
 

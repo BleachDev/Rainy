@@ -32,8 +32,6 @@ class BaseData {
         position = coords;
         Storage.setValue("geo", position);
 
-        syncData();
-
         var hours = IS_GLANCE ? 20 : System.getSystemStats().totalMemory < 80000 ? 13 : 36;
         var days = IS_GLANCE ? 0 : 14;
         request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
@@ -68,6 +66,8 @@ class BaseData {
         if (Storage.getValue("humidity") != null) { humidity = Storage.getValue("humidity"); }
         if (Storage.getValue("symbols") != null) { symbols = Storage.getValue("symbols"); }
         if (Storage.getValue("hours") != null) { hours = Storage.getValue("hours"); }
+        
+        syncData();
         WatchUi.requestUpdate();
 
         // Update if we have a valid position

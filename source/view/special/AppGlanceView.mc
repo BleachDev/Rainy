@@ -35,29 +35,24 @@ class AppGlanceView extends WatchUi.GlanceView {
         var mh = H / 5.5; // Rain chart height margin (bottom)
         var lh = (H - mh * 3) / 3; // Rain chart line height
         var chartWidth = W - mw;
-        if (data.nowRainfall != null && data.nowRainfall.size() > 0) {
-            var rainPoints = new [data.nowRainfall.size() + 2];
-            rainPoints[0] = [ mw, H - mh ];
-            rainPoints[data.nowRainfall.size() + 1] = [ mw + chartWidth, H - mh ];
-            for (var i = 0; i < data.nowRainfall.size(); i++) {
-                rainPoints[i + 1] = [ mw + (chartWidth / 18) * i,
-                                      H - mh - (data.nowRainfall[i] <= 0 ? 0 : data.nowRainfall[i] > 5 ? lh * 3 : ((data.nowRainfall[i] + 0.3) * (lh * 0.6))) ];
+
+        var rainPrimary = data.nowRainfall != null && data.nowRainfall.size() > 0;
+        var rainBackup = data.rainfall.size() >= 6;
+
+        if (rainPrimary || rainBackup) {
+            var rainCount = rainPrimary ? data.nowRainfall.size() : rainBackup ? 6 : 0;
+            var rainPolygon = new [rainCount + 2];
+            rainPolygon[0] = [ mw + chartWidth, H - mh ];
+            rainPolygon[1] = [ mw, H - mh ];
+            for (var i = 0; i < rainCount; i++) {
+                var r = rainPrimary ? data.nowRainfall[i] : data.rainfall[i];
+                rainPolygon[i + 2] = [ mw + (chartWidth / (rainCount - 1)) * i, H - mh - (r <= 0 ? 0 : r > 5 ? lh * 3 : ((r + 0.3) * lh * 0.6)) ];
             }
 
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
-            dc.fillPolygon(rainPoints);
-        } else if (data.rainfall.size() >= 6) {
-            var rainPoints = new [8];
-            rainPoints[0] = [ mw, H - mh ];
-            rainPoints[7] = [ mw + chartWidth, H - mh ];
-            for (var i = 0; i < 6; i++) {
-                rainPoints[i + 1] = [ mw + (chartWidth / 6) * i,
-                                      H - mh - (data.rainfall[i] <= 0 ? 0 : data.rainfall[i] > 5 ? lh * 3 : ((data.rainfall[i] + 0.3) * (lh * 0.6))) ];
-            }
+            dc.fillPolygon(rainPolygon);
 
-            dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
-            dc.fillPolygon(rainPoints);
-            if (data.nowRainfall != null) {
+            if (!rainPrimary && data.nowRainfall != null) {
                 dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
                 dc.drawText(W, H * 0.2, Graphics.FONT_GLANCE, "6hr", Graphics.TEXT_JUSTIFY_RIGHT);
             }

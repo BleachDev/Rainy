@@ -31,8 +31,8 @@ class CelestialView extends BaseView {
             for (var i = 0; i < len; i++) {
                 var x = mw + (cw / (len - 1.0) * i);    
 
-                sunPoints[i] = [ x, H - mh - ch * 0.5 - (data.sunElevation[i] / 150) * ch];
-                sunPoints[len * 2 - 1 - i] = [ x, H - mh - ch * 0.5 - H / 150 - (data.sunElevation[i] / 150) * ch];
+                sunPoints[i] = [ x, H - mh - ch * 0.5 - (data.sunElevation[i] / 150.0) * ch];
+                sunPoints[len * 2 - 1 - i] = [ x, H - mh - ch * 0.5 - H / 150 - (data.sunElevation[i] / 150.0) * ch];
                 if (data.sunElevation[i] >= 0) {
                     lightPoints.add(sunPoints[i]);
                 }

@@ -112,8 +112,7 @@ class FullData extends BaseData {
 
         var showWater = "NO".equals(data[0]["code"]);
         BaseDelegate.pageCount = showWater ? 8 : 7;
-        
-        request("https://api.bleach.dev/weather/aurora?noclouds&limit=32&lat=" + position[0] + "&lon=" + position[1], method(:fetchAuroraData));
+
         request("https://api.bleach.dev/weather/celestial?lat=" + position[0] + "&lon=" + position[1], method(:fetchCelestialData));
         if (showWater) {
             request("https://api.bleach.dev/weather/water?lat=" + position[0] + "&lon=" + position[1], method(:fetchWaterData));
@@ -170,6 +169,8 @@ class FullData extends BaseData {
         Storage.setValue("moonIllumination", moonIllumination);
         Storage.setValue("moonPhase", moonPhase);
         WatchUi.requestUpdate();
+
+        request("https://api.bleach.dev/weather/aurora?noclouds&limit=32&lat=" + position[0] + "&lon=" + position[1], method(:fetchAuroraData));
     }
 
     function fetchWaterData(responseCode as Number, data as Dictionary?) as Void {

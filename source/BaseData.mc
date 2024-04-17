@@ -32,7 +32,7 @@ class BaseData {
         position = coords;
         Storage.setValue("geo", position);
 
-        var hours = IS_GLANCE ? 20 : 48;
+        var hours = IS_GLANCE ? 6 : 48;
         var days = IS_GLANCE ? 0 : 22;
         request("https://api.bleach.dev/weather/forecast?hourly=" + hours + "&daily=" + days + "&lat=" + position[0] + "&lon=" + position[1], method(:fetchForecastData));
         request("https://api.bleach.dev/weather/search?limit=1&lat=" + position[0] + "&lon=" + position[1], method(:fetchGeoData));

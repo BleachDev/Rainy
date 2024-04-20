@@ -3,11 +3,9 @@ import Toybox.WatchUi;
 
 class BaseDelegate extends BehaviorDelegate {
 
-    public static var pageCount = 7;
+    public static var pageCount = 6;
     public static var page as Number = 0;
     private var startX as Number = 0;
-
-    public static var showWater = false;
 
     function initialize() {
         BehaviorDelegate.initialize();
@@ -74,14 +72,13 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {
-        pageCount = 7 - (showWater ? 0 : 1) - (data.showUpgrade && !INSTINCT_MODE ? 0 : 1);
-        switch (page == 5 && !showWater ? 6 : data.pageOrder ? (page == 1 ? 3 : page == 3 ? 1 : page) : page) {
+        pageCount = 6 - (data.showUpgrade && !INSTINCT_MODE ? 0 : 1);
+        switch (data.pageOrder ? (page == 1 ? 3 : page == 3 ? 1 : page) : page) {
             case 0: return  [ new SummaryView(), new BaseDelegate() ];
             case 1: return  [ new DailyView(),   new BaseDelegate() ];
             case 2: return  [ new HourlyView(),  new BaseDelegate() ];
             case 3: return  [ new GraphView(),   new BaseDelegate() ];
             case 4: return  [ new AuroraView(),  new BaseDelegate() ];
-            case 5: return  [ new WaterView(),   new BaseDelegate() ];
             default: return [ new UpgradeView(), new BaseDelegate() ];
         }
     }

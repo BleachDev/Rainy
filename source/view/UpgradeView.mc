@@ -35,6 +35,6 @@ class UpgradeView extends BaseView {
         dc.drawText(W / 2, H * 0.75 + FONT_HEIGHT, Graphics.FONT_TINY, (page + 1) + "/2", Graphics.TEXT_JUSTIFY_CENTER);
 
         // Page Indicator
-        drawIndicator(dc, BaseDelegate.showWater ? 6 : 5);
+        drawIndicator(dc, 5);
     }
 }

@@ -41,7 +41,6 @@ class BaseData {
     // Request order
     // -> Forecast
     // -> Geo ----> (F)Aurora
-    //        \---> (F)Water
     function request(url, callback) {
         Communications.makeWebRequest(url, null, {
             :method => Communications.HTTP_REQUEST_METHOD_GET,

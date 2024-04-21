@@ -45,7 +45,7 @@ class HourlyView extends BaseView {
         // Temperature
         dc.drawBitmap(W / 7, mh + offset, res.getSymbol(data.symbols[dataIndex]));
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
-        dc.drawText(W / 7 + 47, mh + offset, Graphics.FONT_MEDIUM, degrees(data.temperatures[dataIndex]) + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(W / 7 + 47, mh + offset, Graphics.FONT_MEDIUM, degrees(data.temperatures[dataIndex], data.tempUnits) + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         // Rainfall
         var rain = data.rainfall[dataIndex];

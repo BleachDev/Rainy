@@ -15,8 +15,9 @@ class BaseDelegate extends BehaviorDelegate {
         var menu = new Menu2({:title=> "Rainy " + VERSION });
         menu.addItem(new MenuItem("Location", data.autoLocation ? "Automatic (GPS)" : data.location, 0, {}));
         menu.addItem(new MenuItem("Show Graph First", data.pageOrder ? "Yes" : "No", 1, {}));
-        menu.addItem(new MenuItem("Wind Units", SettingsDelegate.WIND_UNITS[data.windUnits], 2, {}));
-        menu.addItem(new MenuItem("Refresh Weather", "Updated " + ((Time.now().value() - data.time.value()) / 60) + " minutes ago", 3, {}));
+        menu.addItem(new MenuItem("Temp Units", data.tempUnits == 0 ? "Celsius" : "Fahrenheit", 2, {}));
+        menu.addItem(new MenuItem("Wind Units", SettingsDelegate.WIND_UNITS[data.windUnits], 3, {}));
+        menu.addItem(new MenuItem("Refresh Weather", "Updated " + ((Time.now().value() - data.time.value()) / 60) + " minutes ago", 4, {}));
         WatchUi.pushView(menu, new SettingsDelegate(), WatchUi.SLIDE_BLINK);
         return true;
     }

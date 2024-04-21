@@ -34,10 +34,14 @@ class SettingsDelegate extends Menu2InputDelegate {
             Properties.setValue("pageOrder", data.pageOrder);
             item.setSubLabel(data.pageOrder ? "Yes" : "No");
         } else if (item.getId() == 2) {
+            data.tempUnits = (data.tempUnits + 1) % 2;
+            Properties.setValue("tempUnits", data.tempUnits);
+            item.setSubLabel(data.tempUnits == 0 ? "Celsius" : "Fahrenheit");
+        } else if (item.getId() == 3) {
             data.windUnits = (data.windUnits + 1) % 4;
             Properties.setValue("windUnits", data.windUnits);
             item.setSubLabel(WIND_UNITS[data.windUnits]);
-        } else if (item.getId() == 3) {
+        } else if (item.getId() == 4) {
             data.update(data.position);
             WatchUi.popView(WatchUi.SLIDE_BLINK);
         }

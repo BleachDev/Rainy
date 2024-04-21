@@ -25,7 +25,7 @@ class AppGlanceView extends WatchUi.GlanceView {
 
         dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_TRANSPARENT);
         dc.drawText(0, H * 0.15, Graphics.FONT_GLANCE, data.location.toUpper(), Graphics.TEXT_JUSTIFY_LEFT);
-        dc.drawText(0, H * 0.4, Graphics.FONT_GLANCE_NUMBER, (loaded ? degrees(data.temperatures[0]) : "--") + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(0, H * 0.4, Graphics.FONT_GLANCE_NUMBER, (loaded ? degrees(data.temperatures[0], data.tempUnits) : "--") + "°", Graphics.TEXT_JUSTIFY_LEFT);
 
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         dc.fillPolygon(generateArrow([ W * 0.22, H * 0.52 ], loaded ? data.windDirections[0] + 180 : 0, W / 8));

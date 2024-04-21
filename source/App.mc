@@ -5,7 +5,6 @@ import Toybox.WatchUi;
 
 public var data as FullData?;
 public var res as Resources?;
-(:glance) public var fahrenheit = System.getDeviceSettings().temperatureUnits == System.UNIT_STATUTE;
 (:glance) public var VERSION = "2.1.4";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var SQUARE_MODE as Boolean = false; // Whether the watch is rectangle/semiround
@@ -74,8 +73,8 @@ function generateArrow(centerPoint as [Float, Float], angle as Float, length as 
 }
 
 (:glance)
-function degrees(c as Float) {
-    return (fahrenheit ? c * (9.0/5.0) + 32 : c).toNumber();
+function degrees(c as Float, unit as Number) {
+    return (unit == 0 ? c : c * (9.0/5.0) + 32).toNumber();
 }
 
 (:glance)

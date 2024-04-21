@@ -4,6 +4,7 @@
         <property id="autoLocation" type="boolean">true</property>
         <property id="manLocation" type="string"></property>
         <property id="pageOrder" type="boolean">false</property>
+        <property id="tempUnits" type="number">0</property>
         <property id="windUnits" type="number">0</property>
         <property id="showUpgrade" type="boolean">true</property>
     </properties>
@@ -17,6 +18,12 @@
         </setting>
         <setting propertyKey="@Properties.pageOrder" title="Show Graph First">
             <settingConfig type="boolean" />
+        </setting>
+        <setting propertyKey="@Properties.tempUnits" title="Wind Units">
+            <settingConfig type="list">
+                <listEntry value="0">Celsius</listEntry>
+                <listEntry value="1">Fahrenheit</listEntry>
+            </settingConfig>
         </setting>
         <setting propertyKey="@Properties.windUnits" title="Wind Units">
             <settingConfig type="list">

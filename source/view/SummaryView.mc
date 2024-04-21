@@ -33,10 +33,10 @@ class SummaryView extends BaseView {
         var sumM = H / 13; // Summary margin
         dc.drawBitmap(sumM, sumM * 2.7, res.getSymbol(data.symbols.size() == 0 ? 2018941991 : data.symbols[0]));
 
-        dc.drawText(sumM + 50, sumM * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.temperatures[0]) + "°", Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(sumM + 50, sumM * 2.5, Graphics.FONT_NUMBER_MILD, degrees(data.temperatures[0], data.tempUnits) + "°", Graphics.TEXT_JUSTIFY_LEFT);
         dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
         var apTemp = calcApparentTemperature(data.temperatures[0], data.humidity[0], data.windSpeeds[0]);
-        dc.drawText(sumM, sumM * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp) + "°" + (fahrenheit ? "F" : "C"), Graphics.TEXT_JUSTIFY_LEFT);
+        dc.drawText(sumM, sumM * 5, Graphics.FONT_XTINY, "Feels Like " + degrees(apTemp, data.tempUnits) + "°" + (data.tempUnits == 1 ? "F" : "C"), Graphics.TEXT_JUSTIFY_LEFT);
 
         // Wind
         dc.drawText(W - sumM * (INSTINCT_MODE ? 2.4 : 3.1), sumM * (INSTINCT_MODE ? 0.45 : 2.5), Graphics.FONT_NUMBER_MILD, wind(data.windSpeeds[0], data.windUnits), Graphics.TEXT_JUSTIFY_RIGHT);

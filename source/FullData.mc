@@ -36,6 +36,7 @@ class FullData extends BaseData {
         
         BaseData.load();
 
+        BaseDelegate.pageCount = showUpgrade && !INSTINCT_MODE ? 6 : 5;
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:posCB));
     }
 

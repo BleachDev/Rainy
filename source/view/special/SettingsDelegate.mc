@@ -39,6 +39,8 @@ class SettingsDelegate extends Menu2InputDelegate {
             item.setSubLabel(WIND_UNITS[data.windUnits]);
         } else if (item.getId() == 3) {
             data.showUpgrade = !data.showUpgrade;
+            BaseDelegate.pageCount = data.showUpgrade && !INSTINCT_MODE ? 6 : 5;
+
             Properties.setValue("showUpgrade", data.showUpgrade);
             item.setSubLabel(data.showUpgrade ? "Show" : "Don't Show");
         } else if (item.getId() == 4) {

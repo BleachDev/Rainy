@@ -27,7 +27,7 @@ class BaseDelegate extends BehaviorDelegate {
             return false;
         }
 
-        page = page == (pageCount - 1) ? 0 : page + 1;
+        page = page >= (pageCount - 1) ? 0 : page + 1;
 
         var view = getView(page);
         WatchUi.switchToView(view[0], view[1], WatchUi.SLIDE_UP);
@@ -72,14 +72,13 @@ class BaseDelegate extends BehaviorDelegate {
     }
 
     function getView(page as Number) as Array<View or BehaviorDelegate> {
-        pageCount = 6 - (data.showUpgrade && !INSTINCT_MODE ? 0 : 1);
         switch (data.pageOrder ? (page == 1 ? 3 : page == 3 ? 1 : page) : page) {
-            case 0: return  [ new SummaryView(), new BaseDelegate() ];
+            default: return [ new SummaryView(), new BaseDelegate() ];
             case 1: return  [ new DailyView(),   new BaseDelegate() ];
             case 2: return  [ new HourlyView(),  new BaseDelegate() ];
             case 3: return  [ new GraphView(),   new BaseDelegate() ];
             case 4: return  [ new AuroraView(),  new BaseDelegate() ];
-            default: return [ new UpgradeView(), new BaseDelegate() ];
+            case 5: return  [ new UpgradeView(), new BaseDelegate() ];
         }
     }
 }

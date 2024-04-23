@@ -60,6 +60,10 @@ class GraphView extends BaseView {
         var tempPoints = new [points * 2 + 2];
         for (var i = 0; i < points; i++) {
             // Rain (fillRectancle uses wh instead of xy :troll:)
+            dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
+            var maxRain = data.maxRainfall[offset + i];
+            dc.fillRectangle(mw + lw * i, H - mh - lh * maxRain, lw, lh * maxRain);
+
             dc.setColor(Graphics.COLOR_BLUE, Graphics.COLOR_TRANSPARENT);
             var rain = data.rainfall[offset + i];
             dc.fillRectangle(mw + lw * i, H - mh - lh * rain, lw, lh * rain);

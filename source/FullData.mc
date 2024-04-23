@@ -10,6 +10,8 @@ class FullData extends BaseData {
     public var hints               as Number = 0;
     public var pageOrder           as Boolean = false;
     public var showUpgrade         as Boolean = true;
+    // Forecast
+    public var maxRainfall         as Array<Float> = [];
     // Aurora
     public var hourlyAurora        as Array<Float>? = null;
     public var hourlyClouds        as Array<Float>? = null;
@@ -50,9 +52,11 @@ class FullData extends BaseData {
         var forecastData = data["forecast"] as Dictionary;
 
         var hours = forecastData.size();
+        maxRainfall = new [hours];
         hourlyClouds = new [hours];
         for (var i = 0; i < hours; i++) {
             var hour = forecastData[i];
+            maxRainfall[i] = hour["precipitation_max"] != null ? hour["precipitation_max"] : rainfall[i];
             hourlyClouds[i] = hour["cloud_area_fraction"];
         }
 

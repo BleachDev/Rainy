@@ -56,7 +56,7 @@ class UvView extends BaseView {
 
         // Humidity Text
         dc.drawText(mw + cw, mh, Graphics.FONT_XTINY, "Humidity " + hum.format("%d") + "%", Graphics.TEXT_JUSTIFY_RIGHT);
-        dc.drawText(mw + cw, mh + FONT_HEIGHT, Graphics.FONT_XTINY, "Dew " + dew.format("%d") + "°", Graphics.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(mw + cw, mh + FONT_HEIGHT, Graphics.FONT_XTINY, "Dew " + degrees(dew, data.tempUnits) + "°", Graphics.TEXT_JUSTIFY_RIGHT);
         dc.setColor(dew < 15 ? Graphics.COLOR_GREEN :
                     dew < 20 ? Graphics.COLOR_YELLOW :
                     dew < 24 ? Graphics.COLOR_ORANGE : Graphics.COLOR_RED, Graphics.COLOR_TRANSPARENT);

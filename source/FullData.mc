@@ -50,7 +50,6 @@ class FullData extends BaseData {
         if (maxRainfall.size() > 0) { maxRainfall.remove(maxRainfall[0]); }
         if (hourlyAurora.size() > 0) { hourlyAurora.remove(hourlyAurora[0]); }
         if (hourlyClouds.size() > 0) { hourlyClouds.remove(hourlyClouds[0]); }
-        if (uv.size() > 0) { uv.remove(uv[0]); }
     }
 
     // Fetching Methods

@@ -68,7 +68,12 @@ class BaseData {
         if (Storage.getValue("symbols") != null) { symbols = Storage.getValue("symbols"); }
         if (Storage.getValue("hours") != null) { hours = Storage.getValue("hours"); }
         
-        syncData();
+        // Sync Data
+        var now = Time.now().value();
+        for (var i = time.value(); i + 3600 < now; i += 3600) {
+            removeHour();
+        }
+
         WatchUi.requestUpdate();
 
         // Update if we have a valid position
@@ -89,20 +94,17 @@ class BaseData {
         }
     }
 
-    function syncData() {
-        var nowTime = Time.now().value();
-        for (var i = time.value(); i + 3600 < nowTime; i += 3600) {
-            if (nowRainfall != null) {
-                nowRainfall = []; // No more 90 minute rain
-            }
-            if (temperatures.size() > 0) { temperatures.remove(temperatures[0]); }
-            if (windSpeeds.size() > 0) { windSpeeds.remove(windSpeeds[0]); }
-            if (windDirections.size() > 0) { windDirections.remove(windDirections[0]); }
-            if (rainfall.size() > 0) { rainfall.remove(rainfall[0]); }
-            if (humidity.size() > 0) { humidity.remove(humidity[0]); }
-            if (symbols.size() > 0) { symbols.remove(symbols[0]); }
-            hours--;
+    function removeHour() {
+        if (nowRainfall != null) {
+            nowRainfall = []; // No more 90 minute rain
         }
+        if (temperatures.size() > 0) { temperatures.remove(temperatures[0]); }
+        if (windSpeeds.size() > 0) { windSpeeds.remove(windSpeeds[0]); }
+        if (windDirections.size() > 0) { windDirections.remove(windDirections[0]); }
+        if (rainfall.size() > 0) { rainfall.remove(rainfall[0]); }
+        if (humidity.size() > 0) { humidity.remove(humidity[0]); }
+        if (symbols.size() > 0) { symbols.remove(symbols[0]); }
+        hours--;
     }
 
     // Fetching Methods

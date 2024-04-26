@@ -33,6 +33,8 @@ class FullData extends BaseData {
         if (Properties.getValue("pageOrder") != null) { pageOrder = Properties.getValue("pageOrder"); }
         if (Properties.getValue("showUpgrade") != null) { showUpgrade = Properties.getValue("showUpgrade"); }
 
+        if (Storage.getValue("maxRainfall") != null) { maxRainfall = Storage.getValue("maxRainfall"); }
+
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
         if (Storage.getValue("hourlyClouds") != null) { hourlyClouds = Storage.getValue("hourlyClouds"); }
         
@@ -40,6 +42,15 @@ class FullData extends BaseData {
 
         BaseDelegate.pageCount = showUpgrade && !INSTINCT_MODE ? 6 : 5;
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:posCB));
+    }
+
+    function removeHour() {
+        BaseData.removeHour();
+
+        if (maxRainfall.size() > 0) { maxRainfall.remove(maxRainfall[0]); }
+        if (hourlyAurora.size() > 0) { hourlyAurora.remove(hourlyAurora[0]); }
+        if (hourlyClouds.size() > 0) { hourlyClouds.remove(hourlyClouds[0]); }
+        if (uv.size() > 0) { uv.remove(uv[0]); }
     }
 
     // Fetching Methods
@@ -60,6 +71,7 @@ class FullData extends BaseData {
             hourlyClouds[i] = hour["cloud_area_fraction"];
         }
 
+        Storage.setValue("maxRainfall", maxRainfall);
         Storage.setValue("hourlyClouds", hourlyClouds);
         return true;
     }

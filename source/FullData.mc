@@ -54,6 +54,8 @@ class FullData extends BaseData {
 
         if (Properties.getValue("pageOrder") != null) { pageOrder = Properties.getValue("pageOrder"); }
 
+        if (Storage.getValue("maxRainfall") != null) { maxRainfall = Storage.getValue("maxRainfall"); }
+
         if (Storage.getValue("hourlyAurora") != null) { hourlyAurora = Storage.getValue("hourlyAurora"); }
         if (Storage.getValue("hourlyClouds") != null) { hourlyClouds = Storage.getValue("hourlyClouds"); }
 
@@ -82,6 +84,15 @@ class FullData extends BaseData {
         Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method(:posCB));
     }
 
+    function removeHour() {
+        BaseData.removeHour();
+
+        if (maxRainfall.size() > 0) { maxRainfall.remove(maxRainfall[0]); }
+        if (hourlyAurora.size() > 0) { hourlyAurora.remove(hourlyAurora[0]); }
+        if (hourlyClouds.size() > 0) { hourlyClouds.remove(hourlyClouds[0]); }
+        if (uv.size() > 0) { uv.remove(uv[0]); }
+    }
+
     // Fetching Methods
 
     function fetchForecastData(responseCode as Number, data as Dictionary?) as Boolean {
@@ -102,6 +113,7 @@ class FullData extends BaseData {
             uv[i] = hour["uv"];
         }
 
+        Storage.setValue("maxRainfall", maxRainfall);
         Storage.setValue("hourlyClouds", hourlyClouds);
         Storage.setValue("uv", uv);
         return true;

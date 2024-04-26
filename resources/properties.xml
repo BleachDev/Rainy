@@ -18,7 +18,7 @@
         <setting propertyKey="@Properties.pageOrder" title="Show Graph First">
             <settingConfig type="boolean" />
         </setting>
-        <setting propertyKey="@Properties.tempUnits" title="Wind Units">
+        <setting propertyKey="@Properties.tempUnits" title="Temp Units">
             <settingConfig type="list">
                 <listEntry value="0">Celsius</listEntry>
                 <listEntry value="1">Fahrenheit</listEntry>

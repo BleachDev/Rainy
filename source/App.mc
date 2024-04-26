@@ -5,7 +5,7 @@ import Toybox.WatchUi;
 
 public var data as FullData?;
 public var res as Resources?;
-(:glance) public var VERSION = "2.2.0";
+(:glance) public var VERSION = "2.2.1";
 (:glance) public var IS_GLANCE as Boolean = false;
 public var SQUARE_MODE as Boolean = false; // Whether the watch is rectangle/semiround
 

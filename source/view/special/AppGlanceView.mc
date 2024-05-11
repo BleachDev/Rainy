@@ -16,9 +16,6 @@ class AppGlanceView extends WatchUi.GlanceView {
 
     // Update the view
     function onUpdate(dc as Dc) as Void {
-        // Call the parent onUpdate function to redraw the layout
-        GlanceView.onUpdate(dc);
-
         var W = dc.getWidth();
         var H = dc.getHeight();
         var loaded = data.temperatures.size() > 0;

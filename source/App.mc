@@ -1,5 +1,6 @@
 import Toybox.Application;
 import Toybox.Lang;
+import Toybox.Math;
 import Toybox.System;
 import Toybox.WatchUi;
 
@@ -84,5 +85,5 @@ function degrees(c as Float, unit as Number) {
 
 (:glance)
 function wind(ms as Float, unit as Number) {
-    return (unit == 0 ? ms : unit == 1 ? ms * 3.6 : unit == 2 ? ms * 2.237 : Toybox.Math.round(Toybox.Math.pow(ms / 0.836, 2.0 / 3))).toNumber();
+    return (unit == 0 ? ms : unit == 1 ? ms * 3.6 : unit == 2 ? ms * 2.237 : unit == 3 ? Math.round(Math.pow(ms / 0.836, 2.0 / 3)) : ms * 1.9438).toNumber();
 }

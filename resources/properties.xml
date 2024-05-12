@@ -31,6 +31,7 @@
                 <listEntry value="1">km/h</listEntry>
                 <listEntry value="2">mph</listEntry>
                 <listEntry value="3">Bft.</listEntry>
+                <listEntry value="4">Knots</listEntry>
             </settingConfig>
         </setting>
         <setting propertyKey="@Properties.showUpgrade" title="Show Upgrade Page">

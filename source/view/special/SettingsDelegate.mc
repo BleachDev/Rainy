@@ -4,7 +4,7 @@ import Toybox.WatchUi;
 
 class SettingsDelegate extends Menu2InputDelegate {
 
-    public static var WIND_UNITS = [ "m/s", "km/h", "mph", "Bft." ];
+    public static var WIND_UNITS = [ "m/s", "km/h", "mph", "Bft.", "Knots" ];
 
     function initialize() {
         Menu2InputDelegate.initialize();
@@ -38,7 +38,7 @@ class SettingsDelegate extends Menu2InputDelegate {
             Properties.setValue("tempUnits", data.tempUnits);
             item.setSubLabel(data.tempUnits == 0 ? "Celsius" : "Fahrenheit");
         } else if (item.getId() == 3) {
-            data.windUnits = (data.windUnits + 1) % 4;
+            data.windUnits = (data.windUnits + 1) % WIND_UNITS.size();
             Properties.setValue("windUnits", data.windUnits);
             item.setSubLabel(WIND_UNITS[data.windUnits]);
         } else if (item.getId() == 4) {

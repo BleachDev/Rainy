@@ -9,7 +9,7 @@ class BaseData {
 
     public var autoLocation   as Boolean = true;
     public var tempUnits      as Number  = System.getDeviceSettings().temperatureUnits; // 0 = C, 1 = F
-    public var windUnits      as Number  = 0; // 0 = m/s, 1 = km/h, 2 = mph, 3 = bft.
+    public var windUnits      as Number  = 0; // 0 = m/s, 1 = km/h, 2 = mph, 3 = bft., 4 = knots
 
     public var position       as Array<Double>?;
     public var location       as String = "..";

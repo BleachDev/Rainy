@@ -11,7 +11,7 @@ class AuroraView extends BaseView {
     // Update the view
     function onDraw(dc as Dc, W as Number, H as Number, FONT_HEIGHT as Number) as Void {
         drawHeader(dc, W, H, "Aurora");
-        if (data.hourlyClouds == null) {
+        if (data.hourlyClouds.size() == 0) {
             dc.setColor(Graphics.COLOR_LT_GRAY, Graphics.COLOR_TRANSPARENT);
             dc.drawText(W / 2, H / 2.5, Graphics.FONT_TINY, "Aurora & Cloud Data\nUnavailable.", Graphics.TEXT_JUSTIFY_CENTER);
         } else {
@@ -40,7 +40,7 @@ class AuroraView extends BaseView {
                 cloudPoints[i] = [ x, cloudY + ch * data.hourlyClouds[i] / 1000 ];
                     cloudPoints[len * 2 - 1 - i] = [ x, cloudY - ch * data.hourlyClouds[i] / 1000 ];
 
-                var aurStrength = data.hourlyAurora != null && data.hourlyAurora.size() > i ? data.hourlyAurora[i] : 0;
+                var aurStrength = data.hourlyAurora.size() > i ? data.hourlyAurora[i] : 0;
                 auroraPoints[i] = [ x, mh + ch - (ch * aurStrength * 0.4)];
                 maxAurora = aurStrength > maxAurora ? aurStrength : maxAurora;
 

@@ -13,8 +13,8 @@ class FullData extends BaseData {
     // Forecast
     public var maxRainfall         as Array<Float> = [];
     // Aurora
-    public var hourlyAurora        as Array<Float>? = null;
-    public var hourlyClouds        as Array<Float>? = null;
+    public var hourlyAurora        as Array<Float> = [];
+    public var hourlyClouds        as Array<Float> = [];
 
     function initialize() {
         BaseData.initialize();
